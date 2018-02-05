@@ -1,0 +1,1251 @@
+﻿<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=8" > 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>新增功能点</title>
+    <link rel="stylesheet" href="../../Content/layui2.2/css/layui.css"/>
+    <style>
+        .div-icon
+        {
+            color:black;
+            font-size:35px;
+        }
+    </style>
+    <script type="text/javascript" src="../../Content/layui2.2/layui.js"></script>
+    <script>
+        window.console = window.console || (function () {
+            var c = {}; c.log = c.warn = c.debug = c.info = c.error = c.time = c.dir = c.profile = c.clear = c.exception = c.trace = c.assert = function () { };
+            return c;
+        })();
+
+        var $;
+        var funcInfo = {};
+        var pItemRow = [];
+        var pItem = {};
+        var pItemRowId = 0;
+
+       
+
+        layui.use(['form', 'layedit', 'laydate', 'basejq'], function () {
+            var form = layui.form
+            , layer = layui.layer
+            , bj = layui.basejq("e")
+            , $ = layui.jquery
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+
+
+            var fid = bj.getUrlParam("funcId");
+
+            funcInfo.funcId = fid > 0 ? fid : 0;
+          
+
+            //异步获取数据并返回数据集
+            var getRetRow = function (reqCode, myParam) {
+                var param = bj.param();
+                var dr = [];
+                param.reqCode = reqCode;
+                param.reqData = myParam;
+                param.async = false;
+                bj.post(param, function (data) {
+                    if (data.IsError) {
+                        bj.showMsg(data.RetMsg, 0);
+                    }
+                    else {
+                         dr = data.RetData.rows;
+                    }
+                });
+                return dr;
+            };
+
+
+            //异步获取数据并自动填充
+            var doBind = function (reqCode, myParam, area) {
+                var param = bj.param();
+                param.reqCode = reqCode;
+                param.reqData = myParam;
+                param.area = area;
+                param.loadImg = true;
+                param.async = false;
+                bj.post(param, function (data) {
+                    if (data.IsError) {
+                        bj.showMsg(data.RetMsg, 0);
+                        return;
+                    }
+                    else {
+                        var dr = data.RetData.rows;
+                        form.render();
+                    }
+                });
+            };
+
+            //下拉框数据绑定
+            var doSelBind = function (reqCode, myParam, async, area, obj) {
+                var param = bj.param();
+                param.reqCode = reqCode;
+                param.reqData = myParam;
+                param.loadImg = true;
+                param.async = async;
+                param.area = area;
+                bj.post(param, function (data) {
+                    if (data.IsError) {
+                        bj.showMsg(data.RetMsg, 0);
+                        return;
+                    }
+                    else {
+                        var dr = data.RetData.rows;
+                        if (dr.length > 0) {
+                            obj.hide();
+                        }
+                    }
+                });
+            };
+
+            //获取多选框选中值,组成value-value-value的字符串形式
+            var jqchk = function (chbName) {
+                var chk_value = "";
+                $("input[name=" + chbName + "]:checked").each(function () {
+                    if ($(this).val().substr(0, 1) != "{") {
+                        chk_value += chk_value == "" ? $(this).val() : "-" + $(this).val()
+                    }
+                });
+                return chk_value
+            }
+
+
+            //下拉列表,根据value值获取text内容
+            var getTextBySelValue = function(selName,value){
+                return $("#"+selName+" option[value='"+value+"']").text()
+            };
+
+     
+
+            
+            
+
+
+            $(document).on("click", ".div-icon", function () {
+                //图标点击事件
+                $("#rShowIcon").html($(this).html());
+                $("#hidIcon").val($(this).prop("id"));
+            });
+
+            $(document).on("click", ".div-color", function () {
+                //颜色点击事件                
+
+                $("#rShowIcon").css("color", $(this).prop("id"));
+                $("#hidColor").val($(this).prop("id"));
+            });
+
+
+            //显示标签选择层
+            $("#lblShowIcon").click(function () {
+                if ($(".div-color")[0].style.backgroundColor == "") {
+                    for (var i = 0; i < $(".div-color").length; i++) {
+                        $(".div-color")[i].style.backgroundColor = $(".div-color")[i].id;
+                    }
+                }
+
+                layer.open({
+                    type: 1,
+                    title: false,
+                    area: ['70%', '80%'],
+                    offset: '50px',
+                    content: $('#divShowIcon'),
+                    fixed: false
+                });
+            });
+
+            //添加投放范围
+            $("#btnAdd").click(function () {
+
+                addPermitContent(pItem);                
+               
+
+            });
+
+            var addPermitContent= function(vpItem){
+
+                var pItemInfo = {};
+                pItemInfo.rowid = pItemRowId;
+                pItemInfo.pItem = {};
+                pItemInfo.pItem.userType = vpItem.userType;
+                pItemInfo.pItem.province = vpItem.province;
+                pItemInfo.pItem.city = vpItem.city;
+                pItemInfo.pItem.town = vpItem.town;
+                pItemInfo.pItem.channel = vpItem.channel;
+                pItemInfo.pItem.deptId = vpItem.deptId;
+                pItemInfo.pItem.postId = vpItem.postId;
+                
+                var content = getTextBySelValue("selProvince", vpItem.province);
+                content += vpItem.city == "" ? "" : " " + getTextBySelValue("selCity", vpItem.city);
+
+
+                var townName1 = typeof (vpItem.townName) == "undefined" ? "" : " "+vpItem.townName;
+                var townName2 = vpItem.town == "" ? "" : " " + getTextBySelValue("selTown", vpItem.town);
+                content += townName1 == "" ? townName2 : townName1;
+
+                var channelName1 = typeof (vpItem.channelName) == "undefined" ? "" : " " + vpItem.channelName;
+                var channelName2 = vpItem.channel == "" ? "" : " " + getTextBySelValue("selChannel", vpItem.channel);
+                content += channelName1 == "" ? channelName2 : channelName1;
+
+                var deptName1 = typeof (vpItem.deptName) == "undefined" ? "" : " " + vpItem.deptName;
+                var deptName2 = vpItem.deptId == "" ? "" : " " + getTextBySelValue("selDept", vpItem.deptId);
+                content += deptName1 == "" ? deptName2 : deptName1;
+
+                var postName1 = typeof (vpItem.postName) == "undefined" ? "" : " " + vpItem.postName;
+                var postName2 = vpItem.postId == "" ? "" : " " + getTextBySelValue("selPost", vpItem.postId);
+                content += postName1 == "" ? postName2 : postName1;
+
+                content += " 全体" + getTextBySelValue("selUserType", vpItem.userType);
+
+                pItemInfo.content = content;
+
+                for (var i = 0; i < pItemRow.length; i++)
+                {
+                    if (content == pItemRow[i].content)
+                    {
+                        return;
+                    }
+                }
+
+                pItemRow.push(pItemInfo);
+                pItemRowId++;
+
+                bj.bind(pItemRow, "pitemlist");
+            
+            }
+
+
+        
+
+            $("#btnSetUser").click(function () {
+                var userString = JSON.stringify($("#userCode").val());//.split("\\n");//.replace(/\\n/g, "\\n").replace(/\\r/g, "\\r");
+                var userArray = userString.split("\\n");
+                var userInfo = "";
+                var userItem = "";
+                for (var i = 0; i < userArray.length; i++)
+                {                    
+                    userItem = userArray[i].replace(/\"/g,"");
+                    if (userItem != "")
+                    {
+                        userInfo += userInfo == "" ? userItem : "-" + userItem;
+                    }
+                }
+                var myParam = {};
+                myParam.name = userInfo;
+
+                doBind("cm053", myParam, "userlist");
+                
+            });
+
+
+
+            $(document).on("click", ".div-pitem", function () {
+
+                var rowid = $(this).prop("id").split("-")[1];
+                var npItemRow = [];
+                
+                for (var i = 0; i < pItemRow.length; i++)
+                {                  
+                    if (rowid != pItemRow[i].rowid)
+                    {
+                        npItemRow.push(pItemRow[i]);
+                    }
+                }
+                pItemRow = [];
+                pItemRow = npItemRow;
+                bj.bind(pItemRow, "pitemlist");
+            });
+
+            
+
+
+           
+
+
+            var getFormInfo = function (data) {
+                funcInfo = funcInfo.funcId>0 ? funcInfo : {};
+                funcInfo.funcId = funcInfo.funcId>0 ? funcInfo.funcId : 0;
+                funcInfo.funcName = data.funcName;
+                funcInfo.funcIconId = data.hidIcon;
+                funcInfo.funcImage = "";//待设计
+                funcInfo.funcIconColor = data.hidColor;
+                funcInfo.funcDesc = data.funcDesc;
+                funcInfo.funcUrl = data.funcUrl;
+                funcInfo.funcCfgId = data.funcCfgId;
+                funcInfo.funcBeginTime = data.funcBeginTime;
+                funcInfo.funcEndTime = data.funcEndTime;
+                funcInfo.platformCode = jqchk("platformCode");
+                funcInfo.labelId = jqchk("label");
+                funcInfo.userCode = jqchk("chbUserInfo");
+            }
+
+
+            
+
+
+            
+
+
+            var permitChange = function (selChangeFlag) {
+                var permitItem = {};
+                permitItem.userType = $("#selUserType").val();
+                permitItem.province = $("#selProvince").val();
+
+                //绑定地市
+                if (selChangeFlag == "" || selChangeFlag == "usertype") {
+                    var myParam = {};
+                    myParam.userType = permitItem.userType;
+                    myParam.province = permitItem.province;
+                    doSelBind("cm045", myParam, false, "citylist", $("#selCity"));
+                }
+
+                permitItem.city = $("#selCity").val();
+
+
+                //绑定县支
+                if (selChangeFlag == "" || selChangeFlag == "usertype" || selChangeFlag == "city") {
+                    myParam = {};
+                    myParam.userType = permitItem.userType;
+                    myParam.city = permitItem.city;
+                    doSelBind("cm046", myParam, false, "townlist", $("#selTown"));
+                }
+
+                permitItem.town = $("#selTown").val();
+
+                //绑定条线
+                if (selChangeFlag == "" || selChangeFlag == "usertype") {
+                    myParam = {};
+                    myParam.userType = permitItem.userType;
+                    doSelBind("cm047", myParam, false, "channellist", $("#selChannel"));
+                }
+
+                permitItem.channel = $("#selChannel").val();
+
+                //绑定部门
+                if (selChangeFlag == "" || selChangeFlag == "usertype" || selChangeFlag == "city" || selChangeFlag == "channel" || selChangeFlag == "town") {
+                    myParam = {};
+                    myParam.userType = permitItem.userType;
+                    myParam.province = permitItem.province
+                    myParam.city = permitItem.city;
+                    myParam.town = permitItem.town;
+                    myParam.channel = permitItem.channel;
+                    doSelBind("cm048", myParam, false, "deptlist", $("#selDept"));
+                }
+
+
+
+                permitItem.deptId = $("#selDept").val();
+
+                //绑定岗位
+                if (selChangeFlag == "" || selChangeFlag == "usertype" || selChangeFlag == "city" || selChangeFlag == "channel" || selChangeFlag == "town" || selChangeFlag == "dept") {
+                    myParam = {};
+                    myParam.userType = permitItem.userType;
+                    myParam.province = permitItem.province
+                    myParam.city = permitItem.city;
+                    myParam.town = permitItem.town;
+                    myParam.deptId = permitItem.deptId;
+                    myParam.channel = permitItem.channel;
+                    doSelBind("cm049", myParam, false, "postlist", $("#selPost"));
+                }
+
+
+
+                permitItem.postId = $("#selPost").val();
+                form.render();
+                return permitItem;
+            };
+
+            pItem = {};
+            pItem = permitChange("");
+
+
+
+
+       
+
+            var colorRow = [
+            { "colorCode": "yellow", "colorValue": "yellow" }
+            , { "colorCode": "#FFAA33", "colorValue": "#FFAA33" }
+            , { "colorCode": "pink", "colorValue": "pink" }
+            , { "colorCode": "red", "colorValue": "red" }
+            , { "colorCode": "purple", "colorValue": "purple" }
+            , { "colorCode": "blue", "colorValue": "blue" }
+            , { "colorCode": "green", "colorValue": "green" }
+            , { "colorCode": "silver", "colorValue": "silver" }
+            , { "colorCode": "gray", "colorValue": "gray" }
+            , { "colorCode": "brown", "colorValue": "brown" }
+            , { "colorCode": "black", "colorValue": "black" }
+            ];
+
+            //绑定链接方式 cm042
+            myParam = {};
+            doSelBind("cm042", myParam, false, "cfglist", $("#funcCfgId"));
+
+            //绑定图标
+            myParam = {};
+            doBind("cm043", myParam, "iconlist");
+
+            bj.bind(colorRow, "colorlist");
+
+
+
+
+            myParam = {};
+            myParam.codeTypeValue = 'FuncPlatParam';
+            doBind("cm901", myParam, "funcplatlist");
+
+
+            //日期
+            laydate.render({
+                elem: '#funcBeginTime'
+            });
+            laydate.render({
+                elem: '#funcEndTime'
+            });
+
+
+
+
+            //创建一个编辑器
+            // var editIndex = layedit.build('LAY_demo_editor');
+
+            //自定义验证规则
+            form.verify({
+                funcName: function (value) {
+                    if (value.length == 0) {
+                        return '标题不能为空！';
+                    }
+                }
+              , funcUrl: function (value) {
+                  if (value.length == 0) {
+                      return '地址不能为空！';
+                  }
+              }
+            });
+
+
+            form.on('select(selUserType)', function (data) {
+                //userType = data.value;
+                pItem = permitChange("usertype");
+            });
+
+            form.on('select(selCity)', function (data) {
+                pItem = permitChange("city");
+            });
+
+            form.on('select(selTown)', function (data) {
+                pItem = permitChange("town");
+            });
+
+            form.on('select(selChannel)', function (data) {
+                pItem = permitChange("channel");
+            });
+
+            form.on('select(selDept)', function (data) {
+                pItem = permitChange("dept");
+            });
+
+            form.on('select(selPost)', function (data) {
+                pItem = permitChange("post");
+            });
+
+
+
+
+            //监听提交
+            form.on('submit(formDemo)', function (data) {
+
+                getFormInfo(data.field);
+
+                var param = bj.param();
+                param.reqCode = "cm050";
+                param.reqData = funcInfo;
+                param.loadImg = true;
+                param.async = false;
+                bj.post(param, function (data) {
+                    if (data.IsError) {
+                        bj.showMsg(data.RetMsg, 0);
+                        return;
+                    }
+                    else {
+                        var dr = data.RetData.rows;
+                        funcInfo.funcId = dr[0].funcId;
+
+                        if (dr[0].funcId > 0) {
+                            for (var i = 0; i < pItemRow.length; i++) {
+                                insPItem(pItemRow[i].pItem);
+                            }
+                        }
+
+                        bj.showMsg("添加成功",0);
+                    }
+                });
+
+               
+
+                return false;
+            });
+
+            var insPItem = function (myParam) {
+                myParam.id = 0;
+                myParam.funcId = funcInfo.funcId;
+                myParam.deptId = myParam.deptId == "" ? 0 : myParam.deptId;
+                myParam.postId = myParam.postId == "" ? 0 : myParam.postId;
+                var param = bj.param();
+                param.reqCode = "cm052";
+                param.reqData = myParam;
+                param.loadImg = true;
+                param.async = false;
+                bj.post(param, function (data) {
+                    if (data.IsError) {
+                        bj.showMsg(data.RetMsg, 0);
+                        return;
+                    }
+                    else {
+                        var dr = data.RetData.rows;
+                    }
+                });
+            }
+
+
+            $.extend({
+                format: function (source, params) {
+                    if (arguments.length == 1)
+                        return function () {
+                            var args = $.makeArray(arguments);
+                            args.unshift(source);
+                            return $.format.apply(this, args);
+                        };
+                    if (arguments.length > 2 && params.constructor != Array) {
+                        params = $.makeArray(arguments).slice(1);
+                    }
+                    if (params.constructor != Array) {
+                        params = [params];
+                    }
+                    $.each(params, function (i, n) {
+                        source = source.replace(new RegExp("\\{" + i + "\\}", "g"), n);
+                    });
+                    return source;
+                },
+                reqQueryList: function (queryObj, reqCode, successFn, shade, async) {
+                    var param = bj.param();
+                    param.reqCode = reqCode; //P_GetPsnInterview
+                    param.loadImg = (typeof shade === 'undefined' ? true : shade);
+                    param.reqData = queryObj;
+                    param.async = (typeof async === 'undefined' ? true : async); //异步   
+                    var ctx = this;
+                    var callback = function (responseData) {
+                        if (-1 != responseData.RetCode) {
+                            var rows = responseData.RetData.rows;
+                            if (successFn && typeof successFn == "function") {
+                                successFn(rows);
+                            }
+                            //if (rows && rows instanceof Array) { }
+                        } else {
+                            bj.showMsg(responseData.RetMsg, 0);
+                        }
+                    }
+                    bj.post(param, function (data) {
+                        callback.call(ctx, data);
+                    });
+                },
+                getLabelType: function () {
+                    $.reqQueryList({}, "cm031", function (records) {
+                        $.showLabelTypeTpl(records, 'lableTypeCon', 'radioTpl');
+
+                        form.render();
+                        form.on('radio(labelType)', function (data) {
+                            $.getLabel(data.value);                            
+                        });
+                    }, true, false)
+                },//显示标签类型
+                showLabelTypeTpl: function (rowData, objid, tplid) {
+                    var tpl = $("#" + tplid).html();
+                    $("#" + objid).empty();
+
+                    $("#" + objid).append($.format('<input type="radio" name="{0}" title="不限" value="" lay-filter="{0}" checked=""/>', "labelType"));
+                    for (var i = 0 ; i < rowData.length; i += 1) {
+                        var html = $.format(tpl, rowData[i].labelName, rowData[i].labelTypeId, 'labelType');
+                        $("#" + objid).append(html);
+                    }
+                },//获取标签列表
+                getLabel: function (labeltype) {
+                    $.reqQueryList({ labelName:"",labelTypeId: labeltype }, "cm034", function (records) {
+                        $.showLabelTpl(records, 'lableCon', 'checkTpl');
+                        form.render();
+                        form.on('checkbox(label)', function (data) {
+                            var checkeds = $('input[name="label"]:checked');
+                            //【不限】选中,其他选中的都取消
+                            if (data.value == "" && data.elem.checked == true) {
+                                for (var i = 0; i < checkeds.length; i++) {
+                                    if ($(checkeds[i]).val() != "") {
+                                        $(checkeds[i]).removeAttr("checked");
+                                    }
+                                }
+                            }
+
+                            //其他选中，取消【不限】选中
+                            if (data.value != "" && data.elem.checked == true) {
+                                for (var i = 0; i < checkeds.length; i++) {
+                                    if ($(checkeds[i]).val() == "") {
+                                        $(checkeds[i]).removeAttr("checked");
+                                    }
+                                }
+                            }
+
+                            //【不限】点击，并且是取消选中状态，其他都没有选中
+                            if (data.value == "" && data.elem.checked != true) {
+                                if (checkeds.length == 0) {
+                                    data.elem.checked = true;
+                                }
+                            }
+
+                            //全都没选中，设置【不限】为选中状态
+                            if (checkeds.length <= 0) {
+                                var checks = $("input[name='label']");
+                                for (var i = 0; i < checks.length; i++) {
+                                    if ($(checks[i]).val() == "") {
+                                        $(checks[i]).prop("checked", true);
+                                    }
+                                }
+                            }
+
+                            form.render();
+                                                       
+
+                            //刷新可选功能点
+                            var finalChkeds = $('input[name="label"]:checked');
+                            var labelIds = "";
+                            if (finalChkeds.length > 0) {
+                                for (var i = 0; i < finalChkeds.length; i++) {
+                                    labelIds += $(finalChkeds[i]).val() + '-';
+                                }
+                                labelIds = labelIds.substr(0, labelIds.length - 1);
+                            }
+
+
+                           
+
+                        });
+
+                        //判断是否为修改页面，修改页面重新刷新label标签
+                        if (bj.getUrlParam("funcId") > 0) {
+                            setLabel();
+                        }
+                    }, true, false)
+                },//显示标签
+                showLabelTpl: function (rowData, objid, tplid) {
+                    var tpl = $("#" + tplid).html();
+                    $("#" + objid).empty();
+
+                    $("#" + objid).append($.format('<input type="checkbox" name="{0}" title="不限" value="" lay-filter="{0}" checked=""/>', "label"));
+                    for (var i = 0 ; i < rowData.length; i += 1) {
+                        var html = $.format(tpl, rowData[i].labelName, rowData[i].labelId, 'label');
+                        $("#" + objid).append(html);
+                    }
+                },
+                collapse: function (arrowId, chkConId) {
+                    if ($(chkConId).css('height') == '38px') {
+                        $(chkConId).css('height', '');
+                        $(arrowId).html('&#xe619;');
+                    } else {
+                        $(chkConId).css('height', '38px');
+                        $(arrowId).html('&#xe61a;');
+                    }
+                }
+
+            });
+
+            $("#lableTypeShow").on("click", function () {
+                $.collapse('#lableTypeArrow', '#lableTypeCon');
+            });
+
+            $("#lableShow").on("click", function () {
+                $.collapse('#lableArrow', '#lableCon');
+            });
+
+
+            var drLabelRows = [];
+
+            var setLabel = function () {
+                if (drLabelRows.length > 0) {
+                    $("input:checkbox[name='label']").prop("checked", false);
+                    for (var i = 0; i < drLabelRows.length; i++) {
+                        $("input:checkbox[name='label'][value='" + drLabelRows[i].labelId + "']").prop("checked", true);
+                    }
+                }
+                form.render();
+            }
+
+            
+
+            //获取标签类型
+            $.getLabelType();
+            //获取标签
+            $.getLabel("");
+
+
+            //form.render('select');
+            form.render();
+
+
+
+           
+
+            //修改页面内容赋值
+            var setFormInfo = function (dr) {
+                $("#funcName").val(dr.funcName);
+                $("#rShowIcon").empty();
+                if (dr.funcIcon == null)
+                {
+                    $("#rShowIcon").html("+");
+                }
+                else
+                {
+                    $("#rShowIcon").html("<i class='layui-icon' style='font-size: 40px;'>" + dr.funcIcon + "</i>");
+                }
+              //  $("#rShowIcon").html("<i class='layui-icon' style='font-size: 40px;'>&#xe68e;</i>");
+                $("#rShowIcon").css("color", dr.funcIconColor);
+                $("#hidIcon").val(dr.funcIconId);
+                $("#hidColor").val(dr.funcIconColor);
+                $("#funcDesc").val(dr.funcDesc);
+                $("#funcUrl").val(dr.funcUrl);
+                $("#funcCfgId").val(dr.funcCfgId);
+                $("#funcBeginTime").val(dr.funcBeginDate.substr(0,10));
+                $("#funcEndTime").val(dr.funcEndDate.substr(0, 10));
+  
+                
+
+                var myParam = {};
+                myParam.funcId = dr.funcId;
+                //var drLabelRow = getRetRow("", myParam);
+                var drPermitListRow = getRetRow("cm044", myParam);
+                //var drPlatRow = getRetRow("", myParam);
+                var drPermitRows = [];
+                var drUserRows = [];
+                drLabelRows = [];
+                var drPlatFormRows =[];
+
+                for (var i = 0; i < drPermitListRow.length; i++)
+                {
+                    if (drPermitListRow[i].province.length == 6)
+                    {
+                        drPermitRows.push({
+                            "userType": drPermitListRow[i].userType
+                            , "province": drPermitListRow[i].province
+                            , "city": drPermitListRow[i].city
+                            , "town": drPermitListRow[i].town
+                            , "townName": drPermitListRow[i].townName
+                            , "channel": drPermitListRow[i].channel
+                            , "channelName": drPermitListRow[i].channelName
+                            , "deptId": drPermitListRow[i].deptId
+                            , "deptName": drPermitListRow[i].deptName
+                            , "postId": drPermitListRow[i].postId
+                            , "postName": drPermitListRow[i].postName
+                        }
+                        );
+                    }
+                    else if (drPermitListRow[i].branchNo.length==6) {
+                        drUserRows.push({ "branchNo": drPermitListRow[i].branchNo, "userCode": drPermitListRow[i].userCode, "userName": drPermitListRow[i].userName });
+                    }
+                    else if (drPermitListRow[i].labelId > 0) {
+                        drLabelRows.push({ "labelId": drPermitListRow[i].labelId });
+                    }
+                    else if (drPermitListRow[i].platformCode.length == 1) {
+                        drPlatFormRows.push({ "platformCode": drPermitListRow[i].platformCode });
+                    }
+                }
+
+
+                setLabel();
+
+                
+
+                for (var i = 0; i < drPermitRows.length; i++)
+                {
+                    addPermitContent(drPermitRows[i]);
+                }
+
+                $("#userCode").val("");
+                for (var i = 0; i < drUserRows.length; i++)
+                {
+                    var userCode = $("#userCode").val() + drUserRows[i].userCode + "\n";
+                    $("#userCode").val(userCode);
+                }
+                bj.bind(drUserRows, "userlist");
+
+                for (var i = 0; i < drPlatFormRows.length; i++) {
+                    $("input:checkbox[name='platformCode'][value='" + drPlatFormRows[i].platformCode + "']").prop("checked", true);
+                }
+               
+                if (dr.permtType == "0") {
+                    $("#btnBranchPermit").show();
+                }
+                else {
+                    $("#funcName").attr("disabled", true);
+                    $("#funcDesc").attr("disabled", true);
+                    $("#funcUrl").attr("disabled", true);
+                    $("#funcCfgId").attr("disabled", true);
+                    $("#funcBeginTime").attr("disabled", true);
+                    $("#funcEndTime").attr("disabled", true);
+                    $("input:radio[name='labelType']").attr("disabled", true);
+                    $("input:checkbox[name='label']").attr("disabled", true);
+                    $("input:checkbox[name='platformCode']").attr("disabled", true);                                                     
+                    $("#lblShowIcon").empty();
+                }
+                
+               
+                
+            }
+
+            //展示修改信息
+            if (bj.getUrlParam("funcId") > 0) {
+                var myParam = {}
+                myParam.funcId = bj.getUrlParam("funcId");
+                var funcInfodr = {};
+                var param = bj.param();
+                param.reqCode = "cm041";
+                param.reqData = myParam;
+                param.async = true;
+                bj.post(param, function (data) {
+                    if (data.IsError) {
+                        bj.showMsg(data.RetMsg, 0);
+                        return;
+                    }
+                    else {
+                        var dr = data.RetData.rows[0];
+                        setFormInfo(dr);
+                        form.render();
+                    }
+                });
+
+
+                
+            }
+
+
+            $("#btnBranchPermit").click(function () {
+                showBranchPermit();
+                return false;
+            });
+
+            var showBranchPermit = function () {
+                //机构授权
+                var branchRow = [
+                    { "branchNo": "", "branchName": "省公司" },
+                    { "branchNo": "330100", "branchName": "杭州分公司" },
+                    { "branchNo": "330300", "branchName": "温州分公司" },
+                    { "branchNo": "330400", "branchName": "嘉兴分公司" },
+                    { "branchNo": "330500", "branchName": "湖州分公司" },
+                    { "branchNo": "330600", "branchName": "绍兴分公司" },
+                    { "branchNo": "330700", "branchName": "金华分公司" },
+                    { "branchNo": "330800", "branchName": "衢州分公司" },
+                    { "branchNo": "330900", "branchName": "舟山分公司" },
+                    { "branchNo": "331000", "branchName": "丽水分公司" },
+                    { "branchNo": "331200", "branchName": "义乌分公司" },
+                    { "branchNo": "332600", "branchName": "台州分公司" }
+                ];
+
+                var myParam = {};
+                myParam.userType = "0";
+                myParam.province = "330000";
+                var dr = getRetRow("cm045",myParam);
+                var cityBranchRow = [];
+
+                for (var i = 0; i < branchRow.length; i++) {
+                    if (branchRow[i].branchNo != dr[0].branchNo) {
+                        cityBranchRow.push(branchRow[i]);
+                    }
+                }
+
+
+                var dr = getRetRow("cm305", { "funcId": funcInfo.funcId });
+
+                var j = 0;
+                var isExtFlag = 0;
+                for (var i = 0; i < cityBranchRow.length; i++) {
+                    isExtFlag = 0;
+                    j = 0;
+                    for (var j = 0; j < dr.length; j++) {
+                        if (dr[j].branchNo == cityBranchRow[i].branchNo) {
+                            isExtFlag = 1;
+                            cityBranchRow[i].beginTime = dr[j].beginTime.substr(0,10);
+                            cityBranchRow[i].endTime = dr[j].endTime.substr(0, 10);
+                            cityBranchRow[i].check = "checked";
+                            j = dr.length;
+                        }
+                        
+                    }
+                    if (isExtFlag == 0) {
+                        cityBranchRow[i].beginTime = $("#funcBeginTime").val();
+                        cityBranchRow[i].endTime = $("#funcEndTime").val();
+                        cityBranchRow[i].check = "";
+                    }
+                }
+
+                bj.bind(cityBranchRow, "bplist");
+
+
+                for (var i = 0; i < cityBranchRow.length; i++) {
+                    laydate.render({
+                        elem: '#bpBeginTime' + cityBranchRow[i].branchNo
+                    });
+                    laydate.render({
+                        elem: '#bpEndTime' + cityBranchRow[i].branchNo
+                    });
+                }
+
+
+
+                
+                
+
+                layer.open({
+                    type: 1,
+                    title: false,
+                    area: ['700', '80%'],
+                    offset: '50px',
+                    content: $('#divBranchPermit'),
+                    fixed: false
+                });
+
+                form.render();
+
+                return false;
+            }
+            
+
+            $("#btnSendBranchPermit").click(function () {
+                var branchArr = jqchk("chbBranchPermit").split("-");
+
+                var myParam = {};
+                for (var i = 0; i < branchArr.length; i++)
+                {
+                    myParam = {};
+                    myParam.funcId = funcInfo.funcId;
+                    myParam.branchList = branchArr[i];
+                    myParam.beginTime = $("#bpBeginTime" + branchArr[i]).val();
+                    myParam.endTime = $("#bpEndTime" + branchArr[i]).val();
+                    if (!insBranchPermit(myParam)) {
+                        bj.showMsg("授权失败", 0);
+                    }
+                }
+                bj.showMsg("授权成功", 0);
+
+                return false;
+            });
+            
+
+            var insBranchPermit = function (myParam) {
+                var param = bj.param();
+                param.reqCode = "cm304";
+                param.reqData = myParam;
+                param.loadImg = true;
+                param.async = false;
+                bj.post(param, function (data) {
+                    if (data.IsError) {
+                        bj.showMsg(data.RetMsg, 0);
+                        return false;
+                    }
+                    else {
+                        var dr = data.RetData.rows;                        
+                    }
+                });
+            }
+            
+
+
+
+
+        });
+
+
+    </script>
+</head>
+<body>
+
+
+
+
+<div style="margin:10px 30px 30px 0px">
+<form class="layui-form" action="">
+  <div class="layui-form-item">
+    <label class="layui-form-label">标题</label>
+    <div class="layui-input-block">
+      <input name="funcName" id="funcName" class="layui-input" type="text" lay-verify="funcName"  placeholder="请输入标题" autocomplete="off">
+    </div>
+  </div>
+  <div class="layui-form-item" id="lblShowIcon">
+    <label class="layui-form-label">图标</label>
+    <div class="layui-input-inline" id="rShowIcon" style="width:50px; height:50px; border:1px solid black; text-align:center; font-size:30px; font-weight:100; vertical-align:middle">+</div>
+    <div class="layui-input-inline" style="height:50px;  vertical-align:text-bottom; bottom:0px;"> <br /><br /><lable valign-align="bottom" >选择图标</lable>
+    </div>
+  </div>
+ 
+    <div style=" margin:0px; display:none" id="divShowIcon">
+  <!--图标选择-->
+  <div  id="iconInfo">
+<!--    <label class="layui-form-label">        
+    </label>-->
+    <div class="layui-input-block" style="margin:0px;"  bj-area="iconlist">
+    <div  class="layui-input-inline div-icon" style="width:35px;margin:10px;" id="{{iconlist.iconId}}">
+        <i class="layui-icon" style="font-size: 30px;">{{iconlist.iconCode}}</i>
+    </div>
+   </div>
+  </div>
+
+ <!--颜色选择-->
+ <div class="layui-form-item" id="colorinfo">
+<!--    <label class="layui-form-label">        
+    </label>-->
+    <div class="layui-input-block" style="margin:0px;"  bj-area="colorlist">
+    <div  class="layui-input-inline div-color" id="{{colorlist.colorValue}}" style="width:40px; height:20px;margin:5px; background-color:{{colorlist.colorValue}};">
+    </div>
+    </div>
+ </div>
+
+  <!--选中图标颜色展示-->
+  <div class="layui-form-item layui-row " style="margin:0px;" id="iconShow">
+<!--    <label class="layui-form-label">        
+    </label>-->
+    <div class="layui-input-block">
+        <div  class="layui-input-inline" style="width:400px;">
+            <input type="hidden" id="hidIcon" name="hidIcon" />
+            <input type="hidden" id="hidColor" name="hidColor" value="black" />
+        </div>
+    </div>
+ </div>
+  </div>
+
+
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">描述</label>
+    <div class="layui-input-block">
+      <textarea class="layui-textarea" id="funcDesc" name="funcDesc" placeholder="请输入内容"></textarea>
+    </div>
+  </div>
+  
+  <div class="layui-form-item">
+      <label class="layui-form-label">地址</label>
+      <div class="layui-input-block">
+        <input id="funcUrl" name="funcUrl" lay-verify="funcUrl" class="layui-input" type="text" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+    <label class="layui-form-label">链接方式</label>
+    <div class="layui-input-block">
+      <select id="funcCfgId" name="funcCfgId" bj-area="cfglist" lay-filter="funcCfgId">
+        <option value="{{cfglist.cfgId}}">{{cfglist.cfgName}}</option>
+      </select>
+    </div>
+
+    <div class="layui-col-md12">
+        <div class="layui-form-item" style=" position:relative;" >
+            <label class="layui-form-label">标签类型</label>
+            <div class="layui-input-block" style="height:38px;overflow:hidden;margin-right:45px;" id="lableTypeCon" >
+                                
+            </div>
+            <div style="position:absolute;right:15px;top:0px;background-color:white;height:38px;line-height:38px;" id="lableTypeShow" >
+                <i class="layui-icon" style="font-size: 30px;" id="lableTypeArrow">&#xe61a;</i> 
+            </div>
+            </div>
+    </div>
+    <div class="layui-col-md12">
+        <div class="layui-form-item" style=" position:relative;" >
+            <label class="layui-form-label">标签名称</label>
+            <div class="layui-input-block" style="height:38px;overflow:hidden;margin-right:45px;" id="lableCon" >
+                                
+            </div>
+            <div style="position:absolute;right:15px;top:0px;background-color:white;height:38px;line-height:38px;" id="lableShow">
+                <i class="layui-icon" style="font-size: 30px;" id="lableArrow">&#xe61a;</i> 
+            </div>
+            </div>
+
+    </div>
+        
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">投放范围</label>
+    <div class="layui-input-inline" style="width:100px;">
+      <select id="selUserType"  lay-filter="selUserType">
+        <option value="0">员工</option>
+        <option value="1">业务员</option>
+      </select>
+    </div>
+    
+       <div class="layui-input-inline"  style="width:100px;">
+      <select id="selProvince" lay-filter="selProvince">
+        <option value="330000">浙江省</option>
+      </select>
+    </div>
+    <div class="layui-input-inline"  style="width:100px;">
+      <select id="selCity"  lay-filter="selCity" bj-area="citylist">
+        <option value="{{citylist.branchNo}}">{{citylist.branchName}}</option>
+      </select>
+    </div>
+    <div class="layui-input-inline"  style="width:100px;">
+      <select id="selTown" lay-filter="selTown" bj-area="townlist">
+        <option value="{{townlist.branchNo}}">{{townlist.branchName}}</option>
+      </select>
+    </div>
+
+  <div class="layui-input-inline"  style="width:100px;">
+      <select id="selChannel" lay-filter="selChannel" bj-area="channellist">
+        <option value="{{channellist.channel}}">{{channellist.channelName}}</option>
+      </select>
+    </div>
+
+  <div class="layui-input-inline"  style="width:100px;">
+      <select id="selDept" lay-filter="selDept" bj-area="deptlist">
+        <option value="{{deptlist.deptId}}">{{deptlist.deptName}}</option>
+      </select>
+    </div>
+
+ <div class="layui-input-inline"  style="width:100px;">
+      <select id="selPost" lay-filter="selPost" bj-area="postlist">
+        <option value="{{postlist.postId}}">{{postlist.postName}}</option>
+      </select>
+ </div>
+
+ <div class="layui-input-inline"  style="width:50px;">
+   <input id="btnAdd" type=button style="font-size:20px;width:35px;background-color:white;  height:35px;" value = "+" >
+   </div>
+ </div>
+
+<div class="layui-input-block" bj-area="pitemlist">    
+  <div class="layui-form-item" >
+  <!--  <label class="layui-form-label"></label>-->
+    <div class="layui-input-inline" style="width:600px;">     
+      <lable>{{pitemlist.content}}</lable>
+    </div>
+    <div class="layui-input-inline div-pitem" style="width:100px;"  id ="pitem-{{pitemlist.rowid}}">     
+      <i class="layui-icon" style="font-size: 20px; color: red;cursor: hand; ">&#x1006;</i>
+    </div>
+ </div>
+</div>      
+<!--  <div class="layui-form-item">
+    <label class="layui-form-label">投放人员</label>
+    <div class="layui-input-inline">     
+      <input class="layui-input"  name="funcUser"  type="text" placeholder="输入工号" autocomplete="off">
+    </div>
+    <div class="layui-input-inline" style="width:100px;">     
+      <lable  name="lblUserInfo">姓名</lable>
+    </div>
+    <div class="layui-input-inline" style="width:100px;">     
+      <button class="layui-btn">查询</button>
+    </div>
+ 
+ </div>-->
+  <div class="layui-form-item">
+    <label class="layui-form-label">投放人员</label>
+    <div class="layui-input-inline" style="width:155px;" >
+      <textarea class="layui-textarea" style="width:150px; height:200px;" id="userCode" name="userCode"  placeholder="请输入工号或姓名，多条记录换行表示，或直接从excel复制粘贴"></textarea>
+    </div>
+    <div class="layui-input-inline"  style="vertical-align:middle; width:60px; padding-top:80px;">
+         <input id="btnSetUser" type=button style="font-size:20px;width:35px;background-color:white;  height:35px;" value = ">" >
+    </div>
+    <div class="layui-input-inline"  bj-area="userlist" style="vertical-align:middle; width:250px; height:200px; border:solid 1px #DDD; padding-left:10px; text-align:left;overflow-y:scroll">
+         <div style="text-align:left">
+             <input type="checkbox" name="chbUserInfo" value="{{userlist.userCode}}" checked="" /> {{userlist.branchNo}} {{userlist.userCode}} {{userlist.userName}}
+         </div>
+
+    </div>
+ </div>
+
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">投放应用</label>
+    <div class="layui-input-block" bj-area="funcplatlist">     
+      <input name="platformCode" id="platformCode" title="{{funcplatlist.codeName}}" type="checkbox" value="{{funcplatlist.codeValue}}" >
+    </div>
+ </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">有效时间</label>
+      <div class="layui-input-inline">
+        <input name="funcBeginTime"   placeholder="yyyy-MM-dd" class="layui-input" id="funcBeginTime" type="text" autocomplete="off">
+      </div>
+      <div class="layui-input-inline" style="width:10px; text-align:center">
+      - 
+      </div>
+      <div class="layui-input-inline">
+      <input name="funcEndTime"  placeholder="yyyy-MM-dd" class="layui-input" id="funcEndTime" type="text" autocomplete="off">
+      </div>
+    </div>
+    
+  </div>
+  
+  
+<!--  <div class="layui-form-item" pane="">
+    <label class="layui-form-label">状态</label>
+    <div class="layui-input-block">
+      <input name="sex" title="有效" type="radio" checked="" value="1">
+      <input name="sex" title="无效" type="radio" value="0">
+    </div>
+  </div>-->
+
+  <div class="layui-form-item layui-input-block" style="margin-bottom:30px;">
+    <a href="#" class="layui-btn" lay-submit lay-filter="formDemo">立即提交</a>
+<!--    <button class="layui-btn" id="btnBranchPermit" style="display:none" >授权</button>-->
+      <a href="#" class="layui-btn" id="btnBranchPermit" style="display:none">授权</a>
+  </div>
+
+
+   <div style=" margin:0px; display:none; width:700px;  padding-top:50px; padding-left:30px; " id="divBranchPermit" >
+       
+       <div class="layui-form-item" bj-area="bplist">
+           <div  class="layui-input-inline" style="width:150px;">
+           <input type="checkbox" name="chbBranchPermit" value="{{bplist.branchNo}}" {{bplist.check}}/>{{bplist.branchName}}
+           </div>
+           <label class="layui-form-label" style="width:80px;">有效时间</label>
+           <div  class="layui-input-inline" style="width:200px;">
+           <input name="bpBeginTime" id="bpBeginTime{{bplist.branchNo}}"  placeholder="yyyy-MM-dd" class="layui-input" value="{{bplist.beginTime}}"  type="text" autocomplete="off">
+           </div>
+           
+           <div  class="layui-input-inline" style="width:150px;">
+           <input name="bpEndTime"  id="bpEndTime{{bplist.branchNo}}"  placeholder="yyyy-MM-dd" class="layui-input" value="{{bplist.endTime}}" type="text" autocomplete="off">
+           </div>   
+       </div>
+   <!--    <div class="layui-form-item" >
+           <div  class="layui-input-inline" style="width:150px;">
+           <input type="checkbox" name="chbBranchPermit" value="330400"/>湖州分公司
+           </div>
+           <label class="layui-form-label" style="width:80px;">有效时间</label>
+           <div  class="layui-input-inline" style="width:200px;">
+           <input name="bpBeginTime"   placeholder="yyyy-MM-dd" class="layui-input"  type="text" autocomplete="off">
+           </div>
+           
+           <div  class="layui-input-inline" style="width:150px;">
+           <input name="bpEndTime"   placeholder="yyyy-MM-dd" class="layui-input"  type="text" autocomplete="off">
+           </div>   
+       </div>   -->
+       <center>
+           <!--<button class="layui-btn" id="btnSendBranchPermit" >提交</button>-->
+           <a href="#" class="layui-btn" id="btnSendBranchPermit">提交</a>
+       </center>
+
+  
+
+  </div>
+
+            <!--标签类型模板-->
+    <div id="radioTpl" style="display:none;">
+        <input type="radio" name="{2}" title="{0}" lay-filter="{2}" value="{1}"/>
+    </div>
+    <!--标签模板-->
+    <div id="checkTpl" style="display:none;">
+        <input type="checkbox" name="{2}" title="{0}" lay-filter="{2}" value="{1}"/>
+    </div>
+</form>
+</div>
+
+
+</body>
+</html>
+

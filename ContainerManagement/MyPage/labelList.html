@@ -1,0 +1,377 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>标签清单</title>
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css" />
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+    <style>
+        .topDiv
+        {
+            margin:13px;
+            padding:0;
+        }
+        .topBtn
+        {
+            margin:0;
+            padding:0  8px;
+            display:inline;
+        }
+    </style>
+    <script>
+        layui.use(["basejq", "form","table"], function () {
+            var bj = layui.basejq("e"), form = layui.form, $ = layui.jquery;
+
+
+            //异步获取数据并自动填充，window.为全局变量 
+            window.getList = function (id, name) {
+
+                //将原来移除class的按钮还原
+                $("#" + document.getElementById("lbBidSet").value).addClass("layui-btn-primary");
+
+                if (id == null) {
+                    //空值为全选
+                    id = "";
+                }
+
+                var param = bj.param();
+                param.reqCode = "cm034";
+                var p = {};
+                p = {
+                    labelTypeId: id,
+                    labelName: ""
+                }
+                param.reqData=p;
+                param.area = "list";
+                param.loadImg = true;
+                bj.post(param, function (data) {
+                    if (data.RetData.rows.length < 1) {
+                        $("#item").html("<option value='-1'>没有可用主题</option>");
+                    }
+                    $("#item").hide();
+                    form.render('select');
+                    //form.render('select');
+                });
+                
+                //设置点击后样式
+                $("#" + id).removeClass("layui-btn-primary");
+
+                document.getElementById("lbBidSet").value = id;
+                document.getElementById("lbBNameSet").value = name;
+            };
+            //getList();
+
+            window.getListByName = function (id, name) {
+                var param = bj.param();
+                param.reqCode = "cm034";
+                var p = {};
+                p = {
+                    labelTypeId: "",
+                    labelName: name
+                }
+                param.reqData = p;
+                param.area = "list";
+                param.loadImg = true;
+                bj.post(param, function (data) {
+                    if (data.RetData.rows.length < 1) {
+                        $("#item").html("<option value='-1'>没有可用主题</option>");
+                    }
+                    $("#item").hide();
+                    form.render('select');
+                    //form.render('select');
+                });
+            }
+
+            //打开修改窗口
+            window.limitUp = function (t, id, n) {
+                bj.showMsg("修改按钮");
+
+            }
+            //打开权限详情窗口--简单异步获取数据postSim
+            window.limitList = function (id, n) {
+                bj.postSim("03limit02", { scr: id, from_type: 3 }, function (data) {
+                    var d = data;
+                    h = '';
+                    for (i = 0; i < d.length; i++) {
+                        h += '<li>' + d[i].code + ';' + d[i].name + '</li>';
+                    }
+                    layer.open({
+                        type: 1,
+                        title: n + "权限清单",
+                        skin: 'layui-layer-rim', //加上边框
+                        area: ['200px', '300px'], //宽高
+                        content: h
+                    });
+                });
+            }
+
+            //添加新小标签
+            window.addOne = function () {
+                layer.open({
+                    type: 2,
+                    title: '新增',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['80%', '90%'],
+                    content: "labelEdit.html?str=0",
+                    end: function () { getList(); }
+                });
+            }
+            //修改小标签
+            window.updateOne = function (str) {
+                //layer.alert(str);
+                //str为标签id和标签名
+
+                //传中文先编码，接收端解码
+                var pageUrl;
+                var str = encodeURIComponent(str);
+                if (!bj.isDefine(pageUrl))
+                    pageUrl = 'labelEdit.html?str=' + str;
+                pageUrl = encodeURI(pageUrl);
+
+                layer.open({
+                    type: 2,
+                    title: '修改',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['80%', '90%'],
+                    content:pageUrl
+                    //content: "labelEdit.html?str=" + str,
+                    //end: function () { getList(); }
+                });
+            }
+      
+            //删除小标签
+            window.deleteOne = function (id) {
+                if (id == null)
+                    alert("当前标签id有误");
+                else {
+                    if (confirm("确定删除" + id + "吗？")) {
+                        deleteSmall(id);
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+
+            //删除小标签（调用存储过程）
+            window.deleteSmall = function (id) {
+                //先删除
+                var param = bj.param();
+                param.reqCode = 'cm105';
+                param.reqData = {
+                    labelId: id
+                };
+                bj.post(param, function (data) {
+                    if (data.RetData.rows.length < 1) {
+
+                    }                   
+                })
+                //再重新调用显示小标签清单存储过程
+                alert("删除成功");
+                getList();
+            };
+
+
+            //修改大标签
+            window.updateBigOne = function (flag) {
+                if ($('#lbBidSet').val() != "")
+                    var bid = $('#lbBidSet').val();
+                else
+                    var bid = "";
+                var pageUrl;
+
+                //if (flag == 0) {
+                //    pageUrl = "labelTypeEdit.html?id=0";
+                //}
+                //else {
+                //    if (bid == 0) {
+                //        pageUrl = "labelTypeEdit.html?id=0";
+                //    }
+                //    else {
+                //        pageUrl = "labelTypeDefine.html";
+                //    }
+                //}
+
+                if (flag == 0) {
+                    pageUrl = "labelTypeEdit.html?id=0";
+                }
+                else {
+                    pageUrl = "labelTypeDefine.html";
+                }
+
+                var titleName;
+                if (pageUrl == "labelTypeDefine.html") {
+                    titleName = '编辑';
+                }
+                else {
+                    titleName = '新增';
+                }
+
+                layer.open({
+                    type: 2,
+                    title: titleName,
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['80%', '90%'],
+                    content: pageUrl,
+                    end: function () { getList(bid); }
+                });
+            }
+
+            //加载大标签
+            var getBigList = function getBigList() {
+                var param = bj.param();
+                param.reqCode = "cm031";
+                param.area = "biglist";
+                param.loadImg = true;
+                bj.post(param, function (data) {
+                    console.log(data);
+                    if (data.RetData.rows.length < 1) {
+                        $("#item").html("<option value='-1'>没有可用主题</option>");
+                    }
+                    $("#item").hide();
+                    form.render('select');
+                    //form.render('select');
+                });
+                //var dataDemo = [{ "id": 1, "name": "标签1", "des": "描述测试1"},
+                //    { "id": 2, "name": "标签2", "des": "描述测试2"},
+                //    { "id": 3, "name": "标签3", "des": "描述测试3" },
+                //    { "id": 4, "name": "标签4", "des": "描述测试4"}]
+
+                //bj.bind(dataDemo, "bigList");
+
+            };
+            getBigList();
+            
+
+            //点击大标签，展示小标签，并且传入id
+            window.showSLbl = function (id,name) {
+                //alert(name);
+                var r = "";
+                r = '<button id="'+id+'" class="layui-btn layui-btn-primary layui-btn-xs" style="margin-bottom:9px;" onclick="getList(' + id + ')">' + name + '</button>';
+                return r;
+            };
+
+            //删除大标签
+            window.delBLbl= function() {
+                var bigid = document.getElementById("lbBidSet").value;
+                if (bigid == "")
+                    alert("当前未选择任何要删除的标签！");
+                else {
+                    if (confirm("仅能删除当前账号创建的标签，确定删除" + bigid + "吗？")) {
+                        deleteBig(bigid);
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+
+            //删除大标签方法
+            window.deleteBig= function(bigid) {
+                //先调用删除存储
+                var param = bj.param();
+                param.reqCode = "cm101";
+                param.reqData = {
+                    labelTypeId: bigid
+                };
+                bj.post(param, function (data) {
+
+                });
+                //重新加载标签大类
+                getBigList();
+            }
+        });    
+
+        //修改小标签
+        function update(id, u,typeId) {
+            var r = "";
+            //var typeId = document.getElementById("lbBidSet").value;
+            //将id和
+            id ="'" +id + ',' + u+','+typeId+"'";
+            //alert(id);
+            r += '<button class="layui-btn layui-btn-primary layui-btn-mini" onclick="updateOne(' + id + ')"><i class="layui-icon"></i></button>';
+            return r;
+        }
+
+        //删除小标签
+        function deleteS(id,name) {
+            var r = "";
+            r += '<button class="layui-btn layui-btn-primary layui-btn-mini" onclick="deleteOne(' + id + ')"><i class="layui-icon">&#xe640</i></button>';
+            return r;
+        }
+
+        //查询小标签
+        function querySList() {
+            var name = document.getElementById("queryName").value;
+            getListByName("",name);
+        }
+    </script>
+</head>
+<body>
+    <!--顶部标签大类-->
+    <!--<div class="layui-row layui-col-space10">-->
+    <div class="topDiv">
+        <div class="layui-col-md1">
+            <label class="">标签类型:</label>
+                                      
+        </div>
+        <div class="layui-col-md7" style="padding-bottom:10px;"> 
+            <div class="topBtn">
+                <button class="layui-btn layui-btn-primary layui-btn-xs" style="margin-bottom:9px;" onclick="getList('')"> 不限</button> 
+            </div>                
+            <div style="display:inline;" bj-area="biglist">
+                @@showSLbl('{{biglist.labelTypeId}}','{{biglist.labelName}}')@@
+            </div>        
+        </div>
+        <div class="layui-col-md4">
+            <ul>
+                <li class="layui-nav-item">
+                    <button class="layui-btn layui-btn-primary layui-btn-xs" onclick="updateBigOne(0)"><i class="layui-icon">&#xe654</i></button>
+                    <button class="layui-btn layui-btn-primary layui-btn-xs" onclick="updateBigOne()"><i class="layui-icon"></i></button>
+                    <button class="layui-btn layui-btn-primary layui-btn-xs" onclick="delBLbl()"><i class="layui-icon">&#xe640</i></button>
+                    <!--隐藏控件，用于获取当前点击大标签的id,name-->
+                    <input id="lbBidSet" value="" type="text" style="display:none;"/>
+                    <input id="lbBNameSet" value="" type="text" style="display:none;"/>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--搜索栏-->
+    <div class="layui-row layui-col-space10">
+        <label>查询</label>
+        <input type="text" id="queryName" value="" />
+        <input type="button" onclick="querySList()" value="确定" />
+    </div>
+    <!--标签小类-->
+    <div>
+        <table id="tbLabel" class="layui-table">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>名称</th>
+                    <th>操作</th>
+                    <th>
+                        <a class="layui-btn layui-btn-primary layui-btn-mini" onclick="addOne()"><i class="layui-icon">&#xe654</i></a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody bj-area="list" style="display: none">
+                <tr>
+                    <td>{{list.labelId}}</td>
+                    <td>{{list.labelName}}</td>
+                    <td>@@update('{{list.labelId}}','{{list.labelName}}','{{list.labelTypeId}}')@@</td>
+                    <td>@@deleteS('{{list.labelId}}','{{list.labelName}}')@@</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

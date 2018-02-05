@@ -1,0 +1,404 @@
+
+td{
+	font-size:9pt;
+}
+
+a:visited{
+	color:#426EB4;
+	font-size:9pt;
+
+	text-decoration:none;
+}
+a:hover{
+	color:#426EB4;
+	font-size:9pt;
+
+	text-decoration:underline;
+}
+a:link{
+	color:#426EB4;
+	font-size:9pt;
+
+	text-decoration:none;
+}
+
+.TopToolFont
+{
+	color:#3366CC;
+	font-size:9pt;
+	font-weight:bold;
+}
+a.TopToolFont:visited{
+	color:#3366CC;
+	font-size:9pt;
+	font-weight:bold;
+	text-decoration:none;
+}
+a.TopToolFont:hover{
+	color:#3366CC;
+	font-size:9pt;
+	font-weight:bold;
+
+}
+a.TopToolFont:link{
+	color:#3366CC;
+	font-size:9pt;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+
+.UserInfoFont{
+	color:#999999;
+	font-size:9pt;
+}
+
+
+.NavFont{
+	color:#ffffff;
+	font-size:9pt;
+	font-weight:bold;
+
+}
+a.NavFont:visited{
+	color:#ffffff;
+	font-size:9pt;
+	font-weight:bold;
+	text-decoration:none;	
+}
+a.NavFont:hover{
+	color:#ffffff;
+	font-size:9pt;
+	font-weight:bold;
+	text-decoration:none;
+}
+a.NavFont:link{
+	color:#FFFFFF;
+	font-size:9pt;
+	font-weight:bold;
+	text-decoration:none;
+}
+.NavBtnBorder{
+	background-color:#cccccc;
+}
+.NavBtnFace{
+	background-color:#F09C42;
+}
+.BanTitleFont{
+	color:#ffffff;
+	font-size:9pt;
+	font-weight:bold;
+	word-spacing: 1pt;
+
+}
+
+
+
+
+.MyNavFont{
+	color:#999999;
+	font-size:9pt;
+	font-weight:bold;
+}
+a.MyNavFont:visited{
+	color:#999999;
+	font-size:9pt;
+	font-weight:bold;
+	text-decoration:none;
+}
+a.MyNavFont:hover{
+	color:#999999;
+	font-size:9pt;
+	font-weight:bold;
+	text-decoration:none;
+}
+a.MyNavFont:link{
+	color:#999999;
+	font-size:9pt;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+
+.AlertFont{
+	color:#00A6AD;
+	font-size:9pt;
+
+}
+a.AlertFont:visited{
+	color:#00A6AD;
+	font-size:9pt;
+	font-weight:bold;
+	text-decoration:none;
+}
+a.AlertFont:hover{
+	color:#00A6AD;
+	font-size:9pt;
+	font-weight:bold;
+
+}
+a.AlertFont:link{
+	color:#00A6AD;
+	font-size:9pt;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+
+.BanBgColor{
+	background-color:#ffffff;
+}
+
+
+
+.ModuleTitle
+{
+	color:#F09C42;
+	font-size:9pt;
+	font-weight:bold;
+	line-height:20px;
+	background-color:#f5f5f5;
+	}
+.ModuleItemName
+{
+	color:#F09C42;
+	font-weight:bold;
+	background-color:#f5f5f5
+	}
+.ModuleItemValue
+{
+	color:#999999;
+	background-color:#ffffff;
+	}
+.ModuleFrame
+{
+	background-color:#CCCCCC;
+	}
+
+.DataItemHeader
+{
+	color:#ffffff;
+	font-size:9pt;
+	font-weight:bold;
+	background-color:#F09C42;
+	}
+.DataItemList
+{
+	color:#999999;
+	font-size:9pt;
+	line-height:20px;
+	background-color:expression(onmouseover=function(){this.style.backgroundColor='#FDE8D1'},onmouseout=function(){this.style.backgroundColor='#ffffff'});
+	}	
+
+.DataItemLists
+{
+	color:#000000;
+	font-size:9pt;
+	line-height:20px;
+	background-color:expression(onmouseover=function(){this.style.backgroundColor='#FDE8D1'},onmouseout=function(){this.style.backgroundColor='#ffffff'});
+	}	
+
+
+
+.ImgLogo{
+	background-image:url("../images/littleyellow/Logo.gif");
+}
+.ImgBanLeft1{
+	background-image:url("../images/littleyellow/BanLeft1.gif");
+}
+.ImgUseInfoBg{
+	background-image:url("../images/littleyellow/UseInfoBg.gif");
+}
+.ImgUseInfoPic{
+	background-image:url("../images/littleyellow/UseInfoPic.gif");
+}
+.ImgUseInfoTitle{
+	background-image:url("../images/littleyellow/UseInfoTitle.gif");
+}
+.ImgUseInfoSplit{
+	background-image:url("../images/littleyellow/UseInfoSplit.gif");	
+}
+.ImgTopBan1{
+	background-image:url("../images/littleyellow/TopBan1.gif");
+}
+.ImgTopBan2{
+	background-image:url("../images/littleyellow/TopBan2.gif");
+}
+.ImgTopBan3{
+	background-image:url("../images/littleyellow/TopBan3.gif");
+
+}
+.ImgBanLeft2{
+	background-image:url("../images/littleyellow/BanLeft2.gif");
+}
+
+.ImgNavSplitDot{
+	background-image:url("../images/littleyellow/NavSplitDot.gif");
+}
+
+.ImgPersonalNavArrow{
+	background-image:url("../images/littleyellow/PersonalNavArrow.gif");
+}
+.ImgBottom1{
+	background-image:url("../images/littleyellow/Bottom1.gif");
+}
+.ImgBottom2{
+	background-image:url("../images/littleyellow/Bottom2.gif");
+}
+.ImgBottom3{
+	background-image:url("../images/littleyellow/Bottom3.gif");
+}
+.ImgBottom4{
+	background-image:url("../images/littleyellow/Bottom4.gif");
+}
+.ImgBottomIconEmail{
+	background-image:url("../images/littleyellow/BottomIconEmail.gif");
+}
+.ImgBottomIconTel{
+	background-image:url("../images/littleyellow/BottomIconTel.gif");
+}
+.ImgBanBg{
+	background-image:url("../images/littleyellow/BanBg.gif");
+}
+.ImgBanTop1{
+background-image:url("../images/littleyellow/BanTop1.gif");
+}
+.ImgBanTop2{
+background-image:url("../images/littleyellow/BanTop2.gif");
+}
+.ImgBanTop3{
+background-image:url("../images/littleyellow/BanTop3.gif");
+}
+.ImgBanBottom1{
+	background-image:url("../images/littleyellow/BanBottom1.gif");
+}
+.ImgBanBottom2{
+	background-image:url("../images/littleyellow/BanBottom2.gif");
+}
+.ImgBanToolEdit{
+	background-image:url("../images/littleyellow/BanToolEdit.gif");
+}
+.ImgBanToolMaxWin{
+	background-image:url("../images/littleyellow/BanToolMaxWin.gif");
+}
+.ImgBanToolColaps{
+	background-image:url("../images/littleyellow/BanToolColaps.gif");
+}
+.ImgBanToolColapsShow{
+background-image:url("../images/littleyellow/BanToolColapsShow.gif");
+}
+.ImgBanToolColapsHide{
+background-image:url("../images/littleyellow/BanToolColapsHide.gif");
+}
+.ImgBanToolDelete{
+	background-image:url("../images/littleyellow/BanToolDelete.gif");
+}
+.ImgBanInfoArrow{
+background-image:url("../images/littleyellow/BanInfoArrow.gif");
+}
+.ImgBanInfoArrowBack{
+background-image:url("../images/littleyellow/BanInfoArrowBack.gif");
+}
+.ImgBanInfoSplitDot{
+background-image:url("../images/littleyellow/BanInfoSplitDot.gif");
+}
+
+
+
+.SearchDataIcon
+{
+	background-image:url("../images/SearchDataIcon.gif");
+}
+.AddDataIcon
+{
+background-image:url("../images/AddDataIcon.gif");
+}
+.EditDataIcon
+{
+background-image:url("../images/EditDataIcon.gif");
+}
+.DeleteDataIcon
+{
+background-image:url("../images/DeleteDataIcon.gif");
+}
+.ConfigDataIcon
+{
+background-image:url("../images/ConfigDataIcon.gif");
+}
+.ConfigAppDataIcon
+{
+background-image:url("../images/ConfigAppDataIcon.gif");
+}
+.ConfigAppIcon
+{
+background-image:url("../images/ConfigAppIcon.gif");
+}
+.InitUserPWDIcon
+{
+	background-image:url("../images/ChangePWDIcon.gif");
+}
+.BackIcon
+{
+background-image:url("../images/BackIcon.gif");
+}
+.MoveFirstIcon{
+background-image:url("../images/littleyellow/MoveFirstIcon.gif");
+}
+.MovePrevIcon{
+background-image:url("../images/littleyellow/MovePrevIcon.gif");
+}
+.MoveNextIcon{
+background-image:url("../images/littleyellow/MoveNextIcon.gif");
+}
+.MoveLastIcon{
+background-image:url("../images/littleyellow/MoveLastIcon.gif");
+}
+
+
+.ItemMoveUpIcon
+{
+	background-image:url("../images/littleyellow/ItemMoveUpIcon.gif");
+}
+.ItemMoveDownIcon
+{
+	background-image:url("../images/littleyellow/ItemMoveDownIcon.gif");
+}
+.ItemMoveLeftIcon
+{
+	background-image:url("../images/littleyellow/ItemMoveLeftIcon.gif");
+}
+.ItemMoveRightIcon
+{
+	background-image:url("../images/littleyellow/ItemMoveRightIcon.gif");
+}
+.ItemDeleteIcon
+{
+	background-image:url("../images/littleyellow/ItemDeleteIcon.gif");
+}
+.ItemAddIcon
+{
+	background-image:url("../images/littleyellow/ItemAddIcon.gif");
+}
+
+.AppTreeNode
+{
+	padding-left:8px;
+	font-size:9pt;
+	line-height:18px;
+	
+}
+
+
+.AppLeaveNode
+{
+	color:#F09C42;
+	text-decoration:underline;
+	 
+}
+.AppNotLeaveNode
+{
+	color:#F09C42;
+	font-weight:bold;
+}
+
+

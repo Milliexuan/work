@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title></title>
+<link type="text/css" rel="stylesheet" href="../Content/materialize/css/materialize.css"/>
+<link type="text/css" rel="stylesheet" href="../Content/materialize/css/index.css"/>
+<link type="text/css" rel="stylesheet" href="../Content/materialize/css/prism.css"/>
+    <link rel="stylesheet" type="text/css" href="../Content/css/newBarM.css" />
+ <script type="text/javascript" src="../Content/js/newBar.js"></script>
+  <style>
+    body{font-family:"Helvetica Neue",Arial,"Microsoft Yahei",Helvetica,sans-serif,Lato;}
+    .tabs .tab .active /*tab选中背景颜色*/
+    {
+        background-color:#eeeeee;/*#ee6e73;*/
+
+    }
+    .sidebar .logo,.nav-wrapper,.btn-floating,.tabs .indicator
+    {
+       background-color:#393D49;/*主背景色调*/
+    }
+     .tabs .tab a:hover
+     {
+        color:#a5d6a7;/*tab鼠标悬浮字体颜色*/
+     }
+    .tabs .tab a
+    {
+        color:#393D49;/*tab字体颜色*/
+    }
+   
+    
+     .sidebar .collapsible-body li.active, .side-nav.fixed .collapsible-body li.active {
+    background-color: #393D49;/*菜单选中颜色颜色*/
+    }
+ </style>
+</head>
+<body>
+<!--1开始--显示左侧菜单按钮-->
+<div class="fixed-action-btn hide-on-med-and-down" style="top: 45px; left: 1px;width:37px;height:37px;">
+    <a class="btn-floating btn-medium" onclick="showNav()"><i class="medium mdi-action-dashboard"></i></a>
+</div>
+<!--1结束--显示左侧菜单按钮-->
+<!--1开始--导航条-->
+<header id="header" class="page-topbar hide-on-large-only">
+    <div class="navbar-fixed ">
+    <nav class="z-depth-0">
+      <div class="nav-wrapper">
+       <div class="container"><a href="#" id="nav-button" class="button-collapse top-nav circle hide-on-large-only"><i class="mdi-navigation-menu"></i></a></div>   
+      <a href="#!" class="brand-logo" style="font-size:18px;font-weight:bold;padding-left:5px;" id="logoName"></a>
+      <a href="#" data-activates="mobile-demo" id="right_btn" class="button-collapse right"><i class="mdi-navigation-more-vert"></i></a>
+      <ul class="right hide-on-med-and-down">
+<!--          <li class="m-top"><a href="badges">我的应用</a></li>
+        <li class="m-top"><a href="buttons">我的信息</a></li>
+        <li class="m-top"><a href="footer">我的任务</a></li>
+        <li class="m-top"><a href="footer">个人中心</a></li>-->
+        <li><a class="dropdown-button" href="#!" data-activates="Ul2" ><span id="welcome"></span><i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+          <li><a title="重新登录" OnClick="return confirm('确定重新登录？');" href="../FramePage/gogateway.aspx" ><i class="small mdi-action-swap-vert-circle right"></i></a></li>
+       <li><a title="退出" OnClick="return confirm('确定退出？');" href="../FramePage/DelegateLogout.aspx"><i class="mdi-action-highlight-remove right"></i></a></li>
+      </ul>
+           
+      </div>
+
+    </nav>
+      <ul id = "nav" class="right hide-on-med-and-down" style="right:300px;"><li class="top"><a href="#" rel="myApp" class="top_link"><span class="down">我的应用</span></a><ul id="myApp" class="sub"><li><a href="./goapplication.aspx?zjappid=1" target="_blank">公文系统</a></li><li><a href="./goapplication.aspx?zjappid=6" target="_blank">服务管理系统(SDMS)</a></li><li><a href="./goapplication.aspx?zjappid=7" target="_blank">邮件系统</a></li><li><a href="./goapplication.aspx?zjappid=5" target="_blank">应用系统维护工具平台</a></li><li><a href="./goapplication.aspx?zjappid=8" target="_blank">省级集中业务管理平台</a></li><li><a href="./goapplication.aspx?zjappid=3" target="_blank">应用基础管理平台</a></li><li><a href="./goapplication.aspx?zjappid=4" target="_blank">增值服务查询系统</a></li><li><a href="./goapplication.aspx?zjappid=31" target="_blank">温州报表查询系统</a></li><li><a href="./goapplication.aspx?zjappid=33" target="_blank">微信管理平台</a></li><li><a href="#" class="fly">所有应用</a><ul><li><a href="#" class="fly">办公应用类</a><ul><li><a href="./goapplication.aspx?zjappid=5" target="_blank">应用系统维护工具平台</a></li><li><a href="./goapplication.aspx?zjappid=6" target="_blank">服务管理系统(SDMS)</a></li><li><a href="./goapplication.aspx?zjappid=7" target="_blank">邮件系统</a></li><li><a href="./goapplication.aspx?zjappid=8" target="_blank">省级集中业务管理平台</a></li><li><a href="./goapplication.aspx?zjappid=10" target="_blank">中国人寿i平台（UOA）</a></li><li><a href="./goapplication.aspx?zjappid=14" target="_blank">客户投诉管理系统</a></li><li><a href="./goapplication.aspx?zjappid=16" target="_blank">费用报销系统</a></li><li><a href="./goapplication.aspx?zjappid=17" target="_blank">客户联络系统</a></li><li><a href="./goapplication.aspx?zjappid=18" target="_blank">中国人寿短信客服系统</a></li><li><a href="./goapplication.aspx?zjappid=71" target="_blank">省版财务预算辅助管理系统</a></li><li><a href="./goapplication.aspx?zjappid=74" target="_blank">温州财务预警辅助系统</a></li><li><a href="./goapplication.aspx?zjappid=77" target="_blank">云服务信息管理平台</a></li><li><a href="./goapplication.aspx?zjappid=78" target="_blank">SDMS帮助手册</a></li><li><a href="./goapplication.aspx?zjappid=79" target="_blank">国寿E家人员上载</a></li><li><a href="./goapplication.aspx?zjappid=82" target="_blank">激活卡领用管理平台</a></li><li><a href="./goapplication.aspx?zjappid=86" target="_blank">上传客户体检报告</a></li><li><a href="./goapplication.aspx?zjappid=87" target="_blank">丽水任务管理</a></li><li><a href="./goapplication.aspx?zjappid=88" target="_blank">WIFI签到</a></li><li><a href="./goapplication.aspx?zjappid=89" target="_blank">问题上报</a></li><li><a href="./goapplication.aspx?zjappid=90" target="_blank">杭州投诉管理系统</a></li><li><a href="./goapplication.aspx?zjappid=91" target="_blank">保证金缴纳登记系统</a></li><li><a href="./goapplication.aspx?zjappid=93" target="_blank">微信活动模板管理平台</a></li></ul></li><li><a href="#" class="fly">业务系统类</a><ul><li><a href="./goapplication.aspx?zjappid=3" target="_blank">应用基础管理平台</a></li><li><a href="./goapplication.aspx?zjappid=23" target="_blank">原中国人寿统一登录入口</a></li></ul></li><li><a href="#" class="fly">销售支持类</a><ul><li><a href="./goapplication.aspx?zjappid=1" target="_blank">公文系统</a></li><li><a href="./goapplication.aspx?zjappid=4" target="_blank">增值服务查询系统</a></li><li><a href="./goapplication.aspx?zjappid=12" target="_blank">台州统计信息系统</a></li><li><a href="./goapplication.aspx?zjappid=19" target="_blank">中介业务手续费结算管理系统</a></li><li><a href="./goapplication.aspx?zjappid=20" target="_blank">营销制度经营支持系统</a></li><li><a href="./goapplication.aspx?zjappid=31" target="_blank">温州报表查询系统</a></li><li><a href="./goapplication.aspx?zjappid=33" target="_blank">微信管理平台</a></li><li><a href="./goapplication.aspx?zjappid=50" target="_blank">测试项目</a></li><li><a href="./goapplication.aspx?zjappid=67" target="_blank">随时通网页版</a></li><li><a href="./goapplication.aspx?zjappid=69" target="_blank">银保销售辅助查询系统</a></li><li><a href="./goapplication.aspx?zjappid=70" target="_blank">客户资源分析系统</a></li><li><a href="./goapplication.aspx?zjappid=81" target="_blank">客户经营系统</a></li></ul></li><li><a href="#" class="fly">业务管理类</a><ul><li><a href="./goapplication.aspx?zjappid=11" target="_blank">理赔统计分析系统</a></li><li><a href="./goapplication.aspx?zjappid=13" target="_blank">调查管理系统</a></li><li><a href="./goapplication.aspx?zjappid=54" target="_blank">湖州财务预算管理系统</a></li><li><a href="./goapplication.aspx?zjappid=55" target="_blank">补充医疗查询平台</a></li></ul></li></ul></li><li><a href="./goapplication.aspx?zjappid=3&zjurl=/AppManage/SsoLoginPage/AboutChangePwd.aspx" target="_blank">邮件等系统密码过期咋办？</a></li></ul></li><li class="top"><a href="#" title="建设中" class="top_link"><span>我的信息</span></a></li><li class="top"><a href="#" title="建设中" class="top_link"><span>我的任务</span></a></li><li class="top"><a href="#" title="建设中" class="top_link"><span>我的数据</span></a></li><li class="top"><a href="#" rel="myInfo" class="top_link"><span class="down">个人中心</span></a><ul id="myInfo" class="sub"><li><a href="./goapplication.aspx?zjappid=3&zjurl=/UseManage/MyInfo.aspx" target="_blank">个人信息</a></li><li><a href="./goapplication.aspx?zjappid=3&zjurl=/UseManage/ChangeMyPwd.aspx" target="_blank">国寿网站功能条密码</a></li><li><a href="./goapplication.aspx?zjappid=3&zjurl=/AppManage/SsoLoginMain.aspx" target="_blank">自动登录用户名密码</a></li></ul></li><li class="top"><a href="#" rel="help" class="top_link"><span class="down">帮助</span></a><ul id="help" class="sub"><li><a href="./goapplication.aspx?zjappid=3&zjurl=/AppManage/NewVersionHelp.aspx" target="_blank">新版使用说明</a></li></ul></li></ul>
+
+<!--          <li class="m-top"><a href="badges">我的应用</a></li>  
+    <!--2开始--个人信息下拉菜单-->
+   <ul id="Ul2" class="dropdown-content">
+    <li><a href="#!" id="name" ></a></li>
+    <li><a href="#!" id="branch" ></a></li>
+    <li><a href="#!" id="dept" ></a></li>
+    <li><a href="#!" id="post">two</a></li>
+  </ul>
+   <!--2结束--个人信息下拉菜单-->
+  <ul class="side-nav right" id="mobile-demo">
+    <li><a href="#!" id="name1" ></a></li>
+      <li><a href="#!" id="branch1" ></a></li>
+    <li><a href="#!" id="dept1" ></a></li>
+    <li><a href="#!" id="post1"></a></li>
+    <li><a title="重新登录" OnClick="return confirm('确定重新登录？');" href="../FramePage/gogateway.aspx.aspx" style="font-size:28px;"><i class="small mdi-action-swap-vert-circle left">重新登录</i></a></li>
+    <li><a title="退出" OnClick="return confirm('确定退出？');" href="../FramePage/DelegateLogout.aspx" style="font-size:28px;"><i class="small mdi-action-highlight-remove left">退出</i></a></li>
+  </ul>
+  </div>
+    </header>
+    <div id="menu-top" class="center" style="display:none;margin: 0 auto;top:64px;background-color:#eeeeee;z-index:100000;width:100%;height:90px;position:absolute">
+    </div>
+<!--1结束--导航条-->
+<aside id="nav-mobile" class="sidebar z-depth-1">
+   <div class="logo " style="height:auto;color:#ffffff;margin-top:0px;padding-top:10px;">
+    <h5 id="logoName2">&nbsp;</h5>
+   <div class="row" id="name2" style="margin-bottom:2px;font-size:12px;">&nbsp;<br/>&nbsp;
+   </div>
+    <div class="row" style="margin-bottom:2px;font-size:12px;width:100%">
+    <div class="col s2"> <a title="退出" OnClick="return confirm('确定退出？');" href="../FramePage/DelegateLogout.aspx" style="color:white"><i class="small mdi-action-highlight-remove left"></i></a></div>
+        <div class="col s2"><a title="重新登录" OnClick="return confirm('确定重新登录？');" href="../FramePage/gogateway.aspx"" style="color:white"><i class="small mdi-image-rotate-left left"></i></a></div>
+   
+     <div class="col s8"><a title="隐藏菜单" OnClick="hideNav()" style="color:white"><i class="mdi-content-backspace right"></i></a></div>
+   
+         </div>
+  </div>
+  <ul class="collapsible" data-collapsible="accordion"  bj-area="leftTree" style="display:none">
+     <li class="active">
+       <div class="collapsible-header active" onclick="goPages({{leftTree.id}},'{{leftTree.name}}','{{leftTree.url}}','{{leftTree.type}}')">
+           <i class="mdi-image-style"></i>{{leftTree.name}}</div>
+       <div class="collapsible-body">
+                          <ul class="collapsible collapsible-accordion" bj-area="leftTreeM" bj-data="children" bj-pre="leftTree">
+                            <li>
+                                <a class="collapsible-header waves-effect waves-light" style="padding-right:1px;padding-left:20px;"
+                                    onclick="goPages({{leftTreeM.id}},'{{leftTreeM.name}}','{{leftTreeM.url}}','{{leftTreeM.type}}')" href="javascript:;">
+                                    <i class="@@menuImg('{{leftTreeM.url}}')@@" style="margin-left:1px;margin-right:1px;"></i>
+                                    {{leftTreeM.name}}
+                                </a>
+
+                              <div class="collapsible-body">
+                                  <table class="bordered"    bj-area="leftTreeF" bj-data="children" bj-pre="leftTreeM">
+                                      <tr>
+                                            <td  class="waves-effect waves-light" style="padding-bottom:3px;padding-top:3px;cursor:pointer;padding-left:20px;" onclick="goPages({{leftTreeF.id}},'{{leftTreeF.name}}','{{leftTreeF.url}}','{{leftTreeF.type}}')">
+                                                <span style="line-height:20px;height:auto;font-weight:normal;width:100%;">{{leftTreeF.name}}</span>
+                                          </td>
+                                      </tr>
+                                  </table>   
+                                   
+                                
+                                <!--<ul  bj-area="leftTreeF" bj-data="children" bj-pre="leftTreeM">
+                                  <li><a style="line-height:20px;height:auto"onclick="goPages({{leftTreeF.id}},'{{leftTreeF.name}}','{{leftTreeF.url}}','{{leftTreeF.type}}')">{{leftTreeF.name}}</a></li>
+                                </ul>-->
+                              </div>
+                            </li>
+                          
+                          </ul>
+       </div>
+     </li>
+  </ul>
+</aside>
+
+<main>
+   <div id="mainContent" class="row" style="margin-bottom:0px;">
+    <div class="col s12" style="padding-left:0;padding-right:0">
+    <ul class="tabs  z-depth-1" id="tab">
+        <li class="tab"><a href="#test1">首页</a></li>
+    </ul>
+    </div>
+     <div id="tabContent">
+         <div id="test1" class="col s12"><iframe src="AppPage.html" width="100%" height="100px" noresize="noresize" frameborder="no" scrolling="auto" name="mainFrame" id="mainFrame"></iframe></div>
+     </div>
+  </div>
+</main>
+<!--<footer class="page-footer">
+  <div class="container">
+
+    <div class="row">
+      <div class="col s12">
+        <h5 class="white-text">Materialize中文网</h5>
+        <p class="grey-text text-lighten-4">本网站所列开源项目的中文版文档全由Materialize中文网成员翻译整理，并全部遵循MIT协议发布。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-copyright">
+    <div class="container">
+      © 2015 Copyright
+    </div>
+  </div>
+</footer>-->
+    <script src='../Content/js/zjfbase.js'></script>
+    <script type="text/javascript" src="../Content/materialize/js/index.js"></script>
+</body>
+</html>

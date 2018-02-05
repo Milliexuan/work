@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css" />
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+    <title>应用清单</title>
+
+</head>
+<body>
+    <!--搜索栏-->
+    <form class="layui-form" id="form1" action="">
+        <div class="layui-row layui-form-item">
+            <div class="layui-col-md4">
+                <input type="text" id="appName" class="layui-input" placeholder="请输入" />
+            </div>
+            <div class="layui-col-md4">
+                <a href="#" id="query" class="layui-btn"><i class="layui-icon">&#xe615;</i></a>
+            </div>
+        </div>
+    </form>
+    <!--标签小类-->
+    <div>
+        <table class="layui-table" id="apptable" lay-filter="apptable"></table>
+    </div>
+
+    <script type="text/html" id="appBar">
+    <a class="layui-btn layui-btn-xs" lay-event="editbtn"><i class="layui-icon">&#xe642;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delbtn"><i class="layui-icon">&#xe640;</i></a>
+   </script>
+
+    <script>
+        var $;
+        layui.use(["basejq", "form", "table"], function () {
+            $ = layui.jquery, layer = layui.layer,  laypage = layui.laypage,form = layui.form, table = layui.table, bj = layui.basejq("e");
+
+
+            $("#query").on("click", function () {
+                var queryName = $.trim($("#appName").val());
+                $.getAppList(queryName);
+            })
+
+
+            //监听工具条
+            table.on('tool(apptable)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+                if (layEvent === 'delbtn') {
+                    layer.confirm('真的删除行么', function (index) {
+                        var queryParam = {}
+                        queryParam.appId=data.appId
+                        $.reqQueryList(queryParam, "cm112", function (records) {
+                            if (records.RetCode != undefined && records.RetCode == '-9999') {
+                                layer.alert(ret.RetMsg);
+                            } else {
+                                obj.del(); //删除对应行（tr）的DOM结构
+                                layer.close(index);
+                            }
+                        });
+                    });
+                } else if (layEvent === 'editbtn') {
+                    layer.open({
+                        type: 2,
+                        area: ["600px", "600px"],
+                        content: './appDefine.html?appId=' + data.appId //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                        ,end:function(){
+                            $.getAppList($("#appName").val())
+                        }
+                    });;
+                }
+            });
+
+
+            //触发事件
+            $.extend({
+                format: function (source, params) {
+                    if (arguments.length == 1)
+                        return function () {
+                            var args = $.makeArray(arguments);
+                            args.unshift(source);
+                            return $.format.apply(this, args);
+                        };
+                    if (arguments.length > 2 && params.constructor != Array) {
+                        params = $.makeArray(arguments).slice(1);
+                    }
+                    if (params.constructor != Array) {
+                        params = [params];
+                    }
+                    $.each(params, function (i, n) {
+                        source = source.replace(new RegExp("\\{" + i + "\\}", "g"), n);
+                    });
+                    return source;
+                },
+                getRowsCount: function (records) {
+                    if (records && records instanceof Array && 0 < records.length) {
+                        return records[0].pagesum;
+                    }
+                },
+                reqQueryList: function (queryObj, reqCode, successFn, shade, async) {
+                    var param = bj.param();
+                    param.reqCode = reqCode; //P_GetPsnInterview
+                    param.loadImg = (typeof shade === 'undefined' ? true : shade);
+                    param.reqData = queryObj;
+                    param.async = (typeof async === 'undefined' ? true : async); //异步   
+                    var ctx = this;
+                    var callback = function (responseData) {
+                        if (-1 != responseData.RetCode) {
+                            var rows = responseData.RetData.rows;
+                            if (successFn && typeof successFn == "function") {
+                                successFn(rows);
+                            }
+                            //if (rows && rows instanceof Array) { }
+                        } else {
+                            bj.showMsg(responseData.RetMsg, 0);
+                        }
+                    }
+                    bj.post(param, function (data) {
+                        callback.call(ctx, data);
+                    });
+                },
+                getAppList: function (queryName) {
+                    
+                    var queryParam = {};
+                    queryParam.appName = queryName;
+
+                    $.reqQueryList(queryParam, "cm001", function (records) {
+                        table.render({
+                            elem: '#apptable'
+                          , height: 315
+                          , data: records
+                          , page: false //开启分页
+                          , cols: [[ //表头
+                          { field: 'appId', title: '序号' }
+                            , { field: 'appName', title: '名称', minWidth: "150", sort: true }
+                            , { field: 'appDesc', title: '描述', minWidth: "150"}
+                            , { fixed: 'right', width: 165, align: 'center', toolbar: '#appBar', title: '<a href="#" id="addbtn" class="layui-btn layui-btn-xs"><i class="layui-icon">&#xe61f;</i></a>' }
+                          ]]
+                            , done: function () {
+                                $("#addbtn").on("click", function () {
+                                    layer.open({
+                                        type: 2,
+                                        area:["600px","600px"],
+                                        content: './appDefine.html?appId=0' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                                        ,end:function(){
+                                            $.getAppList($("#appName").val())
+                                        }
+                                    });;
+                                })
+                            }
+                          });
+                    });
+                },
+
+
+            });
+
+            $.getAppList('');
+        });
+
+    </script>
+</body>
+</html>

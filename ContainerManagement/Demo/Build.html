@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>抽奖信息定义</title>
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css"/>
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+    <script>
+        layui.use(["basejq", "form", "laydate","layer"], function () {
+            var bj = layui.basejq("e"), form = layui.form, $ = layui.jquery; layer = layui.layer;
+            var id = bj.getUrlParam("id");
+            //获取类型
+            var getItem = function () {
+                var p = {};
+                p.item_type = 'L';
+                var param = bj.param();
+                param.reqCode = "03vote01";
+                param.reqData = p;
+                param.area = "item";
+                param.loadImg = true;
+                bj.post(param, function (data) {
+                    console.log(data);
+                    if (data.RetData.rows.length < 1) {
+                        $("#item").html("<option value='-1'>没有可用主题</option>");
+                    }
+                    $("#item").hide();
+                    form.render('select');
+                    if (id != null) {
+                        $("#id").val(id);
+                        $("#tijiao").html("提交修改");
+                        getOne();
+                    }
+                    //form.render('select');
+                });
+            };
+            var checkFail = function () {
+                var type = $("#type").val();
+                if (type == 1) {
+                    var total_amnt = parseInt($("#total_amnt").val());
+                    var max_amnt = parseInt($("#max_amnt").val());
+                    var min_amnt = parseInt($("#min_amnt").val());
+                    var quantity = parseInt($("#quantity").val());
+                    console.log(max_amnt+"|"+min_amnt+"|"+total_amnt);
+                    if (max_amnt > total_amnt) { bj.showMsg("最大金额不能大于总金额"); return true; }
+                    if (max_amnt*quantity < total_amnt) { bj.showMsg("最大金额不能小于平均金额"); return true; }
+                    if (min_amnt*quantity > total_amnt) { bj.showMsg("最小金额不能大于平均金额"); return true; }
+                }
+            }
+            var getOne = function () {
+                var param = bj.param();
+                param.reqCode = "03lottery03";
+                param.loadImg = true;
+                var p = {};
+                p.id = id;
+                param.reqData = p;
+                bj.post(param, function (data) {
+                    if (data.IsError == true) {
+                        bj.showMsgT(data.RetMsg);
+                    }
+                    else {
+                        var d = data.RetData.rows[0];
+                        $("#item").val(d.item_id);
+                        $("#type").val(d.lottery_type);
+                        $("#name").val(d.lottery_name);
+                        $("#desc").val(d.lottery_desc);
+                        $("#btime").val(d.begin_time);
+                        $("#etime").val(d.end_time);
+                        $("#total_amnt").val(d.total_amnt);
+                        $("#max_amnt").val(d.max_amnt);
+                        $("#min_amnt").val(d.min_amnt);
+                        $("#quantity").val(d.quantity);
+                        $("#times").val(d.times);
+                        $("#limit_type").val(d.limit_type);
+                        form.render('select');
+                        
+                    }
+                });
+            }
+
+
+
+            var submit = function () {
+                if ($("#item").val() == '-1') {
+                    bj.showMsg("您还没有可用主题！", 0);
+                    return;
+                }
+                if (checkFail()) return;
+                console.log(bj.fieldValues("paper"))
+                layer.open({
+                    type: 1,
+                    title: "提交的数据",
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['90%', '300px'], //宽高
+                    content: JSON.stringify(bj.fieldValues("paper"))
+                });
+                //var param = bj.param();
+                //param.reqCode = "03lottery01";
+                //param.submit = "paper";
+                //param.loadImg = true;
+                //bj.post(param, function (data) {
+                //    if (data.IsError) {
+                //        bj.showMsg(data.RetMsg);
+                //        return;
+                //    }
+                //    if (data.RetCode == 0 && data.RetData.id > 0) {
+                //        if (id == null) {
+                //            bj.showMsg("保存基本信息成功，进入设置权限清单？", 0, function () {
+                //                location.href = "../Limit/limit.html?id=" + data.RetData.id + "&fromType=3&limitType=" + $("#limit_type").val();
+                //            })
+                //        }
+                //        else bj.showMsg("修改成功！", 0);
+
+                //    }
+                //    else bj.showMsg("保存失败！");
+                //});
+
+            }
+            $("#tijiao").click(function () { submit(); });;
+            getItem();
+        });
+    </script>
+</head>
+<body>
+    <blockquote class="layui-elem-quote layui-quote-nm" style="background-color:#393D49;color:white">抽奖信息定义</blockquote>
+    <form class="layui-form layui-form-pane" bj-submit="paper" action="">
+  <div class="layui-form-item">
+    <label class="layui-form-label" for="item">主题</label>
+    <div class="layui-input-block">
+      <select id="item" bj-area="item" bj-field="item" style="display:none">
+        <option value="{{item.bjj_item_id}}">{{item.item_name}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label" for="type">抽奖类型</label>
+    <div class="layui-input-block">
+      <select id="type" bj-field="type" disabled style="display:none">
+        <option value="1">红包（先到先得随机金额）</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label" for="name">名称</label>
+    <div class="layui-input-block">
+      <input type="text" id="name" bj-field="name" bj-check="empty" placeholder="必填" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label" for="desc">描述说明</label>
+    <div class="layui-input-block">
+      <textarea id="desc" bj-field="desc" placeholder="400字以内" class="layui-textarea"></textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">起至时间</label>
+    <div class="layui-input-inline">
+      <input class="layui-input" placeholder="开始日" bj-check="empty" bj-field="btime" id="btime" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss' })">
+    </div>
+    <div class="layui-input-inline">
+      <input class="layui-input" placeholder="截止日" bj-check="empty" bj-field="etime" id="etime" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss' })">
+    </div>
+   <!-- <div class="layui-form-mid layui-word-aux">辅助文字</div>-->
+  </div>
+  <div class="layui-form-item">
+      <div class="layui-inline">
+    <label class="layui-form-label" for="total_amnt">总金额</label>
+    <div class="layui-input-inline">
+      <input type="number" id="total_amnt"  bj-field="total_amnt" bj-check="empty|int" bj-size="1-" placeholder="必填" class="layui-input">
+    </div>
+          <div class="layui-form-mid layui-word-aux">最小单位为元</div> 
+          </div>
+       <div class="layui-inline">
+      <label class="layui-form-label" for="quantity">红包个数</label>
+      <div class="layui-input-inline">
+        <input type="number" id="quantity" bj-field="quantity" bj-check="empty|int" bj-size="1-"  class="layui-input">
+      </div>
+       <div class="layui-form-mid layui-word-aux">个数不能大于总金额</div> 
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label" for="max_amnt">最大金额</label>
+      <div class="layui-input-inline">
+        <input type="number" id="max_amnt" bj-field="max_amnt" bj-check="empty|int" bj-size="1-"  class="layui-input">
+      </div>
+       <div class="layui-form-mid layui-word-aux">小于等于总金额，大于等于平均金额</div> 
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label" for="min_amnt">最小金额</label>
+      <div class="layui-input-inline">
+        <input type="number" id="min_amnt" bj-field="min_amnt" bj-check="empty|int" bj-size="0-"  value="0"  class="layui-input">
+      </div>
+        <div class="layui-form-mid layui-word-aux">小于等于平均金额</div> 
+    </div>
+  </div>
+    <div class="layui-form-item" style="margin-bottom: 0px">
+       <div class="layui-inline">
+      <label class="layui-form-label" for="times">抽取次数</label>
+      <div class="layui-input-inline">
+        <input type="number" id="times" bj-field="times" bj-check="empty" value="1" disabled class="layui-input">
+      </div>
+        <div class="layui-form-mid layui-word-aux">每个人最多能抽取的次数</div> 
+    </div>
+        <div class="layui-inline">
+    <label class="layui-form-label" for="limit_type">权限设置</label>
+    <div class="layui-input-inline">
+      <select id="limit_type"  bj-field="limit_type" disabled style="display:none">
+        <option value="4">人员清单</option>
+      </select>
+    </div>
+   </div>
+
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+        <input type="number" id="id" style="display:none" bj-field="id" bj-check="empty" value="0" disabled class="layui-input">
+      <button type="button" class="layui-btn" id="tijiao">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+ 
+<script>
+
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>信息发送</title>
+    <script type="text/javascript" src="../../../Content/js/zjfbase.js"></script>
+    <script src="../layui/lay/dest/layui.all.js"></script> 
+    <script type="text/javascript" src="../../../Content/materialize/js/materialize.min.js"></script>
+    <script>
+        var pagesize = "10";
+        var pageindex = 1;
+
+        function GetHtml(data) {
+            var html = "";
+            if ($.isArray(data)) {
+                for (n in data) {
+                    html += buildItem(data[n]);
+                }
+            }
+            else {
+                html += buildItem(data);
+            }
+            return html;
+        }
+        function buildItem(item) {
+            var str = "";
+            var color = "";
+            if (item.shareFlag == 1) { color = "green-text"; }
+            var urlCust = encodeURI('AcCust.html?acid=' + item.acid + '&wxid=' + item.wxid + '&name=' + encodeURIComponent(item.name));
+            str += '<li class="collection-item avatar" style="padding-left:4px;margin-left:4px;min-height:50px;padding-right:4px;">';
+            str += '<img src="' + item.url + '" alt="" class="circle" style="width:60px;height:60px;left:5px;">';
+            str += '<span class="title ' + color + ' " style="font-weight:bold;padding-left:70px;" >' + item.rowID + '.' + item.name + '</span><br/>'
+            str += '<span style="padding-left:70px;">开始：' + item.begintime + '</span><br>';
+            str += '<span style="padding-left:70px;">结束：' + item.endtime + '</span><br>';
+            str += '<span style="padding-left:70px;">';
+            str += '<a href ="AcDetail.html?&id=' + item.wxid + '" >活动详情</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href ="' + urlCust + '" >获客情况</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+            if (item.shareFlag == '1') str += '<a href ="AcDetail.html?&id=' + item.wxid + '">分享</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+            str += '</span>';
+
+            //u = item.custcode;
+
+            str += '</li>';
+            return str;
+        }
+        var f_query = function () {
+            zjyzl.hideNavigationBar();
+            var para = {};
+            para.itemId = 0;
+            para.channel = '1';
+            para.pageindex = pageindex;
+            para.pagesize = pagesize;
+            var p = bj.param();
+            p.reqCode = "activityy01";
+            p.reqData = para;
+            bj.post(p, function (data) {
+                if (data.IsError) {
+                    bj.showMsg(data.RetMsg, 0);
+                }
+                else {
+                    layer.closeAll();
+                    data = data.RetData.rows;
+
+                    pageindex++;
+                    if (data.length < pagesize) {
+                        $("#more").hide();
+                    }
+                    if (pageindex == 2) $(".collection").html("");
+                    var html = GetHtml(data);
+                    $(".collection").append(html);
+                }
+            });
+        }
+        $(function () {
+            bj.openLoadImg();
+            zjyzl.config("", f_query);
+
+            $("#more").click(function () { f_query() });
+        });
+    </script>
+</head>
+<body>
+ <div class="card-panel teal lighten-2" ><span class="white-text text-darken-2" style="font-size:large;font-weight:bold;" id="titles">我的活动列表</span></div>
+  <!--<div class="row">
+       <div class="input-field col s12">
+    <select id="branch">
+      
+    </select>
+    <label>机构</label>
+  </div>
+    <div class="row">
+        <div class="input-field col s5">
+          <input placeholder="开始" id="first_name" type="text" class="validate laydate-icon" onclick="laydate({ istime: false, format: 'YYYY-MM-DD' })"/>
+          <label for="first_name">开始时间</label>
+        </div>
+        <div class="input-field col s5">
+          <input id="last_name" type="text" class="validate laydate-icon" onclick="laydate({ istime: false, format: 'YYYY-MM-DD' })" placeholder="结束"/>
+          
+        </div>
+        <div class="input-field col s2">
+                  <input type="button" id="query" value="查询"/>
+        </div>
+    </div>
+  </div>-->
+    <div class="row">
+  <ul class="collection">
+  </ul>
+  <ul class="p">
+    <li id="more" class="center">显示更多</li>
+  </ul>
+     </div>
+    
+    ＜script> //块开放方法，如果在layui.user()中，请使用window.f_zjcm_template11=... var f_zjcm_template11 = function (n) { var _data = _ZJCM_DATA.d_blockList[n]; var _funcList = _data.list; var html='＜fieldset class="layui-elem-field">'; html += '＜legend>' + _data.blockTitle + '＜/legend>'; html+='＜div class="layui-field-box">'; //内容区域 for (i = 0; i ＜ _funcList.length; i++) { html += '＜a href="javascript:;" onClick="f_zjcm_openPage('+n+','+i+')">' + _funcList[i].funcName + '＜/a>'; html += '＜hr class="layui-bg-orange">'; } if(_data.pagesum>_funcList.length) html += '＜a href="javascript:;" onClick="f_zjcm_blockPage(' + n + ')">更多＜/a>'; html+='＜/div>'; html += '＜/fieldset>'; return html; }; ＜/script>＜script> var f_zjcm_template22 = function (n) { var _data = _ZJCM_DATA.d_blockList[n]; var _funcList = _data.list; var html = '＜fieldset class="layui-elem-field">'; html += '＜legend>' + _data.blockTitle + '＜/legend>'; html += '＜div class="layui-field-box">'; html += '＜table class="layui-table" lay-skin="line">'; for (i = 0; i ＜ _funcList.length; i++) { var s=i+1; html +='＜tr>＜td>'+s+'＜/td>＜td>'+ _funcList[i].funcName+'＜/td>＜/tr>'; } html += '＜/table>'; html += '＜/div>'; html += '＜/fieldset>'; return html; }; ＜/script> ＜script> //块开放方法，如果在layui.user()中，请使用window.f_zjcm_template11=... var f_zjcm_template11 = function (n) { var _data = _ZJCM_DATA.d_blockList[n]; var _funcList = _data.list; var html='＜fieldset class="layui-elem-field">'; html += '＜legend>' + _data.blockTitle + '＜/legend>'; html+='＜div class="layui-field-box">'; //内容区域 for (i = 0; i ＜ _funcList.length; i++) { html += '＜a href="javascript:;" onClick="f_zjcm_openPage('+n+','+i+')">' + _funcList[i].funcName + '＜/a>'; html += '＜hr class="layui-bg-orange">'; } if(_data.pagesum>_funcList.length) html += '＜a href="javascript:;" onClick="f_zjcm_blockPage(' + n + ')">更多＜/a>'; html+='＜/div>'; html += '＜/fieldset>'; return html; }; ＜/script>    
+</body>
+</html>

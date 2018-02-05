@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>cachedefine</title>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css">
+
+    <script src="../Content/js/jquery-3.2.1.min.js"></script>
+    <script src="../Content/js/base.jq.1.0.js"></script>
+    <script src="../Content/layui2.2/layui.js"></script>
+</head>
+<body>
+
+<div class="layui-container " style="padding-top: 30px;">
+
+    <div class="" id="layerAdd" >
+        <form class="layui-form" >
+            <div class="layui-form-item">
+                <label class="layui-form-label">任务名称</label>
+                <div class="layui-input-block" style="width:350px">
+                    <input type="text" name="taskName"  lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">任务Code</label>
+                <div class="layui-input-block" style="width:350px">
+                    <input type="text" name="taskCode" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">存储过程</label>
+                <div class="layui-input-block" style="width:350px">
+                    <input type="text" name="produce" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">运行方式</label>
+                <div class="layui-input-block" style="width:350px">
+                    <select  id="selectType" name="runType" lay-verify="required">
+                        <option value=""></option>
+                        <option value="1">自动</option>
+                        <option value="2">手动</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">失效时间</label>
+                    <div class="layui-input-inline" style="width:300px">
+                        <input type="text" name="invalidTime" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>分
+                
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">key值</label>
+                <div class="layui-input-block" style="width:350px">
+                    <input type="text" name="keyVal" lay-verify="required"  autocomplete="off" placeholder="" class="layui-input">
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="go1">完成</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+    layui.use(['layer','form', 'upload','table'], function() {  //如果只加载一个模块，可以不填数组。如：layui.use('form')
+        var form = layui.form //获取form模块
+            , upload = layui.upload; //获取upload模块
+
+        var table = layui.table;
+        var layer = layui.layer;
+
+        var cacheId="";
+        //需要引入basejq-
+        cacheId= bj.getUrlParam("cacheId");
+
+        //$("[name='name1']").val("lallla");
+       // $("#selectType").val("自动");
+        //$("#selectTime").val("d");
+        //form.render('select'); //刷新select选择框渲染
+
+        //如果修改链接
+        if(cacheId!=null){
+            //调用存储过程
+            fillCacheInfo(cacheId);
+        }else{
+            cacheId=0;
+        }
+
+        form.on('submit(go1)',function(data){/*
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })*/
+            //$("#select_id").find("option:selected").text();  //获取Select选择的Text
+            //console.log(data)
+
+           //testLocalsubmit(data);
+            /*var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭*/
+            saveCacheInfo(data);
+            return false;
+        });
+
+
+
+        function testLocalsubmit(data) {
+            var cacheJobName = data.field.taskName;
+            //----------------还有个Code
+
+            var cacheJobProcedure = data.field.produce;
+            var cacheJobStatus = 1;
+            var cacheJobStartTime = "";   //当前时间吗？-------------------------
+            var cacheJobType = data.field.runType;
+            var cacheJobInvalidTime = data.field.invalidTime;
+            var cacheJobUnit = data.field.timeType;
+            var cacheJobKey = data.field.keyVal;
+
+            console.log(data.field);
+
+
+        }
+
+
+
+
+        function saveCacheInfo(data) {
+            var cacheJobId = cacheId;
+            var cacheJobName = data.field.taskName;
+            var cacheJobProcedure= data.field.produce;
+            var cacheJobType = data.field.runType;
+            var cacheJobInvalidTime = data.field.invalidTime;
+            var cacheJobKey = data.field.keyVal;
+           var cacheJobCode = data.field.taskCode;
+            var cacheJobNextTime = formatDateTime(new Date());
+            var cacheJobStatus = 1;
+           var cacheJobExecStatus = 1;
+
+
+            var paramData = {};
+            paramData.cacheJobId = cacheJobId;
+            paramData.cacheJobName=cacheJobName;
+            paramData.cacheJobProcedure=cacheJobProcedure;
+            paramData.cacheJobType=cacheJobType;
+            paramData.cacheJobInvalidTime=cacheJobInvalidTime;
+            paramData.cacheJobKey=cacheJobKey;
+            paramData.cacheJobCode=cacheJobCode;
+            paramData.cacheJobNextTime=cacheJobNextTime;
+            paramData.cacheJobStatus=cacheJobStatus;
+            paramData.cacheJobExecStatus=cacheJobExecStatus;
+
+
+            var getinfoparam = basejq.param();
+            getinfoparam.reqData = paramData;
+            getinfoparam.encrypt = true;
+            getinfoparam.async = true;
+            getinfoparam.loadImg = false;
+            getinfoparam.reqCode = 'cm145';  //调用存储过程 p_cm01_saveCacheJobInfo
+
+            basejq.post(getinfoparam, function (data) {
+                if (data.IsError) {
+                    basejq.showMsg(data.RetMessage);
+                    return;
+                }
+                // layer.closeAll();
+                parent.layer.msg('提交成功', {icon: 1,time:1000});
+                //执行存储过程成功后，关闭iframe层
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+            });
+        }
+
+
+
+        function fillCacheInfo(cacheJobId) {
+            var paramData = {};
+            paramData.cacheJobId = cacheJobId;
+            var getinfoparam = basejq.param();
+            getinfoparam.reqData = paramData;
+            getinfoparam.encrypt = true;
+            getinfoparam.async = true;
+            getinfoparam.loadImg = false;
+            getinfoparam.reqCode = 'cm144';  //调用存储过程 p_cm01_getCacheJobInfo
+
+            basejq.post(getinfoparam, function (data) {
+                if (data.IsError) {
+                    basejq.showMsg(data.RetMessage);
+                    return;
+                }
+                // layer.closeAll();
+                var datas = data.RetData.rows;
+                if (datas.length == 0) {
+                    return;
+                }
+                var cacheJobName = datas[0].cacheJobName;
+                var cacheJobProcedure = datas[0].cacheJobProcedure;
+                var cacheJobType = datas[0].cacheJobType;
+                var cacheJobInvalidTime = datas[0].cacheJobInvalidTime;
+                var cacheJobKey = datas[0].cacheJobKey;
+                var cacheJobNextTime  = datas[0].cacheJobNextTime ;
+                var cacheJobBeginDate = datas[0].cacheJobBeginDate;
+                var cacheJobEndDate = datas[0].cacheJobEndDate;
+                var cacheJobStatus = datas[0].cacheJobStatus;
+                var cacheJobCode = datas[0].cacheJobCode;
+                var cacheJobExecStatus = datas[0].cacheJobExecStatus;
+
+                $("[name='taskName']").val(cacheJobName);
+                $("[name='taskCode']").val(cacheJobCode);
+                $("[name='produce']").val(cacheJobProcedure);
+                $("#selectType").val(cacheJobType);
+                $("[name='invalidTime']").val(cacheJobInvalidTime);
+                $("[name='keyVal']").val(cacheJobKey);
+
+                form.render('select'); //刷新select选择框渲染
+            });
+        }
+
+
+
+
+    });//layui.use
+
+    var formatDateTime = function (date) {
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h=h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        var second=date.getSeconds();
+        second=second < 10 ? ('0' + second) : second;
+        var milliseconds = date.getMilliseconds();
+        milliseconds=milliseconds < 10 ? ('0' + milliseconds) : milliseconds;
+        return y + '/' + m + '/' + d+' '+h+':'+minute+':'+second+':'+milliseconds;
+    };
+
+
+    var parserDate = function (date) {
+        var t = Date.parse(date);
+        if (!isNaN(t)) {
+            return new Date(Date.parse(date.replace(/-/g, "/")));
+        } else {
+            return new Date();
+        }
+    };
+    $(function () {
+
+
+    })
+
+
+
+
+</script>
+</body>
+</html>

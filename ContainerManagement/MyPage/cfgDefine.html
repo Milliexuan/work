@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+      <link rel="stylesheet" href="../Content/layui2.2/css/layui.css">
+
+    <script src="../Content/js/jquery-3.2.1.min.js"></script>
+    <script src="../Content/js/base.jq.1.0.js"></script>
+    <script src="../Content/layui2.2/layui.js"></script>
+</head>
+<body>
+
+<div class="layui-container" style="margin-top: 30px">
+
+    <div class="" id="layerAdd" >
+        <form class="layui-form" >
+            <div class="layui-form-item">
+                <label class="layui-form-label">配置名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name1" lay-verify="required" autocomplete="off" placeholder="请输入配置名称" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">应用提供方</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name2" lay-verify="required" autocomplete="off" placeholder="请输入应用提供方" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">密钥</label>
+                    <div class="layui-input-inline" >
+                        <input type="text" name="name3" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline"><a class="layui-btn getUUID " id="key">分配</a></div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">签名</label>
+                    <div class="layui-input-inline" >
+                        <input type="text" name="name4" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline"><a class="layui-btn getUUID" id="sign">分配</a></div>
+
+            </div>
+
+
+            <div class="layui-form-item" pane="">
+                <label class="layui-form-label">原始复选框</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="cardType" lay-skin="primary" title="证件类别"  value="custIdType" >
+                    <input type="checkbox" name="idNo" lay-skin="primary" title="证件号" value="custIdNo">
+                    <input type="checkbox" name="name" lay-skin="primary" title="客户姓名" value="custName" >
+                    <input type="checkbox" name="mobile" lay-skin="primary" title="客户手机" value="custMobile" >
+                    <input type="checkbox" name="sex" lay-skin="primary" title="性别" value="custSex" >
+                    <input type="checkbox" name="birth" lay-skin="primary" title="生日" value="custBirth">
+                </div>
+                <div class="layui-input-block">
+
+                    <input type="checkbox" name="userNo" lay-skin="primary" title="工号" value="clerkCode">
+                    <input type="checkbox" name="branch" lay-skin="primary" title="机构" value="branchNo">
+                    <input type="checkbox" name="openId" lay-skin="primary" title="openId" value="openId">
+                    <input type="checkbox" name="userType" lay-skin="primary" title="人员类型" value="userType">
+                </div>
+                <div class="layui-input-block">
+
+
+                    <input type="checkbox" name="chain" lay-skin="primary" title="条线(员工)" value="channel">
+                    <input type="checkbox" name="department" lay-skin="primary" title="部门(员工)" value="erpDept">
+                    <input type="checkbox" name="position" lay-skin="primary" title="岗位(员工)" value="erpPost">
+                </div>
+                <div class="layui-input-block">
+
+                    <input type="checkbox" name="rank" lay-skin="primary" title="职级（业务员）" value="actRank">
+                    <input type="checkbox" name="rank" lay-skin="primary" title="姓名（业务员）" value="clerkName">
+                    <input type="checkbox" name="rank" lay-skin="primary" title="手机（业务员）" value="clerkMobile">
+
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="go1">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+    layui.use(['layer','form', 'upload','table'], function() {  //如果只加载一个模块，可以不填数组。如：layui.use('form')
+        var form = layui.form //获取form模块
+            , upload = layui.upload; //获取upload模块
+
+        var table = layui.table;
+        var layer = layui.layer;
+
+
+        var cfgId = bj.getUrlParam("cfgId");
+        //alert(cfgId);
+
+        //testLocal();
+        //如果为编辑链接
+        if(cfgId!=null){
+           // alert(cfgId);
+            //调用存储过程
+            fillInfo(cfgId);
+            fillBox(cfgId);
+        }else{
+            cfgId=0;
+        }
+
+
+        //获取秘钥和签名  存储过程中是一个随机产生的UUID
+        $(".getUUID").each(function (index,element) {
+            $(this).on("click",function () {
+                var paramData = {};
+                var getinfoparam = basejq.param();
+                getinfoparam.reqData = paramData;
+                getinfoparam.encrypt = true;
+                getinfoparam.async = true;
+                getinfoparam.loadImg = false;
+                getinfoparam.reqCode = 'cm301';  //调用存储过程 p_cm01_getEncryptKey
+               // console.log("aa"+$(this).attr("id"));
+                var id = $(this).attr("id");
+                basejq.post(getinfoparam, function (data) {
+                    if (data.IsError) {
+                        basejq.showMsg(data.RetMessage);
+                        console.log("fail");
+                        return;
+                    }
+                    //------------------
+                    var datas = data.RetData.rows;
+                    if(datas.length ==0){
+                        return;
+                    }
+                    //-------------------------------
+                    //console.log($(this));
+                    //console.log(index+" " + element);
+
+                    if(id=="key"){
+                        $("[name='name3']").val(datas[0].keyStr);
+                    }else if(id=="sign"){
+                        $("[name='name4']").val(datas[0].keyStr);
+                    }
+
+                });
+            });
+        });
+
+
+
+        //监听复选框变化
+        form.on('checkbox', function(data){
+            //console.log(data.elem); //得到checkbox原始DOM对象
+            //console.log(data.elem.checked); //是否被选中，true或者false
+            //alert(typeof data.elem);
+            //console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+            var elem = data.elem;
+            if(data.elem.checked){
+                $(elem).attr("checked", true);
+            }else{
+                $(elem).removeAttr("checked");
+            }
+
+            //console.log(data.othis); //得到美化后的DOM对象
+        });
+        form.on('submit(go1)', function(data){
+              /* layer.alert(JSON.stringify(data.field), {
+                   title: '最终的提交信息'
+               })*/
+
+
+
+            //-----------------------------------------------------
+            /*var cfgParamCode="";//如果一个没选 为空吗？
+            $('input:checkbox').each(function() {
+                if ($(this).attr('checked')) {
+                    cfgParamCode = cfgParamCode+ $(this).val()+"|";
+                }
+            });
+            console.log(cfgParamCode);
+
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+          //parent.layer.msg('成功');
+          parent.layer.msg('提交成功', {icon: 1,time:1000});
+            parent.layer.close(index); //再执行关闭*/
+            //alert("before");
+             saveInfo(data,cfgId);
+            // alert("after");
+               return false;
+           });
+
+        function testLocal() {
+            $("input:checkbox").each(function() {
+                var thisVal = $(this).val();
+                if(thisVal==3){
+                    //alert( $(this).attr("name"));
+                    $(this).attr("checked" ,true);
+                }
+
+            });
+            form.render('checkbox'); //刷新select选择框渲染
+            $("[name='name1']").val("lallla");
+
+        }
+
+
+       function saveInfo(dataf,cfgId) {
+           var cfgParamCode="";//如果一个没选 为空吗？--------------------------
+           $('input:checkbox').each(function() {
+               if ($(this).attr('checked')) {
+                   cfgParamCode = cfgParamCode+ $(this).val()+"-";
+               }
+           });
+           if(cfgParamCode!=""){
+               cfgParamCode = cfgParamCode.substring(0,cfgParamCode.length-1);
+           }
+
+            console.log(cfgParamCode);
+
+           var paramData = {};
+           paramData.cfgId = cfgId;
+           paramData.cfgName = dataf.field.name1;
+           paramData.cfgOrigin = dataf.field.name2;
+           paramData.cfgSecretKey = dataf.field.name3;
+           paramData.cfgSignKey = dataf.field.name4;
+           paramData.cfgParamCode = cfgParamCode;
+
+           var getinfoparam = basejq.param();
+           getinfoparam.reqData = paramData;
+           getinfoparam.encrypt = true;
+           getinfoparam.async = true;
+           getinfoparam.loadImg = false;
+           getinfoparam.reqCode = 'cm125';  //调用存储过程 p_cm01_saveCfgInfo
+
+           basejq.post(getinfoparam, function (data) {
+               if (data.IsError) {
+                   basejq.showMsg(data.RetMessage);
+                   console.log("fail");
+                   return;
+               }
+               // layer.closeAll();
+               //执行存储过程成功后，关闭iframe层
+               console.log("success");
+               parent.layer.msg('提交成功', {icon: 1,time:1000});
+               //window.parent.location.reload();
+               var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+
+              parent.layer.close(index); //再执行关闭
+           });
+       }
+
+        function fillInfo(cfgId) {
+            var paramData = {};
+            paramData.cfgId = cfgId;
+            var getinfoparam = basejq.param();
+            getinfoparam.reqData = paramData;
+            getinfoparam.encrypt = true;
+            getinfoparam.async = true;
+            getinfoparam.loadImg = false;
+            getinfoparam.reqCode = 'cm123';  //调用存储过程 p_cm01_getCfgInfo
+
+            basejq.post(getinfoparam, function (data) {
+                if (data.IsError) {
+                    basejq.showMsg(data.RetMessage);
+                    return;
+                }
+                // layer.closeAll();
+                var datas = data.RetData.rows;
+                if (datas.length == 0) {
+                    return;
+                }
+                var cfgName = datas[0].cfgName;
+                var cfgOrigin = datas[0].cfgOrigin;
+                var cfgSecretKey = datas[0].cfgSecretKey;
+                var cfgSignKey = datas[0].cfgSignKey;
+
+                $("[name='name1']").val(cfgName);
+                $("[name='name2']").val(cfgOrigin);
+                $("[name='name3']").val(cfgSecretKey);
+                $("[name='name4']").val(cfgSignKey);
+            });
+        }
+
+
+
+       function fillBox() {
+            var paramData = {};
+            paramData.cfgId = cfgId;
+            var getinfoparam = basejq.param();
+            getinfoparam.reqData = paramData;
+            getinfoparam.encrypt = true;
+            getinfoparam.async = true;
+            getinfoparam.loadImg = false;
+            getinfoparam.reqCode = 'cm124';  //p_cm01_getCfgParamList
+
+            basejq.post(getinfoparam, function (data) {
+                if (data.IsError) {
+                    basejq.showMsg(data.RetMessage);
+                    return;
+                }
+                // layer.closeAll();
+                var datas = data.RetData.rows;
+                if (datas.length == 0) {
+                    return;
+                }
+                for(var i=0;i<datas.length;i++){
+                    var cfgParamCode = datas[i].cfgParamCode;  //链接参数代码”
+                    var cfgParamName = datas[i].cfgParamName;  //链接参数名称
+                    $("input:checkbox").each(function() {
+                        var thisVal = $(this).val();
+                        if(thisVal==cfgParamCode){//可以加个与把cfgparamName也弄进去防止忘记
+                            $(this).attr("checked", true);
+                        }
+                    });
+                }
+                form.render('checkbox'); //刷新checkbox选择框渲染
+
+            });
+        }
+
+    });//layui.use
+
+
+</script>
+</body>
+</html>

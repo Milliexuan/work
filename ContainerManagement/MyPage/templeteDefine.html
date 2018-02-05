@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../Content/codemirror/lib/codemirror.css" />
+    <link rel="stylesheet" href="../Content/codemirror/theme/ambiance.css" />
+    <script src="../Content/codemirror/lib/codemirror.js"></script>
+   
+    <script src="../Content/codemirror/mode/xml/xml.js"></script>
+    <script src="../Content/codemirror/mode/javascript/javascript.js"></script>
+    <script src="../Content/codemirror/mode/css/css.js"></script>
+     <script src="../Content/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css" />
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+    <!--全屏模式-->
+<link rel="stylesheet" href="../Content/codemirror/addon/display/fullscreen.css"/>
+<script src="../Content/codemirror/addon/display/fullscreen.js"></script>
+
+<!--括号匹配-->
+<script src="../Content/codemirror/addon/edit/matchbrackets.js"></script>
+    <title>新增/修改模板</title>
+    <style>
+        html
+        {
+            height: 100%;
+        }
+
+        body
+        {
+            height: 100%;
+            margin: 0;
+        }
+        /*.CodeMirror {
+            border: 1px solid #eee;
+            height: auto;
+        }
+        .CodeMirror-scoll {
+            height:auto;
+            overflow-y:auto;
+            overflow-x:hidden;
+        }*/
+    </style>
+</head>
+<body>
+    <form class="layui-form layui-form-pane" bj-submit="paper" action="">
+       
+        <div class="layui-row" style="height: 100%;">
+            <div class="layui-col-md6 layui-col-sm6">
+                <!--保存右侧展示-->
+                <div class="layui-row">
+                     <div class="layui-form-item">
+            <label class="layui-form-label" for="name">模板名称</label>
+            <div class="layui-input-block">
+                    <input type="text" id="name" bj-field="name"  bj-check="empty" placeholder="必填" class="layui-input"> 
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="templetType">状态</label>
+            <div class="layui-input-block">
+                <select name="templetType" id="templetType" lay-filter="templetType" lay-verify="required">
+                    <option value="B">块模板</option>
+                    <option value="P">页模板</option>
+                </select>
+            </div>
+        </div>
+
+                </div>
+                <div class="layui-row" style="height: 100%;margin-bottom:5px;margin-left:2px; vertical-align:bottom">
+                    <div class="layui-col-md4 layui-col-sm4">
+                    <button type="button" class="layui-btn layui-btn-sm" id="tijiao" style="margin-top:5px;">提交模板</button>
+                    </div>
+                    <div class="layui-col-md4 layui-col-sm4" style="text-align:center;vertical-align:bottom">
+                         <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" id="retBtn" style="margin-top:5px;">初始化</button>
+                    </div>
+                     <div class="layui-col-md4 layui-col-sm4" style="text-align:right">
+                         <button type="button" class="layui-btn layui-btn-sm" id="lookBtn" style="margin-top:5px;">运行浏览</button>
+                    </div>
+                </div>
+                 <div class="layui-row" id="codeDiv" style="height: 300px;background-color:gray">
+                     <textarea id="code" name="code"><script>
+   //_ZJCM_DATA.d_blockList[n]
+   var f_zjcm_template = function (n) {
+       /*_data=_ZJCM_DATA.d_blockList[n] 当前快信息
+       ##_data.list 块功能点列表
+       ##_data.blockId 块ID
+       ##_data.blockTitle 块名称
+       ##_data.funcCnt 显示功能点数量
+       */
+       /*_funcList=_data.list 功能点
+       ##_funcList.customSeq
+       ##_funcList.funcCfgId
+       ##_funcList.funcDesc
+       ##_funcList.funcIconCode
+       ##_funcList.funcIconColor
+       ##_funcList.funcIconId
+       ##_funcList.funcIconSize
+       ##_funcList.funcId
+       ##_funcList.funcImage
+       ##_funcList.funcName
+       ##_funcList.funcUrl
+       ##_funcList.id
+       ##_funcList.pagesum
+       ***最终提交前删除以上注释**/
+       //组织返回显示在快中的HTML串
+       var html = "hello";
+        return html;
+    }
+</script>
+
+                     </textarea>
+                     <textarea id="my" style="display:none">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css" />
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+   <script type="text/javascript" src="../ApplPage/Js/ZjcmPage.js"></script>  
+</head>
+
+<body>
+<!--可以使用id=zjcm_block1 来定位模块的位置，id=zjcm_block2 模块-->
+
+<!--自定义内容-->    
+<div class="layui-fluid" id="zjcm_content" style="padding:0px 5px;">
+    <!--块内容显示区 id="zjcm_content"-->
+</div>
+<!--自定义内容-->
+</body>
+</html>
+                     </textarea>
+                </div>
+                 <div class="layui-row" id="btnArea" >
+           
+        </div>
+            </div>
+            <div class="layui-col-md6 layui-col-sm6 " id="lookArea" style="">
+                <div class="layui-row" id="showBlock" style="display:none">
+                      <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">调试用块ID</label>
+      <div class="layui-input-inline">
+        <input type="number" name="blockId" id="blockId" value="1"  class="layui-input"/>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <div class="layui-input-inline">
+        
+      </div>
+    </div>
+  </div>
+                </div>
+                <div class="layui-row" style="margin-left:5px;">
+                 <iframe  width="100%" height="100px" noresize="noresize" frameborder="no"  scrolling="auto" name="mainFrame" id="mainFrame"></iframe>
+                    </div>
+            </div>
+        </div>
+
+       
+    </form>
+    <script>
+        var _myCode = '';
+        var _blockId = -1;
+        var _templetId = -1;
+        //初始化codeMirror
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            lineNumbers: true,
+            extraKeys: { "Ctrl-Space": "autocomplete" },
+            mode: { name: "htmlmixed", globalVars: true },
+            theme: "ambiance",
+            tabSize:4
+        });
+        
+        layui.use(['basejq', 'form'], function () {
+            var form = layui.form, $ = layui.jquery, bj = layui.basejq("e");
+
+            var setSite = function () {
+                var height = $(window).height() - 148;
+                $("#lookArea").height($(window).height());
+                $("#mainFrame").height($(window).height() - 5);
+                $("#codeDiv").height(height);
+                editor.setSize('auto', height);
+            }
+            setSite();
+
+            var id = parseInt(bj.getUrlParam("id"));
+            if (bj.getUrlParam("id") != null) _templetId = id;
+            //form.on('select(templetType)', function (data) {
+                
+            //    if (bj.getUrlParam("id") == null) {
+            //        console.log(editor.getTextArea().value);
+            //        if (data.value == 'P' && $("#code").val() == editor.getTextArea().value) editor.setValue($("#my").val());
+            //        else if (data.value == 'B' && $("#my").val() == editor.getTextArea().value) editor.setValue($("#code").val());
+                   
+            //    }
+            //});
+            
+            $("#retBtn").click(function () {
+                bj.showMsg("您的编辑会被初始文本内容替换，确定吗？", 0, function () {
+                    if ($("#templetType").val() == 'P') editor.setValue($("#my").val());
+                    else if ($("#templetType").val() == 'B') editor.setValue($("#code").val());
+                }, function () { });
+            });
+
+            window.show = function (htmlCssJs) {
+                //将获取的数据重新解码
+                htmlCssJs = htmlCssJs.replace(new RegExp("＜", "g"), "<");
+                //给editor设值
+                editor.setValue(htmlCssJs);
+            };
+            
+            var getInfo = function (id) {
+                var param = bj.param();
+                param.reqCode = "cm133";
+                param.reqData = {
+                    templetId: id                   
+                };
+                bj.post(param, function (data) {
+                    console.log(data);
+                    $("#name").val(data.RetData.rows[0].templetName);
+                    var htmlCssJs = data.RetData.rows[0].templetHtmlCssJs;
+                    show(htmlCssJs);
+                })
+            };
+
+            if (id > 0) {
+                //alert(id);
+                getInfo(id);
+            }
+
+            var submit = function () {
+                var name = $("#name").val();
+                if (bj.isEmpty(name)) {
+                    layer.msg("名称不能为空");
+                    $("#name").focus();
+                    return;
+                }
+                //获取codeMirror经过转义的数据
+                var code = editor.getValue();
+                if (bj.isEmpty(code)) {
+                    layer.msg("代码不能为空");
+                   
+                    return;
+                }
+                //获取codeMirror未经转义的数据
+                var code2 = editor.getTextArea().value;
+                //将codeMirror进行表单提交
+                var codeText = $("#code").text(code);
+
+                //code = encodeURIComponent(code);
+                //将输入字符进行编码
+                //code = window.btoa(encodeURIComponent(code));
+
+                //将'<'全局提换成＜（英文圆角）
+                code = code.replace(new RegExp("<", "g"), "＜");
+
+                alert(name + ',' + code);
+                //return;
+
+                //code = decodeURIComponent(code);
+
+                //将字符进行解码
+                //code = decodeURIComponent(window.atob(code));
+
+                //alert(name + ',' + code);
+
+                var param = bj.param();
+                param.reqCode = "cm134";
+                param.reqData = {
+                    templetId: id,//0表示新增，非0表示修改
+                    templetName: name,
+                    templetHtmlCssJs: code,
+                    templetType: $("#templetType").val()
+                };
+                bj.post(param, function (data) {
+                    bj.showMsg("提交成功");
+                    console.log(data);
+                });
+            };
+
+            $("#tijiao").click(function () { submit(); });
+
+            $("#lookBtn").click(function () {
+                _myCode = editor.getValue();
+                if (bj.isEmpty(_myCode)) {
+                    layer.msg("代码不能为空");
+                    return;
+                }
+                if ($("#templetType").val() == 'P') {
+                    //layer.msg("页面模板浏览功能还在努力开发中...");
+                    mainFrame.document.open();
+                    mainFrame.document.write(_myCode);
+                    mainFrame.document.close();
+                    return;
+                }
+                else {
+                    $("#showBlock").show();
+                    $("#mainFrame").height($(window).height() - 80);
+                    _blockId = $("#blockId").val();
+                    $('iframe').attr('src', './templateShow1.html');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

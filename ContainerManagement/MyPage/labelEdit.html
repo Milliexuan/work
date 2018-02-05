@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>小标签编辑页</title>
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css" />
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+
+</head>
+<body>
+    <!--获取labelType如果存在，在填充信息，如果不存在则为新增信息-->
+    <form class="layui-form layui-form-pane" bj-submit="paper" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="name">标签名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" bj-field="name" autocomplete="off" lay-verify="title" bj-check="empty" placeholder="必填" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="selectTypeId">所属类型</label>
+            <div class="layui-input-block">
+                <select id="selectTypeId" lay-verify="required" lay-search="">
+                </select>
+                <!--<input type="text" id="labelTypeId" bj-field="labelTypeId" bj-check="empty" placeholder="必填" class="layui-input">-->
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label" for="desc">标签描述</label>
+            <div class="layui-input-block">
+                <textarea id="desc" bj-field="desc" lay-verify="txt" placeholder="200字以内" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <!--<input type="number" id="id" style="" bj-field="id" bj-check="empty" value="0" disabled class="layui-input">-->
+                <button type="button" class="layui-btn" id="tijiao" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+        <!--选项框模板-->
+        <div style="display: none;">
+            <select id="selTpl" style="display: none;">
+                <option value="{0}">{1}</option>
+            </select>
+        </div>
+
+    </form>
+
+    <script>
+        layui.use(["basejq", "form", 'table', 'layer'], function () {
+            var bj = layui.basejq("e"), form = layui.form, $ = layui.jquery, laydate = layui.laydate;
+            var table = layui.table;
+            var layer = layui.layer;
+
+            var str = decodeURIComponent(bj.getUrlParam("str"));
+            //alert(str);
+
+            //form.verify({
+            //    title: function (value) {
+            //        if (value.length == 0) {
+            //            return '请输入名称';
+            //        }
+            //    }
+            //    , pass: [/(.+){6,12}$/, '密码必须6到12位']
+            //    , content: function (value) {
+            //        layedit.sync(editIndex);
+            //    }
+            //        });
+
+            //拆分获取的字符串，分别为labelid,labelname,labeltypeid
+            var arr = str.split(',');
+            var lbId = arr[0];
+            var lbName = arr[1];
+            var lbTypeId = arr[2];
+            //alert(lbId);
+            //填充内容
+            $("#name").val(lbName);
+            $("#labelTypeId").val(lbTypeId);
+
+            window.format = function (source, params) {
+                if (arguments.length == 1)
+                    return function () {
+                        var args = $.makeArray(arguments);
+                        args.unshift(source);
+                        return $.format.apply(this, args);
+                    };
+                if (arguments.length > 2 && params.constructor != Array) {
+                    params = $.makeArray(arguments).slice(1);
+                }
+                if (params.constructor != Array) {
+                    params = [params];
+                }
+                $.each(params, function (i, n) {
+                    source = source.replace(new RegExp("\\{" + i + "\\}", "g"), n);
+                });
+                return source;
+            }
+
+            window.showPageTpl = function (rowData, objid, tplid) {
+                //数据，目标，模板
+                var tpl = $("#" + tplid).find('option').parent().html();
+                $("#" + objid).empty();
+                //alert(rowData.RetData.rows.length);
+
+                for (var i = 0 ; i < rowData.RetData.rows.length; i += 1) {
+                    var html = format(tpl, rowData.RetData.rows[i].labelTypeId, rowData.RetData.rows[i].labelName);
+                    $("#" + objid).append(html);
+
+                }
+
+            }
+
+            var fillSelectType = function () {
+                var param = bj.param();
+                param.reqCode = "cm031";
+                bj.post(param, function (data) {
+                    console.log(data);
+                    showPageTpl(data, 'selectTypeId', 'selTpl');
+                    form.render();
+                })
+            }
+            fillSelectType();
+
+            var setOne = function () {
+                id = parseInt(lbId);
+                var param = bj.param();
+                param.reqCode = "cm106";
+                param.reqData = {
+                    labelId: id,
+                    labelName: document.getElementById("name").value,//$("#name").val(),
+                    labelTypeId: $("#selectTypeId").val(),
+                    labelDesc: $("#desc").val()
+                };
+                bj.post(param, function (data) {
+                    console.log(data);
+                    //关闭弹层
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                });
+            }
+
+            var summit = function () {
+                if ($("#name").val() != "") {
+                    setOne();
+                } else {
+                    alert("请输入名称");
+                }
+                
+            }
+
+            $("#tijiao").click(function () {summit(); });;
+
+        });
+    </script>
+</body>
+</html>

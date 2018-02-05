@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>应用编辑页</title>
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css" />
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+
+</head>
+<body>
+     <!--获取labelType如果存在，在填充信息，如果不存在则为新增信息-->
+    <form class="layui-form layui-form-pane" action="">
+        <div class="layui-form-item">
+                <input type="hidden" id="appId" class="layui-input">
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="name">应用名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="appName" required lay-verify="required"  placeholder="必填" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+               <label class="layui-form-label" for="desc">应用描述</label>
+            <div class="layui-input-block">
+                <textarea id="appDesc"   placeholder="200字以内" class="layui-textarea"></textarea>
+            </div>
+        </div>
+     <div class="layui-form-item">
+            <label class="layui-form-label" for="type">应用模板</label>
+            <div class="layui-input-inline" id="templetV">
+            </div>
+    </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button"  lay-submit class="layui-btn" id="tijiao">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+        <script id="templetTpl" type="text/html">
+        <select id="templetId" name="templetId">
+            <option value=''>全部</option>
+            {{#  layui.each(d.templeList, function(index, item){ }}
+                    {{#  if (item.templetId===d.templetId)  { }}
+                        <option value='{{item.templetId}}' selected='selected'>{{item.templetName}}</option>
+                    {{# } else { }}
+                         <option value='{{item.templetId}}'>{{item.templetName}}</option>
+                     {{#  } }} 
+            {{#  }); }}
+        </select>
+        </script>
+
+        <script>
+            var $;
+            layui.use(["basejq", "form", 'table', 'layer', 'laytpl'], function () {
+                bj = layui.basejq("e"), form = layui.form, $ = layui.jquery, laydate = layui.laydate, layer = layui.layer, laytpl = layui.laytpl;
+
+                var appId = $.trim(decodeURIComponent(bj.getUrlParam("appId")));
+                $("#appId").val(appId);
+
+
+                $("#tijiao").on("click", function () {
+                    $.saveAppInfo(appId);
+                })
+
+
+                //触发事件
+                $.extend({
+                    format: function (source, params) {
+                        if (arguments.length == 1)
+                            return function () {
+                                var args = $.makeArray(arguments);
+                                args.unshift(source);
+                                return $.format.apply(this, args);
+                            };
+                        if (arguments.length > 2 && params.constructor != Array) {
+                            params = $.makeArray(arguments).slice(1);
+                        }
+                        if (params.constructor != Array) {
+                            params = [params];
+                        }
+                        $.each(params, function (i, n) {
+                            source = source.replace(new RegExp("\\{" + i + "\\}", "g"), n);
+                        });
+                        return source;
+                    },
+                    getRowsCount: function (records) {
+                        if (records && records instanceof Array && 0 < records.length) {
+                            return records[0].pagesum;
+                        }
+                    },
+                    reqQueryList: function (queryObj, reqCode, successFn, shade, async) {
+                        var param = bj.param();
+                        param.reqCode = reqCode; //P_GetPsnInterview
+                        param.loadImg = (typeof shade === 'undefined' ? true : shade);
+                        param.reqData = queryObj;
+                        param.async = (typeof async === 'undefined' ? true : async); //异步   
+                        var ctx = this;
+                        var callback = function (responseData) {
+                            if (-1 != responseData.RetCode) {
+                                var rows = responseData.RetData.rows;
+                                if (successFn && typeof successFn == "function") {
+                                    successFn(rows);
+                                }
+                                //if (rows && rows instanceof Array) { }
+                            } else {
+                                bj.showMsg(responseData.RetMsg, 0);
+                            }
+                        }
+                        bj.post(param, function (data) {
+                            callback.call(ctx, data);
+                        });
+                    },
+
+                    getAppInfo: function (appId) {   
+                        var queryParam = {};
+                        queryParam.appId = appId;
+
+                        $.reqQueryList(queryParam, "cm016", function (records) {
+                            for (var i = 0 ; i < records.length; i += 1) {
+                                $("#appId").val(records[i].appId);
+                                $("#appName").val(records[i].appName);
+                                $("#appDesc").val(records[i].appDesc);
+                                $.getTempletInfo(records[i].templetId);
+                            } 
+                        });
+                    },
+                    getTempletInfo: function (templetId) {
+                        var queryParam = {};
+                        queryParam.templetName='';
+                        queryParam.pageNo=1,
+                        queryParam.pageSize=1000000,
+
+                        $.reqQueryList(queryParam, "cm131", function (records) {
+                            templetData = {}
+                            templetData.templetId = templetId;
+                            templetData.templeList = records;
+                            //机构下拉渲染
+                            var getTpl = templetTpl.innerHTML
+                              , view = document.getElementById('templetV');
+                            laytpl(getTpl).render(templetData, function (html) {
+                                view.innerHTML = html;
+                            });
+                            form.render();
+                        });
+                    },
+                    saveAppInfo: function (appId) {
+                        var queryParam = {};
+                        queryParam.appId = $("#appId").val();
+                        queryParam.appName = $("#appName").val();
+                        queryParam.appDesc = $("#appDesc").val();
+                        queryParam.templetId = $("#templetId").val();
+
+                        $.reqQueryList(queryParam, "cm114", function (records) {
+                            if (records.RetCode != undefined && records.RetCode == '-9999') {
+                                layer.alert(ret.RetMsg);
+                            } else {
+                                //当你在iframe页面关闭自身时
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭   
+                            }
+                        });
+                    },
+
+
+                });
+
+
+                if (appId != '0') {
+                    $.getAppInfo(appId);
+                } else {
+                    $.getTempletInfo('0');
+                }
+            });
+    </script>
+</body>
+</html>

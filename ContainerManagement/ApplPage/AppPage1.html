@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css" />
+    <link rel="stylesheet" href="../Content//css/alcss.css" />
+    <script type="text/javascript" src="../Content/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+    <script>
+        var _ZJCM_DATA = {};
+        layui.use(['basejq'], function () {
+            var $ = layui.jquery, bj = layui.basejq("e"), layer = layui.layer;
+            var _pageId=6;  
+            //获取页面信息cm011
+            _ZJCM_DATA.d_pageInfo = {};
+            var f_getPageInfo = function () {
+                bj.postSim("cm011", { pageId:_pageId}, function (data) {
+                    //console.log(data);
+                    if (data != null && data.length > 0) {
+                        _ZJCM_DATA.d_pageInfo = data[0];
+                        $("title").html(_ZJCM_DATA.d_pageInfo.title);
+                    }
+                    else layer.msg("查无页面数据");
+                });
+            }
+            //获取模板信息cm??
+            var f_getTemplateInfo = function () {
+                bj.postSim("cm0??", { pageId: _pageId }, function (data) {
+                    console.log(data);
+                    if (data != null && data.length > 0) {
+                        layui.each(data, function (n,d) {
+                            $("body").append(d.templetHtmlCssJs);
+                        });
+                        //获取页面块信息
+                        f_getPageBlockList();
+                    }
+                    else layer.msg("查无模板");
+                });
+            }
+            //获取页面块信息cm012
+            _ZJCM_DATA.d_blockList = [];
+            var f_getPageBlockList = function () {
+                bj.postSim("cm012", { pageId: _pageId }, function (data) {
+                    console.log(data);
+                    if (data != null && data.length > 0) {
+                        _ZJCM_DATA.d_blockList = data;
+                        layui.each(data, function (n,d) {
+                            f_getFuncInfo(n);
+                        });
+                    }
+                    else layer.msg("查无页面板块");
+                });
+            }
+            //创建页面位置填充数据
+            var _aotu_blockCount = 0;
+            var f_buildPosition = function (n) {
+                var blockIndex = n + 1;
+                var obj_blocks = $("*[id='zjcm_block" + blockIndex + "']");
+                if (obj_blocks.length < 1) {//需要创建位置
+                    var rowIndex = parseInt(_aotu_blockCount / 2) + 1;
+                    if (_aotu_blockCount % 2 == 0) {
+                        //添加行
+                        $("#zjcm_content").append('<div class="layui-row" id="zjcm_row' + rowIndex + '"></div>');
+                    }
+                    //添加行里的块
+                    $("#zjcm_row" + rowIndex).append('<div class="layui-col-xs12 layui-col-xs6 layui-col-md6" id="zjcm_block'+blockIndex+'"></div>');
+                    _aotu_blockCount++;
+                }
+                //填充数据
+                $("#zjcm_block" + blockIndex).html("");
+                var blockHtml = eval('f_zjcm_template' + _ZJCM_DATA.d_blockList[n].templetId + '("' + n + '")');
+                if (blockHtml!='') $("#zjcm_block" + blockIndex).html(blockHtml);
+                //bj.showMsg(obj_blocks.length);
+            }
+            //获取功能点cm022
+            var f_getFuncInfo = function (n) {
+                bj.postSim("cm022", { blockId: _ZJCM_DATA.d_blockList[n].blockId }, function (data) {
+                    console.log(data);
+                    if (data != null && data.length > 0) {
+                        _ZJCM_DATA.d_blockList[n].list = data;
+                    }
+                    else _ZJCM_DATA.d_blockList[n].list = [];
+                    f_buildPosition(n);
+                    //else layer.msg("查无");
+                });
+            }
+            var f_init = function () {
+                _aotu_blockCount = 0;
+                //1.获取页面信息
+                f_getPageInfo();
+                //2.获取模板信息
+                //f_getTemplateInfo();
+                f_getPageBlockList();
+            }
+
+            //00执行主入口
+            f_init();
+
+        });
+        function test(data) {
+            console.log(prek);
+            return 'aaaaa';
+            //alert(data);
+        }
+    </script>  
+</head>
+
+<body>
+ <div class="layui-row">
+    <div class="layui-col-md9" id="zjcm_block1">
+         
+    </div>
+  </div>
+  <hr class="layui-bg-blue">
+<div class="layui-fluid" id="zjcm_content" style="padding:0px 5px;">
+
+</div>
+    <script>
+        //块开放方法，如果在layui.user()中，请使用window.f_zjcm_template1=...
+        var f_zjcm_template1 = function (n) {
+            var _data = _ZJCM_DATA.d_blockList[n];
+            var _funcList = _data.list;
+            var html='<fieldset class="layui-elem-field">';
+            html += '<legend>' + _data.blockTitle + '</legend>';
+            html+='<div class="layui-field-box">';
+            //内容区域
+            for (i = 0; i < _funcList.length; i++) {
+                html += _funcList[0].funcName;
+                html += '<hr class="layui-bg-orange">';
+            }
+            html+='</div>';
+            html += '</fieldset>';
+
+            return html;
+        };
+    </script>
+    
+    <script>
+       
+        var f_zjcm_template2 = function (n) {
+            var _data = _ZJCM_DATA.d_blockList[n];
+            var _funcList = _data.list;
+            var html = '<fieldset class="layui-elem-field">';
+            html += '<legend>' + _data.blockTitle + '</legend>';
+            html += '<div class="layui-field-box">';
+            html += '<table class="layui-table" lay-skin="line">';
+            for (i = 0; i < _funcList.length; i++) {
+                var s=i+1;
+                html +='<tr><td>'+s+'</td><td>'+ _funcList[0].funcName+'</td></tr>';
+            }
+            html += '</table>';
+            html += '</div>';
+            html += '</fieldset>';
+            return html;
+        };
+    </script>  
+</body>
+</html>

@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="renderer" content="webkit" />
+        <title>理赔信息查询</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css" />
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+      <script>
+          layui.use(['table', 'basejq', 'laydate', 'form', 'laytpl'], function () {
+              var table = layui.table, $ = layui.jquery, bj = layui.basejq("e"), layer = layui.layer, laytpl = layui.laytpl;
+              var data = {
+                  "title": "Layui常用模块"
+                  , "list": [
+                    {
+                        "modname": "弹层"
+                      , "alias": "layer"
+                      , "site": "layer.layui.com"
+                    }
+                    , {
+                        "modname": "表单"
+                      , "alias": "form"
+                    }
+                    , {
+                        "modname": "分页"
+                      , "alias": "laypage"
+                    }
+                    , {
+                        "modname": "日期"
+                      , "alias": "laydate"
+                    }
+                    , {
+                        "modname": "上传"
+                      , "alias": "upload"
+                    }
+                  ]
+              };
+              //var getTpl = demo.innerHTML;
+              //var view = document.getElementById('demo1');
+              //laytpl(getTpl).render(data, function (html) {
+              //    view.innerHTML = html;
+              //});
+
+              eval("go_func1('a')");
+
+          });
+    </script>  
+</head>
+
+<body>
+<div class="layui-fluid" style="background-color:green;padding:0px 5px;">
+     <div class="layui-row">
+    <div class="layui-col-md9" id="demo1" style="background-color:red">
+    
+    </div>
+    <div class="layui-col-md3" style="background-color:blue">
+      你的内容 3/12
+    </div>
+  </div>
+</div>
+    <script>
+
+    </script>
+    <style></style>
+
+    <script>
+        go_func1 = function (a) {
+            layui.use("jquery",function(){
+                $ = layui.jquery;
+                alert(a);
+            });
+        }
+     </script><blockquote class="layui-elem-quote"></blockquote>  
+</body>
+</html>

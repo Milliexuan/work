@@ -1,0 +1,22 @@
+﻿<script>
+        //块开放方法，如果在layui.user()中，请使用window.f_zjcm_template41=...
+        var f_zjcm_template41 = function (n) {
+            var _data = _ZJCM_DATA.d_blockList[n];
+            var _funcList = _data.list;
+            var html='<fieldset class="layui-elem-field">';
+            html += '<legend>' + _data.blockTitle + '</legend>';
+            html+='<div class="layui-field-box">';
+            //内容区域
+            for (i = 0; i < _funcList.length; i++) {
+                html += '<a href="javascript:;" onClick="f_zjcm_openPage('+n+','+i+')">' + _funcList[i].funcName + '</a>';
+                html += '<hr class="layui-bg-orange">';
+            }
+            if(_data.pagesum>_funcList.length)
+                html += '<a href="javascript:;" onClick="f_zjcm_blockPage(' + n + ')">更多</a>';
+
+            html+='</div>';
+            html += '</fieldset>';
+
+            return html;
+        };
+    </script>

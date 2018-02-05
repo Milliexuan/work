@@ -1,0 +1,1444 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="renderer" content="webkit"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css" />
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+    <script type="text/javascript" src="../Content/js/jquery-1.9.1.min.js"></script>
+     <script type="text/javascript" src="../Content/js/jquery.qrcode.js"></script>
+    <title></title>
+    <style>
+        .appAdd
+        {
+            border:1px solid #2F4056;
+            width:90%;height:180px;
+            line-height:180px;
+            margin:0 auto;
+            cursor:pointer;
+            box-shadow: 5px 5px 5px #dddddd;
+        }
+        
+        .appContent
+        {
+            border-top:1px solid #2F4056;
+            border-left:1px solid #2F4056;
+            border-right:1px solid #2F4056;
+            width:90%;
+            height:150px;
+            line-height:150px;
+            margin:0 auto;
+            box-shadow: 5px 0px 5px #dddddd;
+        }
+
+        .appTool
+        {
+            border-bottom:1px solid #2F4056;
+            border-left:1px solid #2F4056;
+            border-right:1px solid #2F4056;
+            width:90%;
+            height:30px;
+            margin:0 auto;
+            text-align:right;
+            box-shadow: 5px 5px 5px #dddddd;
+        }
+
+        .icon
+        {
+            font-size: 30px;
+            cursor:pointer;
+        }
+
+        .blockTitle
+        {
+            border-top:1px solid black;
+            border-left:1px solid black;
+            border-right:1px solid black;
+            width:70%;
+            height:20px;
+            line-height:20px;
+            font-size:18px;
+            margin:0 auto;
+        }
+        .blockContent
+        {
+            border-left:1px solid black;
+            border-right:1px solid black;
+            width:70%;
+            height:100px;
+            line-height:100px;
+            margin:0 auto;
+        }
+
+            .blockContent .blocksplit
+            {
+                float:left;
+                width:4%;
+                height:80px;
+                line-height:80px;
+                margin:0 auto;
+            }
+
+            .blockContent .blockfunc
+            {
+                float:left;
+                border:1px solid black;
+                width:20%;height:80px;
+                line-height:80px;
+                margin:0 auto;
+            }
+
+        .blockTool
+        {
+            border-bottom:1px solid black;
+            border-left:1px solid black;
+            border-right:1px solid black;
+            width:70%;height:30px;
+            margin:0 auto;
+            text-align:right;
+        }
+
+        .blockAdd
+        {
+            border:1px solid black;
+            width:70%;
+            height:150px;
+            line-height:150px;
+            margin:0 auto;
+            cursor:pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <form class="layui-form" id="form1" action="">
+        <div class="layui-row layui-col-space1" style="margin-top:10px;">
+            <div class="layui-col-md3">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-block">
+                  <select name="status" id="status" lay-verify="required">
+                    <option value="1">有效</option>
+                    <option value="0">失效</option>
+                  </select>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+              <label class="layui-form-label">应用</label>
+                <div class="layui-input-block">
+                  <select id="applist" lay-verify="" lay-search>
+                  </select>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+              <label class="layui-form-label">标题</label>
+                <div class="layui-input-block">
+                  <input type="text" name="title" id="title"  lay-verify="" placeholder="请输入标题" autocomplete="off" class="layui-input"/>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+              <a href="#" id="query" class="layui-btn">查询</a>
+            </div>
+      </div>
+      <div id="appPageList">
+      </div>
+      <div class="layui-row" style="margin-top:10px;text-align:right;">
+          <div id="pager"></div>
+      </div>
+         
+    </form>
+   
+    <!--主页配置-->
+    <div id="pageHide" style="display:none;">
+        <div style="width:100%;height:100%">
+        <form class="layui-form" id="form2" action="">
+        <input type="hidden" name="title" id="pageid" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">应用</label>
+            <div class="layui-input-block">
+                <select id="apps" lay-filter="apps" lay-search>
+                </select>
+            </div>
+        </div>
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label">主页名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" id="pageName"  lay-verify="" maxlength="25" placeholder="请输入主页名称" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+       
+        <div class="layui-form-item">
+            <label class="layui-form-label">主页标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" id="pageTitle"  lay-verify="" maxlength="10" placeholder="请输入主页标题" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">页模板</label>
+            <div class="layui-input-block">
+                <select id="pageTpl" lay-verify="" lay-search>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <select name="status" id="pageStatus" lay-verify="required">
+                <option value="1">有效</option>
+                <option value="0">失效</option>
+                </select>
+            </div>
+        </div>
+        <div style="text-align:center;">
+            <a href="#" class="layui-btn" onclick="$.savePage();">保存</a>
+        </div>
+        <hr class="layui-bg-green">
+        <div class="layui-row layui-form-item">
+            <div class="layui-col-md12" style="text-align:left;">
+                <div class="layui-btn-group" style="margin-left:10px;">
+                    <a href="#" class="layui-btn layui-btn-disabled" id="blockAdd" >增加</a>
+                    <a href="#" class="layui-btn layui-btn-disabled" id="blockEdit" >编辑</a>
+                    <a href="#" class="layui-btn layui-btn-disabled" id="blockDel" >删除</a>
+                </div>
+            </div>
+            <div class="layui-col-md12">
+                <div id="blockList"></div>
+            </div>
+        </div>
+       
+    </form>
+    </div>
+    </div>
+    <!--主页配置-->
+    <!--功能配置-->
+    <div id="blockHide" style="display:none;">
+        <div style="width:100%;height:100%;">
+            <form class="layui-form" action="">
+                <input type="hidden" name="title" id="blockId" />
+                <div class="layui-row layui-form-item">
+                    <div class="layui-col-md6">
+                        <label class="layui-form-label">选择模板</label>
+                        <div class="layui-input-block">
+                            <select id="blockTpl" lay-verify="" lay-search>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <label class="layui-form-label">显示顺序</label>
+                        <div class="layui-input-block">
+                            <input type="number" id="orderSeq" min="0" step="1" value="0"  autocomplete="off" class="layui-input"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-row  layui-form-item">
+                    <div class="layui-col-md6">
+                        <label class="layui-form-label">块标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="blockTile" lay-verify="" placeholder="请输入块标题" autocomplete="off" class="layui-input"/>
+                        </div>
+                        </div>
+                    <div class="layui-col-md6">
+                        <label class="layui-form-label">功能点顺序</label>
+                        <div class="layui-input-block">
+                            <select id="funcSeq" lay-filter="funcSeq" >
+                            <option value="1">常用功能</option>
+                            <option value="2">时间顺序</option>
+                            <option value="3">时间倒序</option>
+                            <option value="4">自定义</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-row   layui-form-item">
+                    <div class="layui-col-md6">
+                        <label class="layui-form-label">功能点个数</label>
+                        <div class="layui-input-block">
+                            <input type="number" id="funcCnt" min="1" max="100" step="1"  autocomplete="off" value="4" class="layui-input"/>
+                        </div>
+                    </div>
+                </div>
+                <hr class="layui-bg-green">
+                <div class="layui-row layui-form-item">
+                    <div class="layui-col-md12">
+                        <label class="layui-form-label" style="font-size:16px;font-weight:bold;">功能点选择</label>
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-form-item" style=" position:relative;" >
+                            <label class="layui-form-label">标签类型</label>
+                            <div class="layui-input-block" style="height:38px;overflow:hidden;margin-right:45px;" id="lableTypeCon" >
+                                
+                            </div>
+                            <div style="position:absolute;right:15px;top:0px;background-color:white;height:38px;line-height:38px;" onclick="$.collapse('#lableTypeArrow','#lableTypeCon')">
+                                <i class="layui-icon" style="font-size: 30px;" id="lableTypeArrow">&#xe61a;</i> 
+                            </div>
+                         </div>
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-form-item" style=" position:relative;" >
+                            <label class="layui-form-label">标签名称</label>
+                            <div class="layui-input-block" style="height:38px;overflow:hidden;margin-right:45px;" id="lableCon" >
+                                
+                            </div>
+                            <div style="position:absolute;right:15px;top:0px;background-color:white;height:38px;line-height:38px;" onclick="$.collapse('#lableArrow','#lableCon')">
+                                <i class="layui-icon" style="font-size: 30px;" id="lableArrow">&#xe61a;</i> 
+                            </div>
+                         </div>
+
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-row layui-form-item">
+                            <div class="layui-col-md6">
+                                <label class="layui-form-label">功能点名称</label>
+                                <div class="layui-input-block">
+                                  <input type="text" id="funName"  lay-verify="" placeholder="请输入功能点名称" autocomplete="off" class="layui-input"/>
+                                </div>
+                            </div>
+                            <div class="layui-col-md6">
+                                <a href="#" class="layui-btn" id="funcQuery">查询</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-row layui-form-item">
+                            <div class="layui-col-md5">
+                                <div style="font-weight:bold;">可选择功能点</div>
+                                <div id="allFunList"></div>
+                            </div>
+                            <div class="layui-col-md2" style="text-align:center;">
+                                <!--<div class="layui-row layui-form-item" style="text-align:center;">-->
+                                    <div style="height:315px;">
+                                        <div style="height:30%;">
+                                        </div>
+                                        <div style="height:40%;">
+                                            <a href="#" class="layui-btn" id="push" onclick="$.selFunc();"><i class="layui-icon" style="font-size:28px;">&#xe602;</i></a>
+                                            <div style="margin-top:5px;"></div>
+                                            <a href="#" class="layui-btn" id="pull" onclick="$.unSelFunc();"><i class="layui-icon" style="font-size:28px;">&#xe603;</i></a>
+                                            <div style="margin-top:5px;"></div>
+                                            <a href="#" class="layui-btn layui-btn-disabled" id="up"><i class="layui-icon" style="font-size:28px;">&#xe619;</i></a>
+                                            <div style="margin-top:5px;"></div>
+                                            <a href="#" class="layui-btn layui-btn-disabled" id="down"><i class="layui-icon" style="font-size:28px;">&#xe61a;</i></a>
+                                            <div style="margin-top:5px;"></div>
+                                        </div>
+                                        <div style="height:30%;">
+                                        </div>
+                                    </div>
+                                <!--</div>-->
+                            </div>
+                            <div class="layui-col-md5">
+                                <div style="font-weight:bold;">已选择功能点</div>
+                                <div id="selFunList"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+       
+            </form>
+        </div>
+    </div>
+    <!--功能配置-->
+    <!--二维码生成区-->
+    <div id="qrcodeContainer" style="display:none;">
+        <div style="text-align:center;">
+            <div id="qrcode"></div>
+            <form>
+                <div>
+                    <input type="text" name="title" id="url"  lay-verify="" class="layui-input"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--选项框模板-->
+    <select id="selTpl" style="display:none;">
+        <option value="{0}">{1}</option>
+    </select>
+    <!--主页列表模板-->
+    <div id="rowTpl">
+        <div class="layui-row layui-col-space1" style="margin-top:10px;"></div>
+    </div>
+    <div id="appAddTpl" style="display:none;">
+        <div class="layui-col-md3" style="text-align:center;">
+            <div class="appAdd" onclick="$.showEdit('0');"><i class="layui-icon" style="font-size: 100px;">&#xe608;</i></div>
+        </div>
+    </div>
+    <div id="appEditTpl" style="display:none;">
+        <div class="layui-col-md3" style="text-align:center;">
+            <div class="appContent">{1}</div>
+            <div class="appTool">
+                <i class="layui-icon icon" onclick="$.showEdit('{0}');">&#xe642;</i>
+                <i class="layui-icon icon" onclick="$.delPage('{0}')">&#xe640;</i>
+            </div>
+        </div>
+    </div>
+    <!--标签类型模板-->
+    <div id="radioTpl" style="display:none;">
+        <input type="radio" name="{2}" title="{0}" lay-filter="{2}" value="{1}"/>
+    </div>
+    <!--标签模板-->
+    <div id="checkTpl" style="display:none;">
+        <input type="checkbox" name="{2}" title="{0}" lay-filter="{2}" value="{1}"/>
+    </div>
+    
+
+    
+    <script>
+        var $;
+        layui.use(['basejq', 'element', 'form', 'laypage', 'table'], function () {
+            $ = layui.jquery
+            , element = layui.element
+            , form = layui.form
+            , laypage = layui.laypage
+            , layer = layui.layer
+            , table = layui.table
+            , bj = layui.basejq("e");
+
+            var defQueryObj = {
+                pageSize: 8,
+                pageNo: 1
+            };
+
+            $("#query").on("click", function () {
+                $.getPageList(defQueryObj,  defQueryObj.pageNo, defQueryObj.pageSize);
+            })
+
+            
+            
+            //触发事件
+            $.extend({
+                format: function (source, params) {
+                    if (arguments.length == 1)
+                        return function () {
+                            var args = $.makeArray(arguments);
+                            args.unshift(source);
+                            return $.format.apply(this, args);
+                        };
+                    if (arguments.length > 2 && params.constructor != Array) {
+                        params = $.makeArray(arguments).slice(1);
+                    }
+                    if (params.constructor != Array) {
+                        params = [params];
+                    }
+                    $.each(params, function (i, n) {
+                        source = source.replace(new RegExp("\\{" + i + "\\}", "g"), n);
+                    });
+                    return source;
+                },
+                getRowsCount : function (records) {
+                    if (records && records instanceof Array && 0 < records.length) {
+                        return records[0].pagesum;
+                    }
+                },
+                reqQueryList:function (queryObj, reqCode, successFn, shade, async) {
+                    var param = bj.param();
+                    param.reqCode = reqCode; //P_GetPsnInterview
+                    param.loadImg = (typeof shade === 'undefined' ? true : shade);
+                    param.reqData = queryObj;
+                    param.async = (typeof async === 'undefined' ? true : async); //异步   
+                    var ctx = this;
+                    var callback = function (responseData) {
+                        if (-1 != responseData.RetCode) {
+                            var rows = responseData.RetData.rows;
+                            if (successFn && typeof successFn == "function") {
+                                successFn(rows);
+                            }
+                            //if (rows && rows instanceof Array) { }
+                        } else {
+                            bj.showMsg(responseData.RetMsg, 0);
+                        }
+                    }
+                    bj.post(param, function (data) {
+                        callback.call(ctx, data);
+                    });
+                },
+                getAppList: function () {
+                    $.reqQueryList({appName:''}, "cm001", function (records) {
+                        
+                        records.splice(0, 0, { appId: '', appName: '全部' });
+                        //if (0 == records.length) {
+                        //    bj.showMsg("没有查到应用项目数据");
+                        //} else {
+                        $.showAppList(records, 'applist', 'selTpl');
+                        //}
+                        form.render();
+                    }, true, false)
+                },
+                getAppList2: function () {
+                    $.reqQueryList({ appName: '' }, "cm001", function (records) {
+                        $.showAppList(records, 'apps', 'selTpl');
+                        form.render('select');
+
+                    }, true, false)
+                },
+                showAppList: function (rowData, objid, tplid) {
+                    var tpl = $("#" + tplid).find('option').parent().html();
+                    $("#" + objid).empty();
+
+
+                    for (var i = 0 ; i < rowData.length; i += 1) {
+                        var html = $.format(tpl, rowData[i].appId, rowData[i].appName);
+                        $("#" + objid).append(html);
+                    }
+                },
+                getPageTpl: function () {
+                    $.reqQueryList({ templetType: 'P' }, "cm111", function (records) {
+                     
+                        $.showPageTpl(records, 'pageTpl', 'selTpl');
+                        
+                        form.render();
+                    }, true, false)
+                },
+                getBlockTpl: function () {
+                    $.reqQueryList({ templetType: 'B' }, "cm111", function (records) {
+                        
+                        $.showPageTpl(records, 'blockTpl', 'selTpl');
+
+                        form.render();
+                    }, true, false)
+                },
+                showPageTpl: function (rowData, objid, tplid) {
+                    var tpl = $("#" + tplid).find('option').parent().html();
+                    $("#" + objid).empty();
+
+
+                    for (var i = 0 ; i < rowData.length; i += 1) {
+                        var html = $.format(tpl, rowData[i].templetId, rowData[i].templetName);
+                        $("#" + objid).append(html);
+                    }
+                },
+                getPageList: function (queryParam, pageNo, pageSize) {
+                    var status = $.trim($("#status").val());
+                    var appId = $.trim($("#applist").val());
+                    var title = $.trim($("#title").val());
+
+
+                    queryParam.pageNo = pageNo,
+                    queryParam.pageSize = pageSize;
+                    queryParam.title = title;
+                    queryParam.status = status;
+                    queryParam.appId = appId;
+                    $.reqQueryList(queryParam, "cm002", function (records) {
+                        if (records.length == 0 && pageNo > 1) {
+                            $.getPageList(queryParam, pageNo - 1, pageSize)
+                        } else {
+                            $("#appPageList").html("");
+                            $.showPageList(records, pageNo, pageSize);
+
+                            var rowsCount = $.getRowsCount(records) + 1;
+                            //分页
+                            laypage.render({
+                                elem: 'pager' //注意，这里的 test1 是 ID，不用加 # 号
+                                , count: rowsCount  //数据总数，从服务端得到
+                                , limit: pageSize
+                                , curr: pageNo
+                                , jump: function (obj, first) {
+
+                                    //首次不执行
+                                    if (!first) {
+                                        $.getPageList(defQueryObj, obj.curr, obj.limit)
+                                    }
+                                }
+                            });
+                        }
+                    });
+                },
+                showPageList: function (rowData, pageNo, pageSize) {
+                    var tplAppEditTpl = $("#appEditTpl").html();
+                    //$("#eleTbd").show();
+                    $("#appPageList").empty();
+
+                    var rows = 0;
+                    var cntPerRow = 4;
+                    //第一页
+                    if (pageNo == 1) {
+                        rowData.splice(0, 0, { pagesum: rowData && rowData instanceof Array && 0 < rowData.length ? rowData[0].pagesum : 0, id: '', name: '', title: '', imgUrl: '' });
+                        rows = rowData.length % cntPerRow == 0 ? rowData.length / cntPerRow : rowData.length / cntPerRow + 1;
+                        for (var i = 1; i <= rows + 1; i++) {
+                            $("#rowTpl").children("div:first-child").empty();
+                            var loopcnt = 0;
+                            loopcnt = (rowData.length - (i * cntPerRow)) >= 0 ? cntPerRow : (rowData.length - ((i - 1) * cntPerRow));
+                            for (var j = 0; j < loopcnt; j++) {
+                                //第一行第一列
+                                if (i == 1 && j == 0) {
+                                    $("#rowTpl").children("div:first-child").append($("#appAddTpl").html());
+                                }
+                                else {
+                                    var html = $.format(tplAppEditTpl, rowData[(i - 1) * cntPerRow + j].id,
+                                                    rowData[(i - 1) * cntPerRow + j].name,
+                                                    rowData[(i - 1) * cntPerRow + j].title,
+                                                    rowData[(i - 1) * cntPerRow + j].imgUrl);
+                                    $("#rowTpl").children("div:first-child").append(html);
+                                }
+                            }
+                            $("#appPageList").append($("#rowTpl").html());
+
+                        }
+                    }
+                    else {
+                        rows = rowData.length % cntPerRow == 0 ? rowData.length / cntPerRow : rowData.length / cntPerRow + 1;
+                        for (var i = 1; i <= rows + 1; i++) {
+                            $("#rowTpl").children("div:first-child").empty();
+                            var loopcnt = 0;
+                            loopcnt = (rowData.length - (i * cntPerRow)) >= 0 ? cntPerRow : (rowData.length - ((i-1) * cntPerRow));
+                            for (var j = 0; j < loopcnt; j++) {
+                                var html = $.format(tplAppEditTpl, rowData[(i-1)*cntPerRow+j].id,
+                                                rowData[(i - 1) * cntPerRow + j].name,
+                                                rowData[(i - 1) * cntPerRow + j].title,
+                                                rowData[(i - 1) * cntPerRow + j].imgUrl);
+                                $("#rowTpl").children("div:first-child").append(html);
+                            }
+                            $("#appPageList").append($("#rowTpl").html());
+                            
+                        }
+                    }
+                },
+                showEdit: function (id) {
+                    //var blockDom = $.parseHTML(pageContent);
+                    //$(blockDom).find("#blockList").val();
+
+                    var appindex = layer.open({
+                        type: 1
+                      , title: false //不显示标题栏
+                      , closeBtn: true
+                      , area: ['600px','95%']
+                      , shade: 0.8
+                      , id: 'app' //设定一个id，防止重复弹出
+                      , btn: ['预览']
+                        //, btnAlign: 'c'
+                      , moveType: 1 //拖拽模式，0或者1
+                      , content: pageContent
+                      , yes: function () {
+                          //TODO:添加预览功能
+                          $.view();
+                          //layer.close(appindex);
+                      }
+                      , success: function (layero) {
+                          form.render();
+                          element.init();
+
+                          $("#pageid").val(id);
+                          $.getPageInfo(id);
+                          $.getBlockList(id);
+                          //设置块编辑的新增、编辑和删除按钮为启用
+                          if (id > 0) {
+                              $.setBlkEditBtnStatus();
+                          }
+
+                          form.on('select(apps)', function (data) {
+                              $.getPageTplByAppid(data.elem.value);
+                          });
+
+
+
+                      }
+                    });
+
+
+                    //$("#pageid").val(id);
+                    //$.getPageInfo(id);
+                    //$.getBlockList(id);
+                    ////设置块编辑的新增、编辑和删除按钮为启用
+                    //if (id > 0) {
+                    //    $.setBlkEditBtnStatus();
+                    //}
+
+                },
+                setBlkEditBtnStatus: function () {
+                    $("#blockAdd").removeClass("layui-btn-disabled");
+                    $("#blockEdit").removeClass("layui-btn-disabled");
+                    $("#blockDel").removeClass("layui-btn-disabled");
+
+                    $("#blockAdd").on("click", function () {
+                        $.showAddBlock();
+                    })
+                    $("#blockEdit").on("click", function () {
+                        $.showEditBlock();
+                    })
+                    $("#blockDel").on("click", function () {
+                        $.delBlock();
+                    })
+                },
+                savePage: function () {
+                    var pageId = bj.trim($("#pageid").val());
+                    var name = bj.trim($("#pageName").val());
+                    var title = bj.trim($("#pageTitle").val());
+                    var templetId = bj.trim($("#pageTpl").val() == null ? '' : $("#pageTpl").val());
+                    var appId = bj.trim($("#apps").val() == null ? '' : $("#apps").val());
+                    var pageStatus = bj.trim($("#pageStatus").val() == null ? '' : $("#pageStatus").val());
+
+                    if (name == "") {
+                        bj.showMsg("请输入主页名称");
+                        return;
+                    }
+
+                    if (title == "") {
+                        bj.showMsg("请输入主页标题");
+                        return;
+                    }
+
+                    var ret;
+                    var reqData = {};
+                    reqData.pageId = pageId;
+                    reqData.name = name;
+                    reqData.title = title;
+                    reqData.imgUrl = '';
+                    reqData.templetId = templetId;
+                    reqData.appId = appId;
+                    reqData.pageStatus = pageStatus;
+                    ret = bj.ajaxPost('cm014', reqData);
+
+                    if (ret.RetCode != undefined && ret.RetCode == '-9999') {
+                        bj.showMsg(ret.RetMsg);
+                    } else {
+                        bj.showMsg("保存成功。", 0, function () {
+                            
+                            $("#pageid").val(ret.RetData.rows[0].pageId);
+                            //TODO:添加生成主页功能
+                            $.createPage(ret.RetData.rows[0].pageId);
+                            $.setBlkEditBtnStatus();
+                            $.getPageList(defQueryObj, defQueryObj.pageNo, defQueryObj.pageSize)
+                        })
+                    }
+                },
+                getPageInfo: function (pageid) {
+                    $.reqQueryList({ pageId: pageid }, "cm011", function (records) {
+
+                        if (0 < records.length) {
+                            $("#pageid").val(records[0].pageId);
+                            $("#pageName").val(records[0].name);
+                            $("#pageTitle").val(records[0].title);
+                            $("#pageTpl").val(records[0].templetId);
+                            $("#apps").val(records[0].appId);
+                            $("#pageStatus").val(records[0].pageStatus);
+                            form.render();
+                        }
+                    }, true, false)
+                },
+                getBlockList: function (pageid) {
+                    
+                    $.reqQueryList({pageId:pageid}, "cm012", function (records) {
+                        table.render({
+                            elem: '#blockList'
+                           , height: 315
+                           , data: records
+                           , page: false //开启分页
+                           , cols: [[ //表头
+                             { field: 'blockId', type: "checkbox" }
+                             , { field: 'blockTitle', title: '板块标题', sort: true }
+                             , { field: 'templetId', title: '模板id', sort: true }
+                             , { field: 'templetName', title: '模板名称', sort: true }
+                             , { field: 'orderSeq', title: '显示顺序', sort: true }
+                           ]]
+                        });
+                    });
+                },
+                delPage: function (pageid) {
+                    bj.showMsg("确认要删除主页吗？", 0, function () {
+                        var ret;
+                        var reqData = {};
+                        reqData.pageId = pageid;
+                        ret = bj.ajaxPost('cm003', reqData);
+
+                        if (ret.RetCode != undefined && ret.RetCode == '-9999') {
+                            bj.showMsg(ret.RetMsg);
+                        } else {
+                            bj.showMsg("删除成功。", 0, function () {
+                                $.getPageList(defQueryObj, defQueryObj.pageNo, defQueryObj.pageSize)
+                            })
+                        }
+                    }, function () { })
+                },//新增块
+                showAddBlock: function () {
+
+                    var blokcindex = layer.open({
+                        type: 1
+                      , title: false //不显示标题栏
+                      , closeBtn: true
+                      , area: ['600px', '95%']
+                      , shade: 0.8
+                      , id: 'block' //设定一个id，防止重复弹出
+                      , btn: ['确定']
+                        //, btnAlign: 'c'
+                      , moveType: 1 //拖拽模式，0或者1
+                      , content: blockContent
+                      , yes: function () {
+                          $.saveBlock(blokcindex);
+                      }
+                      , success: function (layero) {
+                          form.render();
+                          element.init();
+
+                          //获取标签类型
+                          $.getLabelType();
+                          //获取标签
+                          $.getLabel("");
+                          //获取功能点
+                          $.getFuns("", "", $("#funName").val());
+                          //获取已选中功能点清单
+                          $.getSelFuns("");
+                          
+
+                          //绑定查询事件
+                          $("#funcQuery").on("click", function () {
+
+                              var finalChkeds = $('input[name="label"]:checked');
+                              var labelIds = "";
+                              if (finalChkeds.length > 0) {
+                                  for (var i = 0; i < finalChkeds.length; i++) {
+                                      labelIds += $(finalChkeds[i]).val() + '-';
+                                  }
+                                  labelIds = labelIds.substr(0, labelIds.length - 1);
+                              }
+                              $.getFuns($("#blockId").val(), labelIds, $("#funName").val());
+                          })
+
+                          form.on('select(funcSeq)', function (data) {
+                              $.funcSeqChange();
+                          });
+
+                          $("#blockId").val('0');
+                      }
+                    });
+
+
+                    ////获取标签类型
+                    //$.getLabelType();
+                    ////获取标签
+                    //$.getLabel("");
+                    ////获取功能点
+                    //$.getFuns("", "", $("#funName").val());
+                    ////获取已选中功能点清单
+                    //$.getSelFuns("");
+                    //$("#blockId").val('0');
+
+                    ////绑定查询事件
+                    //$("#funcQuery").on("click", function () {
+
+                    //    var finalChkeds = $('input[name="label"]:checked');
+                    //    var labelIds = "";
+                    //    if (finalChkeds.length > 0) {
+                    //        for (var i = 0; i < finalChkeds.length; i++) {
+                    //            labelIds += $(finalChkeds[i]).val() + '-';
+                    //        }
+                    //        labelIds = labelIds.substr(0, labelIds.length - 1);
+                    //    }
+                    //    $.getFuns($("#blockId").val(), labelIds, $("#funName").val());
+                    //})
+
+                    //form.on('select(funcSeq)', function (data) {
+                    //    $.funcSeqChange();
+                    //});
+                },//修改块
+                showEditBlock: function () {
+                    var checkStatus = table.checkStatus('blockList'); 
+                    if (checkStatus.data.length == 1) {
+                        var blokcindex = layer.open({
+                            type: 1
+                          , title: false //不显示标题栏
+                          , closeBtn: true
+                          , area: ['600px', '95%']
+                          , shade: 0.8
+                          , id: 'block' //设定一个id，防止重复弹出
+                          , btn: ['确定']
+                            //, btnAlign: 'c'
+                          , moveType: 1 //拖拽模式，0或者1
+                          , content: blockContent
+                          , yes: function () {
+                              //layer.closeAll();
+                              $.saveBlock(blokcindex);
+                          }
+                          , success: function (layero) {
+                              form.render();
+                              element.init();
+
+                             
+                              $.getBlockInfo(checkStatus.data[0].blockId);
+                              //获取标签类型
+                              $.getLabelType();
+                              //获取标签
+                              $.getLabel("");
+                              //获取功能点
+                              $.getFuns(checkStatus.data[0].blockId, "", $("#funName").val());
+                              //获取已选中功能点清单
+                              $.getSelFuns(checkStatus.data[0].blockId);
+
+                              //绑定查询事件
+                              $("#funcQuery").on("click", function () {
+
+                                  var finalChkeds = $('input[name="label"]:checked');
+                                  var labelIds = "";
+                                  if (finalChkeds.length > 0) {
+                                      for (var i = 0; i < finalChkeds.length; i++) {
+                                          labelIds += $(finalChkeds[i]).val() + '-';
+                                      }
+                                      labelIds = labelIds.substr(0, labelIds.length - 1);
+                                  }
+                                  $.getFuns($("#blockId").val(), labelIds, $("#funName").val());
+                              })
+
+                              form.on('select(funcSeq)', function (data) {
+                                  $.funcSeqChange();
+                              });
+
+                              $("#blockId").val(checkStatus.data[0].blockId);
+                          }
+                        });
+
+
+                        //$("#blockId").val(checkStatus.data[0].blockId);
+                        //$.getBlockInfo(checkStatus.data[0].blockId);
+                        ////获取标签类型
+                        //$.getLabelType();
+                        ////获取标签
+                        //$.getLabel("");
+                        ////获取功能点
+                        //$.getFuns(checkStatus.data[0].blockId,"", $("#funName").val());
+                        ////获取已选中功能点清单
+                        //$.getSelFuns(checkStatus.data[0].blockId);
+
+                        ////绑定查询事件
+                        //$("#funcQuery").on("click", function () {
+
+                        //    var finalChkeds = $('input[name="label"]:checked');
+                        //    var labelIds = "";
+                        //    if (finalChkeds.length > 0) {
+                        //        for (var i = 0; i < finalChkeds.length; i++) {
+                        //            labelIds += $(finalChkeds[i]).val() + '-';
+                        //        }
+                        //        labelIds = labelIds.substr(0, labelIds.length - 1);
+                        //    }
+                        //    $.getFuns($("#blockId").val(), labelIds, $("#funName").val());
+                        //})
+
+                        //form.on('select(funcSeq)', function (data) {
+                        //    $.funcSeqChange();
+                        //});
+                    } else {
+                        bj.showMsg("请选择一条块数据进行修改");
+                    }
+                },
+                funcSeqChange: function () {
+                    if ($("#funcSeq").val() == '4') {
+                        $("#up").removeClass("layui-btn-disabled");
+                        $("#down").removeClass("layui-btn-disabled")
+                        $("#up").on("click", function () {
+                            $.moveUp();
+                        })
+                        $("#down").on("click", function () {
+                            $.moveDown();
+                        })
+                    } else {
+                        $("#up").addClass("layui-btn-disabled");
+                        $("#down").addClass("layui-btn-disabled")
+
+                        $('#up').unbind("click");
+                        $('#down').unbind("click");
+                    }
+                    
+                },
+                delBlock: function () {
+                    var checkStatus = table.checkStatus('blockList'); 
+                    if (checkStatus.data.length > 0) {
+                        bj.showMsg("确认要删除选中的块吗？", 0, function () {
+                            var delcnt = 0;
+                            for (var i = 0 ; i < checkStatus.data.length; i++) {
+                                var ret;
+                                var reqData = {};
+                                reqData.blockId = checkStatus.data[i].blockId;
+                                ret = bj.ajaxPost('cm013', reqData);
+
+                                if (ret.RetCode != undefined && ret.RetCode == '-9999') {
+                                    //bj.showMsgT(ret.RetMsg);
+                                } else {
+                                    delcnt++;
+                                    //bj.showMsg("删除成功。", 0, function () {
+                                    //    
+                                    //})
+                                }
+                            }
+
+                            if (delcnt >= checkStatus.data.length) {
+                                bj.showMsg("删除成功");
+                            }
+                            //重新填充数据
+                            $.getBlockList($("#pageid").val());
+                        }, function () { })
+                    } else {
+                        bj.showMsg("请选择需要删除的块");
+                    }
+                },//获取块信息
+                getBlockInfo: function (blockid) {
+                    $.reqQueryList({ blockId: blockid }, "cm021", function (records) {
+
+                        if (0 < records.length) {
+                            $("#blockTpl").val(records[0].templetId);
+                            $("#orderSeq").val(records[0].orderSeq);
+                            $("#blockTile").val(records[0].blockTitle);
+                            $("#funcSeq").val(records[0].funcSeq);
+                            $("#funcCnt").val(records[0].funcCnt);
+                            $("#blockId").val(records[0].blockId);
+                            form.render();
+                            if (records[0].funcSeq = 4) {
+                                $.funcSeqChange();
+                            }
+                        }
+                    }, true, false)
+                },//获取标签类型列表
+                getLabelType: function () {
+                    $.reqQueryList({}, "cm031", function (records) {
+                        //records.splice(0, 0, { templetId: '', templetName: '全部' });
+
+                        $.showLabelTypeTpl(records, 'lableTypeCon', 'radioTpl');
+                        
+                        form.render();
+                        form.on('radio(labelType)', function (data) {
+                            $.getLabel(data.value);
+                            //console.log(data.value); //被点击的radio的value值
+                            //$('input[name="label"]:checked').each(function () {
+                            //    alert($(this).html());
+                            //});
+                            $.getFuns($("#blockId").val(), "", $("#funName").val());
+                        });
+                    }, true, false)
+                },//显示标签类型
+                showLabelTypeTpl: function (rowData, objid, tplid) {
+                    var tpl = $("#" + tplid).html();
+                    $("#" + objid).empty();
+
+                    $("#" + objid).append($.format('<input type="radio" name="{0}" title="不限" value="" lay-filter="{0}" checked=""/>', "labelType"));
+                    for (var i = 0 ; i < rowData.length; i += 1) {
+                        var html = $.format(tpl, rowData[i].labelName, rowData[i].labelTypeId, 'labelType');
+                        $("#" + objid).append(html);
+                    }
+                },//获取标签列表
+                getLabel:function(labeltype){
+                    $.reqQueryList({labelName:'', labelTypeId: labeltype }, "cm034", function (records) {
+
+                        $.showLabelTpl(records, 'lableCon', 'checkTpl');
+
+                        form.render();
+                        form.on('checkbox(label)', function (data) {
+                            var checkeds = $('input[name="label"]:checked');
+                            //【不限】选中,其他选中的都取消
+                            if (data.value == "" && data.elem.checked == true) {
+                                for (var i = 0; i < checkeds.length; i++) {
+                                    if ($(checkeds[i]).val() != "") {
+                                        $(checkeds[i]).removeAttr("checked");
+                                    }
+                                }
+                            }
+
+                            //其他选中，取消【不限】选中
+                            if (data.value != "" && data.elem.checked == true) {
+                                for (var i = 0; i < checkeds.length; i++) {
+                                    if ($(checkeds[i]).val() == "") {
+                                        $(checkeds[i]).removeAttr("checked");
+                                    }
+                                }
+                            }
+
+                            //【不限】点击，并且是取消选中状态，其他都没有选中
+                            if (data.value == "" && data.elem.checked != true) {
+                                if (checkeds.length == 0) {
+                                    data.elem.checked = true;
+                                }
+                            }
+                           
+                            //全都没选中，设置【不限】为选中状态
+                            if (checkeds.length <= 0) {
+                                var checks = $("input[name='label']");
+                                for(var i = 0; i < checks.length; i++){
+                                    if ($(checks[i]).val() == "") {
+                                        $(checks[i]).prop("checked", true);
+                                    }
+                                }
+                            }
+
+                            form.render();
+                            //刷新可选功能点
+                            var finalChkeds = $('input[name="label"]:checked');
+                            var labelIds = "";
+                            if (finalChkeds.length > 0) {
+                                for (var i = 0; i < finalChkeds.length; i++) {
+                                    labelIds += $(finalChkeds[i]).val() + '-';
+                                }
+                                labelIds = labelIds.substr(0, labelIds.length - 1);
+                            }
+
+                            $.getFuns($("#blockId").val(),labelIds, $("#funName").val());
+                        });
+                    }, true, false)
+                },//显示标签
+                showLabelTpl: function (rowData, objid, tplid) {
+                    var tpl = $("#" + tplid).html();
+                    $("#" + objid).empty();
+
+                    $("#" + objid).append($.format('<input type="checkbox" name="{0}" title="不限" value="" lay-filter="{0}" checked=""/>', "label"));
+                    for (var i = 0 ; i < rowData.length; i += 1) {
+                        var html = $.format(tpl, rowData[i].labelName, rowData[i].labelId, 'label');
+                        $("#" + objid).append(html);
+                    }
+                },//获取可选功能列表
+                getFuns: function (blockid, labellist, Name) {
+                    //$.reqQueryList({ blockId: blockid, labelList: labellist, name: Name }, "cm024", function (records) {
+                    $.reqQueryList({ branchCode:'', labelId: labellist, name: Name, pageNo: 1, pageSize: 10000 }, "cm032", function (records) {
+                        table.render({
+                            elem: '#allFunList'
+                               , id:'allFuncs'
+                               , height: 315
+                               , data: records
+                               , page: false //开启分页
+                               , cols: [[ //表头
+                                 { field: 'funcId', type: "checkbox" }
+                                 , { field: 'funcName', title: '功能名称', minWidth: "150", sort: true }
+                               ]]
+                        });
+                    })
+                },//获取已选功能列表
+                getSelFuns: function (blockid) {
+                    $.reqQueryList({ pageNo:1,pageSize:10000,blockId: blockid }, "cm022", function (records) {
+                        table.render({
+                            elem: '#selFunList'
+                                , id: 'selFuncs'
+                               , height: 315
+                               , data: records
+                               , page: false //开启分页
+                               , cols: [[ //表头
+                                 { field: 'funcId', type: "checkbox" }
+                                 , { field: 'funcName', title: '功能名称', minWidth: "150", sort: true }
+                               ]]
+                        });
+                    })
+                },//保存块信息
+                saveBlock:function(layerIndex){
+                    
+                    var blockId = bj.trim($("#blockId").val());
+                    var pageId = bj.trim($("#pageid").val());
+                    var blockTitle = bj.trim($("#blockTile").val());
+                    var templetId = bj.trim($("#blockTpl").val() == null ? '' : $("#blockTpl").val());
+                    var funcSeq = bj.trim($("#funcSeq").val() == null ? '' : $("#funcSeq").val());
+                    var orderSeq = bj.trim($("#orderSeq").val());
+                    var funcCnt = bj.trim($("#funcCnt").val());
+                    
+                    var funcIds = "";
+                    for (var i = 0; i < table.cache.selFuncs.length; i++) {
+                        funcIds += table.cache.selFuncs[i].funcId + '-';
+                    }
+                    funcIds = funcIds.substr(0, funcIds.length - 1);
+
+                    if (blockTitle == "") {
+                        bj.showMsg("请输入块标题");
+                        return;
+                    }
+
+                    if (!bj.isInt(orderSeq)) {
+                        bj.showMsg("显示顺序请输入整数");
+                        return;
+                    }
+
+                    if (!bj.isInt(funcCnt)) {
+                        bj.showMsg("功能点个数请输入正整数")
+                        return;
+                    }
+                    if (funcCnt <= 0) {
+                        bj.showMsg("功能点个数请输入正整数")
+                        return;
+                    }
+
+                    var ret;
+                    var reqData = {};
+                    reqData.blockId = blockId;
+                    reqData.pageId = pageId;
+                    reqData.blockTitle = blockTitle;
+                    reqData.templetId = templetId;
+                    reqData.funcSeq = funcSeq;
+                    reqData.orderSeq = orderSeq;
+                    reqData.funcCnt = funcCnt;
+                    reqData.funcList = funcIds;
+                    ret = bj.ajaxPost('cm025', reqData);
+
+                    if (ret.RetCode != undefined && ret.RetCode == '-9999') {
+                        bj.showMsg(ret.RetMsg);
+                    } else {
+                        bj.showMsg("保存成功。", 0, function () {
+                            $.getBlockList($("#pageid").val());
+                            $("#blockId").val(ret.RetData.rows[0].blockId);
+                            layer.close(layerIndex);
+                        })
+                    }
+                },//选择功能点
+                selFunc: function () {
+                    //var checkStatus = table.checkStatus('allFunList');
+                    //var tmpArr = new Array();
+                    //for (var j = 0; j < checkStatus.data.length; j++) {
+                    //    var isExist = false;
+                    //    for (var i = 0; i < table.cache.selFunList.length; i++) {
+                    //        if (checkStatus.data[j].funcId == table.cache.selFunList[i].funcId) {
+                    //            //table.cache.allFunList.splice(i, 1);
+                    //            //table.cache.selFunList.push(checkStatus.data[j]);
+                    //            isExist = true;
+                    //            break;
+                    //        }
+                    //    }
+                    //    if (!isExist) {
+                    //        tmpArr.push(checkStatus.data[j]);
+                    //    }
+                    //}
+
+                    //table.cache.selFunList = table.cache.selFunList.concat(tmpArr);
+                    //table.render({
+                    //    elem: '#selFunList'
+                    //           , height: 315
+                    //           , data: table.cache.selFunList
+                    //           , page: false //开启分页
+                    //           , cols: [[ //表头
+                    //             { field: 'funcId', type: "checkbox" }
+                    //             , { field: 'funcName', title: '功能名称', minWidth: "150", sort: true }
+                    //           ]]
+                    //});
+
+
+                    var checkStatus = table.checkStatus('allFuncs');
+                    var tmpArr = new Array();
+                    for (var j = 0; j < checkStatus.data.length; j++) {
+                        var isExist = false;
+                        for (var i = 0; i < table.cache.selFuncs.length; i++) {
+                            if (checkStatus.data[j].funcId == table.cache.selFuncs[i].funcId) {
+                                //table.cache.allFunList.splice(i, 1);
+                                //table.cache.selFunList.push(checkStatus.data[j]);
+                                isExist = true;
+                                break;
+                            }
+                        }
+                        if (!isExist) {
+                            tmpArr.push(checkStatus.data[j]);
+                        }
+                    }
+
+                    table.cache.selFuncs = table.cache.selFuncs.concat(tmpArr);
+
+                    table.render({
+                        elem: '#selFunList'
+                                , id: 'selFuncs'
+                               , height: 315
+                               , data: table.cache.selFuncs
+                               , page: false //开启分页
+                               , cols: [[ //表头
+                                 { field: 'funcId', type: "checkbox" }
+                                 , { field: 'funcName', title: '功能名称', minWidth: "150", sort: true }
+                               ]]
+                    });
+                    
+                },//删除功能点
+                unSelFunc:function(){
+                    //var checkStatus = table.checkStatus('selFunList');
+                    //for (var j = 0; j < checkStatus.data.length; j++) {
+                    //    for (var i = 0; i < table.cache.selFunList.length; i++) {
+                    //        if (checkStatus.data[j].funcId == table.cache.selFunList[i].funcId) {
+                    //            table.cache.selFunList.splice(i, 1);
+                    //            break;
+                    //        }
+                    //    }
+                    //}
+
+                    //table.render({
+                    //    elem: '#selFunList'
+                    //           , height: 315
+                    //           , data: table.cache.selFunList
+                    //           , page: false //开启分页
+                    //           , cols: [[ //表头
+                    //             { field: 'funcId', type: "checkbox" }
+                    //             , { field: 'funcName', title: '功能名称', minWidth: "150", sort: true }
+                    //           ]]
+                    //});
+
+                    var checkStatus = table.checkStatus('selFuncs');
+                    for (var j = 0; j < checkStatus.data.length; j++) {
+                        for (var i = 0; i < table.cache.selFuncs.length; i++) {
+                            if (checkStatus.data[j].funcId == table.cache.selFuncs[i].funcId) {
+                                table.cache.selFuncs.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+
+                    table.render({
+                        elem: '#selFunList'
+                               , id: "selFuncs"
+                               , height: 315
+                               , data: table.cache.selFuncs
+                               , page: false //开启分页
+                               , cols: [[ //表头
+                                 { field: 'funcId', type: "checkbox" }
+                                 , { field: 'funcName', title: '功能名称', minWidth: "150", sort: true }
+                               ]]
+                    });
+                },//上移功能点
+                moveUp: function () {
+                    var funcSeq = $("#funcSeq").val();
+                    if (funcSeq == '4') {
+                        var checkStatus = table.checkStatus('selFuncs');
+                        var isStop = false;
+                        for (var j = 0; j < checkStatus.data.length; j++) {
+                            for (var i = 0; i < table.cache.selFuncs.length; i++) {
+                                if (checkStatus.data[j].funcId == table.cache.selFuncs[i].funcId) {
+                                    if (i - 1 < 0) {
+                                        isStop = true;
+                                        break;
+                                    }
+                                    var tmpdate = table.cache.selFuncs[i];
+                                    table.cache.selFuncs.splice(i, 1);
+                                    table.cache.selFuncs.splice(i - 1, 0, tmpdate);
+                                    break;
+                                }
+                            }
+                            if (isStop)
+                                break;
+                        }
+
+                        for (var i = 0 ; i < table.cache.selFuncs.length; i++) {
+                            table.cache.selFuncs[i].LAY_TABLE_INDEX = i;
+                        }
+
+                        table.render({
+                            elem: '#selFunList'
+                                   , id: "selFuncs"
+                                   , height: 315
+                                   , data: table.cache.selFuncs
+                                   , page: false //开启分页
+                                   , cols: [[ //表头
+                                     { field: 'funcId', type: "checkbox" }
+                                     , { field: 'funcName', title: '功能名称', minWidth: "150", sort: true }
+                                   ]]
+                        });
+                    }
+                },//下移功能点
+                moveDown: function () {
+                    var funcSeq = $("#funcSeq").val();
+                    if (funcSeq == '4') {
+                        var checkStatus = table.checkStatus('selFuncs');
+                        var isStop = false;
+                        for (var j = checkStatus.data.length -1; j >= 0 ; j--) {
+                            for (var i = 0; i < table.cache.selFuncs.length; i++) {
+                                if (checkStatus.data[j].funcId == table.cache.selFuncs[i].funcId) {
+                                    if (i + 1 >= table.cache.selFuncs.length) {
+                                        isStop = true;
+                                        break;
+                                    }
+
+                                    var tmpdate = table.cache.selFuncs[i];
+                                    table.cache.selFuncs.splice(i, 1);
+                                    table.cache.selFuncs.splice(i + 1, 0, tmpdate);
+                                    break;
+                                }
+                            }
+                            if (isStop)
+                                break;
+                        }
+
+                        for (var i = 0 ; i < table.cache.selFuncs.length; i++) {
+                            table.cache.selFuncs[i].LAY_TABLE_INDEX = i;
+                        }
+                        //table.reload('selFuncs', {});
+                        table.render({
+                            elem: '#selFunList'
+                                   , id:"selFuncs"
+                                   , height: 315
+                                   , data: table.cache.selFuncs
+                                   , page: false //开启分页
+                                   , cols: [[ //表头
+                                     { field: 'funcId', type: "checkbox" }
+                                     , { field: 'funcName', title: '功能名称', minWidth: "150", sort: true }
+                                   ]]
+                        });
+                    }
+                },
+                collapse: function (arrowId, chkConId) {
+                    if ($(chkConId).css('height')=='38px') {
+                        $(chkConId).css('height', '');
+                        $(arrowId).html('&#xe619;');
+                    } else {
+                        $(chkConId).css('height', '38px');
+                        $(arrowId).html('&#xe61a;');
+                    }
+                },
+                view: function () {
+                    var pageId = $("#pageid").val();
+                    if (pageId == "0") {
+                        bj.showMsg("请先保存页面信息");
+                        return;
+                    }
+
+                    $.createQrCode($.createPage(pageId));
+
+                },
+                createPage: function (pageid) {
+
+                    var ret;
+                    var reqData = {};
+                    reqData.pageId = pageid;
+                    ret = bj.ajaxPost('cm015', reqData);
+
+                    if (ret.RetCode != undefined && ret.RetCode != '0') {
+                        bj.showMsg("主页生成失败请重新点击保存生成");
+                    } else {
+                        //console.log(ret.RetData.pageUrl);
+                        return ret.RetData.pageUrl;
+                    }
+                },
+                createQrCode: function (contentText) {
+                    
+                   
+                    var appindex = layer.open({
+                        type: 1
+                      , title: false //不显示标题栏
+                      , closeBtn: true
+                      , area: ['250px', '250px']
+                      , shade: 0.8
+                      , id: 'qr' //设定一个id，防止重复弹出
+                        //, btnAlign: 'c'
+                      , moveType: 1 //拖拽模式，0或者1
+                      , content: qrcodeContainer
+                      , success: function (layero) {
+                          form.render();
+                          element.init();
+                          $('#qrcode').qrcode({ width: 200, height: 200, correctLevel: 0, text: contentText });
+                          $('#url').val(contentText);
+                      }
+                    });
+                },
+                getPageTplByAppid: function (appid) {
+                    //新增状态才会根据所选应用ID更新页模板
+                    if ($("#pageid").val() == "0") {
+                        $.reqQueryList({ appId: appid }, "cm016", function (records) {
+                            if (records.length > 0) {
+                                $("#pageTpl").val(records[0].templetId);
+                                form.render('select');
+                            }
+                        })
+                    }
+                }
+                
+            })
+
+            $.getAppList();
+            $.getAppList2();
+            $.getPageTpl();
+            $.getBlockTpl();
+            $.getPageList(defQueryObj, defQueryObj.pageNo, defQueryObj.pageSize);
+
+            var pageContent = $("#pageHide").html();
+            $("#pageHide").empty();
+
+            var blockContent = $("#blockHide").html();
+            $("#blockHide").empty();
+
+            var qrcodeContainer = $("#qrcodeContainer").html();
+            $("#qrcodeContainer").empty();
+
+        });
+
+</script>
+</body>
+</html>

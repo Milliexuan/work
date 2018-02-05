@@ -1,0 +1,510 @@
+﻿<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=8" > 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>功能管理</title>
+    <link rel="stylesheet" href="../../Content/layui2.2/css/layui.css"/>
+    <script type="text/javascript" src="../../Content/layui2.2/layui.js"></script>
+    <script>
+        window.console = window.console || (function () {
+            var c = {}; c.log = c.warn = c.debug = c.info = c.error = c.time = c.dir = c.profile = c.clear = c.exception = c.trace = c.assert = function () { };
+            return c;
+        })();
+
+        layui.use(["basejq", "form", "table"], function () {
+            var bj = layui.basejq("e"), form = layui.form, $ = layui.jquery;
+            var table = layui.table;
+
+  
+
+
+            //获取多选框选中值,组成value-value-value的字符串形式
+            var jqchk = function (chbName) {
+                var chk_value = "";
+                $("input[name=" + chbName + "]:checked").each(function () {
+                    if ($(this).val().substr(0, 1) != "{") {
+                        chk_value += chk_value == "" ? $(this).val() : "-" + $(this).val()
+                    }
+                });
+                return chk_value
+            }
+
+
+            var cityBranchRow = [
+                { "branchNo": "330000", "branchName": "省公司" },
+                { "branchNo": "330100", "branchName": "杭州分公司" },
+                { "branchNo": "330300", "branchName": "温州分公司" },
+                { "branchNo": "330400", "branchName": "嘉兴分公司" },
+                { "branchNo": "330500", "branchName": "湖州分公司" },
+                { "branchNo": "330600", "branchName": "绍兴分公司" },
+                { "branchNo": "330700", "branchName": "金华分公司" },
+                { "branchNo": "330800", "branchName": "衢州分公司" },
+                { "branchNo": "330900", "branchName": "舟山分公司" },
+                { "branchNo": "331000", "branchName": "丽水分公司" },
+                { "branchNo": "331200", "branchName": "义乌分公司" },
+                { "branchNo": "332600", "branchName": "台州分公司" }
+            ];
+
+            var getSelCity = function () {
+                var bindData = [];
+                bindData = cityBranchRow;
+                var myParam = {};
+                myParam.userType = 0;
+                myParam.province = "330000";
+                var param = bj.param();
+                param.reqCode = "cm045";
+                param.reqData = myParam;
+                param.loadImg = true;
+                param.async = false;
+                //param.area = "citylist";
+                bj.post(param, function (data) {
+                    if (data.IsError) {
+                        bj.showMsg(data.RetMsg, 0);
+                        return;
+                    }
+                    else {
+                        var dr = data.RetData.rows;
+                        for (var i = 0; i < bindData.length; i++)
+                        {
+                            if (dr[0].branchNo == bindData[i].branchNo || (bindData[i].branchNo=="330000" && dr[0].branchNo == "")) {
+                                bindData[i].issel = "selected";
+                                bindData[i].branchName = bindData[i].branchName+" (本公司)";
+                            }
+                        }
+                    }
+                });
+                bj.bind(bindData, "citylist")
+                $("#selCity").hide();
+            }
+
+            getSelCity();
+
+            mytable = table.render({
+                elem: '#funcTbl'
+                    , limit: 10
+	                , cols:
+	                    [[ { field: 'funcId', title: '序号', width: 80 ,sort:true}
+                        , { field: 'funcName', title: '标题', width: 200 }
+	                    , { field: 'funcDesc', title: '描述', width: 200 }
+	                    , { field: 'status', title: '状态', width: 80 }
+	                    , { field: 'funcBeginDate', title: '生效时间', width: 120, templet: '#shortBeginDate' }
+                        , { field: 'funcEndDate', title: '失效时间', width: 120, templet: '#shortEndDate' }
+                        , { fixed: 'right', width: 150, align: 'center', toolbar: '#barDemo' } //这里的toolbar值是模板元素的选择器
+	                    ]
+                        //,
+                        // [
+                        //    { align: 'center', title: '', colspan: 6 },
+                        //    { align: 'left', height: '40px;', title: '<input id="btnAdd"  data-method="setTop" type=button style="font-size:20px;; width:35px;background-color:white;  height:28px;" value = "+" >' }
+                        // ]
+                        // ,
+	                    ]//, skin: 'row', even: true //表格风格
+                    , page: true
+
+            });
+
+            var getList = function () {
+                var myParam = {};
+                myParam.branchCode = $("#selCity").val();
+                myParam.labelId = jqchk("label");
+                myParam.name = $("#lableName").val();
+                myParam.pageNo = 1;
+                myParam.pageSize = 999999;
+
+                var param = bj.param();
+                param.reqCode = "cm032";
+                param.reqData = myParam;
+                param.loadImg = true;
+                param.async = false;
+                bj.post(param, function (data) {
+                    if (data.IsError) {
+                        bj.showMsg(data.RetMsg, 0);
+                        return;
+                    }
+                    else {
+                        var dr = data.RetData.rows;
+
+                        mytable.reload({
+                            //even:true
+                            data: dr,
+                        });
+
+                        //form.render();
+                    }
+                });
+            }
+
+
+
+
+
+            getList();
+
+            $("#btnSearch").click(function () {
+                getList();
+            });
+
+            
+
+            //触发事件
+            var active = {
+                setTop: function () {
+                    var that = this;
+                    //多窗口模式，层叠置顶
+                    layer.open({
+                        type: 2,
+                        title: '新增功能点',
+                        area: ['98%', '98%'],
+                        fixed: false, //不固定
+                        maxmin: true,
+                        offset: '20px',
+                        content: 'funcDefine.html',
+                        end: function () {
+                            location.reload();
+                        }
+
+                    });
+
+
+                }
+            };
+
+           
+
+            $('#btnAdd').on('click', function () {
+                //var othis = $(this), method = othis.data('method');
+                //active[method] ? active[method].call(this, othis) : '';
+
+                layer.open({
+                    type: 2,
+                    title: '新增功能点',
+                    area: ['98%', '98%'],
+                    fixed: false, //不固定
+                    maxmin: true,
+                    offset: '20px',
+                    content: 'funcDefine.html',
+                    end: function () {
+                        location.reload();
+                    }
+
+                });
+            });
+
+            var doEdit = function (funcId) {
+                layer.open({
+                    type: 2,
+                    title: '修改功能点：funcId='+funcId,
+                    area: ['98%', '98%'],
+                    fixed: false, //不固定
+                    maxmin: true,
+                    offset: '20px',
+                    content: 'funcDefine.html?funcId='+funcId,
+                    end: function () {
+                        location.reload();
+                    }
+
+                });
+            }
+
+
+
+
+
+            $.extend({
+                format: function (source, params) {
+                    if (arguments.length == 1)
+                        return function () {
+                            var args = $.makeArray(arguments);
+                            args.unshift(source);
+                            return $.format.apply(this, args);
+                        };
+                    if (arguments.length > 2 && params.constructor != Array) {
+                        params = $.makeArray(arguments).slice(1);
+                    }
+                    if (params.constructor != Array) {
+                        params = [params];
+                    }
+                    $.each(params, function (i, n) {
+                        source = source.replace(new RegExp("\\{" + i + "\\}", "g"), n);
+                    });
+                    return source;
+                },
+                reqQueryList: function (queryObj, reqCode, successFn, shade, async) {
+                    var param = bj.param();
+                    param.reqCode = reqCode; //P_GetPsnInterview
+                    param.loadImg = (typeof shade === 'undefined' ? true : shade);
+                    param.reqData = queryObj;
+                    param.async = (typeof async === 'undefined' ? true : async); //异步   
+                    var ctx = this;
+                    var callback = function (responseData) {
+                        if (-1 != responseData.RetCode) {
+                            var rows = responseData.RetData.rows;
+                            if (successFn && typeof successFn == "function") {
+                                successFn(rows);
+                            }
+                            //if (rows && rows instanceof Array) { }
+                        } else {
+                            bj.showMsg(responseData.RetMsg, 0);
+                        }
+                    }
+                    bj.post(param, function (data) {
+                        callback.call(ctx, data);
+                    });
+                },
+                getLabelType: function () {
+                    $.reqQueryList({}, "cm031", function (records) {
+                        $.showLabelTypeTpl(records, 'lableTypeCon', 'radioTpl');
+
+                        form.render();
+                        form.on('radio(labelType)', function (data) {
+                            $.getLabel(data.value);
+                        });
+                    }, true, false)
+                },//显示标签类型
+                showLabelTypeTpl: function (rowData, objid, tplid) {
+                    var tpl = $("#" + tplid).html();
+                    $("#" + objid).empty();
+
+                    $("#" + objid).append($.format('<input type="radio" name="{0}" title="不限" value="" lay-filter="{0}" checked=""/>', "labelType"));
+                    for (var i = 0 ; i < rowData.length; i += 1) {
+                        var html = $.format(tpl, rowData[i].labelName, rowData[i].labelTypeId, 'labelType');
+                        $("#" + objid).append(html);
+                    }
+                },//获取标签列表
+                getLabel: function (labeltype) {
+                    $.reqQueryList({ labelName: "", labelTypeId: labeltype }, "cm034", function (records) {
+
+                        $.showLabelTpl(records, 'lableCon', 'checkTpl');
+
+                        form.render();
+                        form.on('checkbox(label)', function (data) {
+                            var checkeds = $('input[name="label"]:checked');
+                            //【不限】选中,其他选中的都取消
+                            if (data.value == "" && data.elem.checked == true) {
+                                for (var i = 0; i < checkeds.length; i++) {
+                                    if ($(checkeds[i]).val() != "") {
+                                        $(checkeds[i]).removeAttr("checked");
+                                    }
+                                }
+                            }
+
+                            //其他选中，取消【不限】选中
+                            if (data.value != "" && data.elem.checked == true) {
+                                for (var i = 0; i < checkeds.length; i++) {
+                                    if ($(checkeds[i]).val() == "") {
+                                        $(checkeds[i]).removeAttr("checked");
+                                    }
+                                }
+                            }
+
+                            //【不限】点击，并且是取消选中状态，其他都没有选中
+                            if (data.value == "" && data.elem.checked != true) {
+                                if (checkeds.length == 0) {
+                                    data.elem.checked = true;
+                                }
+                            }
+
+                            //全都没选中，设置【不限】为选中状态
+                            if (checkeds.length <= 0) {
+                                var checks = $("input[name='label']");
+                                for (var i = 0; i < checks.length; i++) {
+                                    if ($(checks[i]).val() == "") {
+                                        $(checks[i]).prop("checked", true);
+                                    }
+                                }
+                            }
+
+                            form.render();
+                            //刷新可选功能点
+                            var finalChkeds = $('input[name="label"]:checked');
+                            var labelIds = "";
+                            if (finalChkeds.length > 0) {
+                                for (var i = 0; i < finalChkeds.length; i++) {
+                                    labelIds += $(finalChkeds[i]).val() + '-';
+                                }
+                                labelIds = labelIds.substr(0, labelIds.length - 1);
+                            }
+
+                        });
+                    }, true, false)
+                },//显示标签
+                showLabelTpl: function (rowData, objid, tplid) {
+                    var tpl = $("#" + tplid).html();
+                    $("#" + objid).empty();
+
+                    $("#" + objid).append($.format('<input type="checkbox" name="{0}" title="不限" value="" lay-filter="{0}" checked=""/>', "label"));
+                    for (var i = 0 ; i < rowData.length; i += 1) {
+                        var html = $.format(tpl, rowData[i].labelName, rowData[i].labelId, 'label');
+                        $("#" + objid).append(html);
+                    }
+                },
+                collapse: function (arrowId, chkConId) {
+                    if ($(chkConId).css('height') == '38px') {
+                        $(chkConId).css('height', '');
+                        $(arrowId).html('&#xe619;');
+                    } else {
+                        $(chkConId).css('height', '38px');
+                        $(arrowId).html('&#xe61a;');
+                    }
+                }
+
+            });
+
+            $("#lableTypeShow").on("click", function () {
+                $.collapse('#lableTypeArrow', '#lableTypeCon');
+            });
+
+            $("#lableShow").on("click", function () {
+                $.collapse('#lableArrow', '#lableCon');
+            });
+
+
+            //获取标签类型
+            $.getLabelType();
+            //获取标签
+            $.getLabel("");
+
+            
+
+            //监听工具条
+            table.on('tool(funcTbl)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+                console.log(layEvent);
+                console.log(tr);
+               
+                if(layEvent === 'del'){ //删除
+                    layer.confirm('真的删除这项功能点吗？', function (index) {
+                    
+                        var myParam = {};
+                        myParam.funcId = data.funcId;
+
+                        var param = bj.param();
+                        param.reqCode = "cm033";
+                        param.reqData = myParam;
+                        param.loadImg = true;
+                        param.async = false;
+                        bj.post(param, function (data) {
+                            if (data.IsError) {
+                                bj.showMsg(data.RetMsg, 0);
+                                return;
+                            }                           
+                        });
+
+                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                     //向服务端发送删除指令
+                   });
+                } 
+                else if(layEvent === 'edit'){ //编辑
+                    doEdit(data.funcId);
+                }
+            });
+
+
+
+            form.on('checkbox(label)', function (data) {
+                getList();
+            });
+
+            form.on('select(selCity)', function (data) {
+                getList();
+            });
+
+        });
+
+
+      
+
+
+        //var doAdd = function () {
+        //    location.href="funcDefine.html"
+        //}
+
+        
+    </script>
+</head>
+<body>
+<!-- <div class="layui-form">-->
+<form class="layui-form layui-form-pane" action="">
+ <div class="layui-form-item">
+    <label class="layui-form-label">机构</label>
+     <div class="layui-input-inline"  style="width:200px;">
+      <select id="selCity"  lay-filter="selCity" bj-area="citylist">
+        <option value="{{citylist.branchNo}}" {{citylist.issel}}>{{citylist.branchName}}</option>
+      </select>
+    </div>
+  </div>
+
+      <div class="layui-col-md12">
+        <div class="layui-form-item" style=" position:relative;" >
+            <label class="layui-form-label">标签类型</label>
+            <div class="layui-input-block" style="height:38px;overflow:hidden;margin-right:45px;" id="lableTypeCon" >
+                                
+            </div>
+            <div style="position:absolute;right:15px;top:0px;background-color:white;height:38px;line-height:38px;" id="lableTypeShow" >
+                <i class="layui-icon" style="font-size: 30px;" id="lableTypeArrow">&#xe61a;</i> 
+            </div>
+            </div>
+    </div>
+    <div class="layui-col-md12">
+        <div class="layui-form-item" style=" position:relative;" >
+            <label class="layui-form-label">标签名称</label>
+            <div class="layui-input-block" style="height:38px;overflow:hidden;margin-right:45px;" id="lableCon" >
+                                
+            </div>
+            <div style="position:absolute;right:15px;top:0px;background-color:white;height:38px;line-height:38px;" id="lableShow">
+                <i class="layui-icon" style="font-size: 30px;" id="lableArrow">&#xe61a;</i> 
+            </div>
+            </div>
+
+    </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">搜索</label>
+    <div class="layui-input-inline" style="width:500px;">
+      <input name="lableName" id="lableName" class="layui-input" type="text" placeholder="搜索" autocomplete="off" >
+    </div>
+    <div class="layui-input-inline">
+     <!-- <input type="button" class="layui-btn" id="btnSearch" value="查询" />-->
+         <a href="#" class="layui-btn" id="btnSearch">查询</a>
+    </div>
+  </div>
+
+
+          <!--标签类型模板-->
+    <div id="radioTpl" style="display:none;">
+        <input type="radio" name="{2}" title="{0}" lay-filter="{2}" value="{1}"/>
+    </div>
+    <!--标签模板-->
+    <div id="checkTpl" style="display:none;">
+        <input type="checkbox" name="{2}" title="{0}" lay-filter="{2}" value="{1}"/>
+    </div>
+
+</form> 
+<!-- </div>-->
+
+
+<!--<input id="btnAdd" class="layui-btn"  data-method="setTop" type="button"  value = "添加" >-->
+ <a href="#" class="layui-btn layui-btn-xs"id="btnAdd"  data-method="setTop" type="button">添加</a>
+<table id="funcTbl" class="layui-table "  lay-filter="funcTbl" style="margin:0px; padding:0px;">
+</table>
+<script id="barDemo" type="text/html">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="shortBeginDate">
+   {{d.funcBeginDate.substr(0,10)}}
+</script>
+<script type="text/html" id="shortEndDate">
+    {{d.funcEndDate.substr(0,10)}}
+</script>
+ 
+
+
+
+</body>
+</html>
+

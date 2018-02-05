@@ -1,0 +1,43 @@
+td{
+font-size:9pt;
+color:#999999;
+}
+.cssNoRepeatBG{
+	background-repeat: no-repeat;
+	background-position: right top;
+	
+}
+.cssNoRepeatBGRight{
+	background-repeat: no-repeat;
+	background-position: left top;
+	
+}
+.cssLoginInput{
+	border:1px solid #666666;
+	
+	color:#003399;
+}
+
+a:visited{
+	color:#018C55;
+	text-decoration:none;
+}
+a:hover{
+	color:#018C55;
+	
+	text-decoration:underline;
+}
+a:link{
+	color:#018C55;
+	text-decoration:none;
+}
+
+.cssTaskStatusInputBox{
+
+	font-size:9pt;
+	color:#999999;
+}
+
+.cssNormalGreenWord{
+	color:#018C55;
+}

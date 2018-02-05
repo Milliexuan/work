@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>我定义抽奖信息列表</title>
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css"/>
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+    <script>
+        layui.use(["basejq", "form"], function () {
+            var bj = layui.basejq("e"), form = layui.form, $ = layui.jquery;
+
+            //异步获取数据并自动填充
+            var getList = function () {
+                var param = bj.param();
+                param.reqCode = "03lottery02";
+                param.area = "list";
+                param.loadImg = true;
+                bj.post(param, function (data) {
+                    if (data.RetData.rows.length < 1) {
+                        $("#item").html("<option value='-1'>没有可用主题</option>");
+                    }
+                    $("#item").hide();
+                    form.render('select');
+                    //form.render('select');
+                });
+            };
+            getList();
+
+           //打开修改窗口
+           window.limitUp=function(t, id,n) {
+               bj.showMsg("修改按钮");
+              
+           }
+            //打开权限详情窗口--简单异步获取数据postSim
+           window.limitList = function (id, n) {
+               bj.postSim("03limit02", {scr:id,from_type:3}, function (data) {
+                       var d = data;
+                       h = '';
+                       for (i = 0; i < d.length; i++) {
+                           h += '<li>' + d[i].code + ';' + d[i].name + '</li>';
+                       }
+                       layer.open({
+                           type: 1,
+                           title: n + "权限清单",
+                           skin: 'layui-layer-rim', //加上边框
+                           area: ['200px', '300px'], //宽高
+                           content: h
+                       });
+               });
+           }
+
+            //添加新
+           window.addOne=function(){
+               layer.open({
+                   type: 2,
+                   title: '新增',
+                   shadeClose: true,
+                   shade: 0.8,
+                   area: ['80%', '90%'],
+                   content: "./build.html",
+                   end: function () { getList(); }
+               });
+           }
+            //添加新
+           window.updateOne = function (id) {
+               layer.open({
+                   type: 2,
+                   title: '修改',
+                   shadeClose: true,
+                   shade: 0.8,
+                   area: ['80%', '90%'],
+                   content: "./build.html?id="+id,
+                   end: function () { getList(); }
+               });
+           }
+
+
+        });
+        function stat(a) {
+            var r = '';
+            switch (a) {
+                case '0':
+                    r = "未开始";
+                    break;
+                case '1':
+                    r = '抽奖中';
+                    break;
+                case '-1':
+                    r = '已结束';
+                    break
+                case '-3':
+                    r = '错误';
+                    break;
+                default:
+                    r = '空错误';
+                    break;
+            }
+            return r;
+        }
+        function limit(t,c,u,id,n) {
+            var r = '';
+            switch (t) {
+                case '1':
+                    r = "机构";
+                    break;
+                case '2':
+                    r = '核算单元';
+                    break;
+                case '3':
+                    r = '';
+                    break
+                case '4':
+                    r = '人';
+                    break;
+                default:
+                    r = '空错误';
+                    break;
+            }
+            if (c == '0') r = "<span style='color:#FF5722'>未设置</span>";
+            else r = "<a href='#' onclick='limitList(" + id + ",\"" + n + "\")'>" + c + "个" + r + "</a>";
+            if (u == '1') r += '<button class="layui-btn layui-btn-primary layui-btn-mini" onclick="limitUp('+t+','+id+',\''+n+'\')"><i class="layui-icon"></i></button>';
+            return r;
+        }
+        
+        function update(id,u) {
+            var r = "";
+            if (u != '1') r += '<button class="layui-btn layui-btn-primary layui-btn-mini" onclick="updateOne(' + id + ')"><i class="layui-icon"></i></button>';
+            return r;
+        }
+    </script>
+</head>
+<body>
+     <blockquote class="layui-elem-quote layui-quote-nm" style="background-color:#393D49;color:white">基于jquery,layui,basejq的一个Demo</blockquote>
+ <div class="layui-form">
+ <div class="layui-field-box" style="text-align:center">
+    <span><i class="layui-icon">&#xe645;</i></span>
+    <span id="tip"> 1.表格自动填充,对应方法getlist；2.点“权限”例数值，获取授权详情使用了简单异步获取数据，对应方法window.limitList
+</span>
+  </div>
+
+ 
+  <table class="layui-table">
+    <thead>
+      <tr>
+        <th>修改</th>
+        <th>编号</th>
+        <th>主题</th>
+        <th>名称</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>状态</th>
+        <th>权限</th>
+        <th>总金额</th>
+        <th>个数</th>
+        <th>最大金额</th>
+        <th>最小金额</th>
+        <th>次/人</th>
+      </tr> 
+    </thead>
+    <tbody bj-area="list" style="display:none">
+      <tr>
+        <td>@@update('{{list.lottery_id}}','{{list.up}}')@@</td>
+        <td>{{list.lottery_id}}</td>
+        <td>{{list.item_name}}</td>
+        <td>{{list.lottery_name}}</td>
+          <td>{{list.begin_time}}</td>
+          <td>{{list.end_time}}</td>
+          <td>@@stat('{{list.flag}}')@@</td>
+          <td>@@limit('{{list.limit_type}}','{{list.powers}}','{{list.up}}','{{list.lottery_id}}','{{list.lottery_name}}')@@</td>
+          <td>{{list.total_amnt}}</td>
+          <td>{{list.p_count}}/{{list.quantity}}</td>
+          <td>{{list.max_amnt}}</td>
+          <td>{{list.min_amnt}}</td>
+          <td>{{list.times}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+</body>
+</html>

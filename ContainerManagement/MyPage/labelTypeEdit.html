@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>大标签编辑页面</title>
+    <link rel="stylesheet" href="../Content/layui2.2/css/layui.css" />
+    <script type="text/javascript" src="../Content/layui2.2/layui.js"></script>
+    <script>
+        layui.use(["basejq", "form", "laydate", "layer"], function () {
+            var bj = layui.basejq("e"), form = layui.form, $ = layui.jquery, laydate = layui.laydate;
+            var layer = layui.layer;
+            var id = bj.getUrlParam("id");
+            var name = decodeURIComponent(bj.getUrlParam("name"));
+            
+            //alert(name);
+            var getOne = function () {
+                if (id != '0') {
+                    $('#typeId').val(id);
+                } else
+                {
+                    $('#typeId').val(0);
+                }
+                //alert(name);
+                if (name != "null") {
+                    $('#name').val(name);
+                }
+            }
+
+            getOne();
+
+            var submit = function () {
+                var p = {
+                    labelTypeId: $('#typeId').val(),
+                    labelTypeName: $('#name').val(),
+                    labelTypeDesc: $('#desc').val()
+                };
+                var param = bj.param();
+                param.reqCode = "cm103";
+                param.reqData = p;
+                bj.post(param, function (data) {
+                    console.log(data);
+                    //关闭弹层
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                })
+            };
+
+            var checkSubmit = function () {
+                if ($("#name").val() != "") {
+                    submit();
+                } else {
+                    alert("请输入名称");
+                }
+            };
+
+            $("#tijiao").click(function () { checkSubmit(); });;
+        });
+    </script>
+</head>
+<body>
+    <form class="layui-form layui-form-pane" bj-submit="paper" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="name">类型代码</label>
+            <div class="layui-input-block">
+                <input readonly="readonly" type="text" id="typeId" bj-field="name" bj-check="empty" placeholder="必填" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="name">类型名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" bj-field="name" bj-check="empty" placeholder="必填" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label" for="desc">标签描述</label>
+            <div class="layui-input-block">
+                <textarea id="desc" bj-field="desc" placeholder="200字以内" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <!--<input type="number" id="id" style="" bj-field="id" bj-check="empty" value="0" disabled class="layui-input">-->
+                <button type="button" class="layui-btn" id="tijiao">立即提交</button>
+                <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+            </div>
+        </div>
+    </form>
+</body>
+</html>
