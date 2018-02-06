@@ -30,7 +30,7 @@ layui.use(['layer','form', 'upload','table','laypage'], function(){  //如果只
     getCfgListpage();
 
 
-    function testLocal(){
+   /* function testLocal(){
         for(var i =0;i<8;i++){
             var datas=[{name:"11",pro:"11a"},{name:"22",pro:"22a"},{name:"33",pro:"33a"}]
             var $cfgItem = $("<div class='cfgRow' id='"+i+"'><div class='rowCfgName'>11</div>" +
@@ -63,19 +63,19 @@ layui.use(['layer','form', 'upload','table','laypage'], function(){  //如果只
                     layer.msg('的确很重要', {icon: 1,time:1000});
 
                 }, function(){
-                    /*layer.msg('也可以这样', {
+                    /!*layer.msg('也可以这样', {
                         time: 20000, //20s后自动关闭
                         btn: ['明白了', '知道了']
-                    });*/
+                    });*!/
                 });
             });
         });
-    }
+    }*/
 
 
 
 
-    function getCfgList() {
+  /*  function getCfgList() {
         var paramData = {};
         var getinfoparam = basejq.param();
         getinfoparam.reqData = paramData;
@@ -134,16 +134,16 @@ layui.use(['layer','form', 'upload','table','laypage'], function(){  //如果只
                         delCfg(delId);
 
                     }, function(){
-                        /*layer.msg('也可以这样', {
+                        /!*layer.msg('也可以这样', {
                             time: 20000, //20s后自动关闭
                             btn: ['明白了', '知道了']
-                        });*/
+                        });*!/
                     });
                 });
             });//删除按钮遍历监听
 
         });//base.post回调
-    }//getCfgList方法
+    }//getCfgList方法*/
 
 
 
@@ -268,7 +268,7 @@ layui.use(['layer','form', 'upload','table','laypage'], function(){  //如果只
 
 
 
-    function delCfg(cfgId) {
+    /*function delCfg(cfgId) {
         var paramData = {};
         paramData.cfgId = cfgId;
         var getinfoparam = basejq.param();
@@ -290,11 +290,6 @@ layui.use(['layer','form', 'upload','table','laypage'], function(){  //如果只
             layer.msg('删除成功', {icon: 1,time:1000});
 
         });
-    }//delcfg方法  调用存储过程删除记录
+    }//delcfg方法  调用存储过程删除记录*/
 
-});//layui.use
-
-
-
-
-
+});//layui.us

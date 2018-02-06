@@ -152,7 +152,8 @@
                     //console.log(index+" " + element);
 
                     if(id=="key"){
-                        $("[name='name3']").val(datas[0].keyStr);
+                        var subKeyStr = datas[0].keyStr.substr(0,16);
+                        $("[name='name3']").val(subKeyStr);
                     }else if(id=="sign"){
                         $("[name='name4']").val(datas[0].keyStr);
                     }
