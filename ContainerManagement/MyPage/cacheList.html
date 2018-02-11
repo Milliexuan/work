@@ -7,27 +7,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <link rel="stylesheet" href="../Content/layui2.2/css/layui.css">
-    <style>
+    <style type="text/css">
         i{
             cursor: pointer;
         }
-        .cacheRow{
-            display: flex;
-            justify-content: center;
+       .cacheRow,.titleRow{
+            display: -webkit-box;
+            display: -moz-box;
+            display: box;
+
+            /*justify-content: center;*/
             border: 1px solid #cccccc;
         }
-        .rowCacheName,.rowCacheStatus,.rowCacheNextTime{
-            width:170px;
+        .rowIcon,.a,.rowCacheName,.rowCacheStatus,.rowCacheNextTime,.rowCacheCode,.rowCacheProce,.rowCacheInvalid,.rowCacheKey{
+
+            height: 50px;
+            width:1%;
+            -webkit-box-flex:1 ;
+            -moz-box-flex: 1;
+            box-flex: 1;
+            word-break: break-all;
+            text-align: center;
+           display:flex;
+            justify-content: center;
+            flex-direction: column;
+           /* width:170px;
             height:50px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             text-align: center;
+            word-wrap:break-word;
+            flex:1;*/
         }
-        .rowIcon{
-            width:130px;height:50px;display: flex;flex-direction: column;justify-content: center;text-align: center;
+        /*.rowIcon{
 
-        }
+            height:50px;
+            display: flex;flex-direction: column;justify-content: center;text-align: center;flex:1;
+
+        }*/
         .rowIcon i{
             margin-right:20px;
             font-size:20px
@@ -46,7 +64,7 @@
 
 
 <div style="padding-top: 30px">
-    <div class=" " style="width:600px;margin:auto">
+    <div class=" " style="width:1100px;margin:auto">
 
        <!--<div class="demoTable" style="text-align:right">
             缓存任务：
@@ -56,22 +74,23 @@
             <button class="layui-btn" id="searchCache">搜索</button>
         </div>-->
 
-        <div id="rowHead" style="width: 600px;margin:auto;font:bold 20px arial ">
-            <div style="display: flex;justify-content: center;">
-                <div class="" style="width:170px;height:50px;display: flex;flex-direction: column;justify-content: center;text-align: center">缓存任务
-                </div>
-                <div style="width:170px;height:50px;display: flex;flex-direction: column;justify-content: center;text-align: center">运行状态
-                </div>
-                <div style="width:170px;height:50px;display: flex;flex-direction: column;justify-content: center;text-align: center">下次运行时间
-                </div>
-                <div style="width:130px;height:50px;display: flex;flex-direction: column;justify-content: center;text-align: center;">
+        <div id="rowHead" style="font:bold 20px arial ">
+            <div class="titleRow" >
+                <div class="a" >缓存任务</div>
+                <div class="a" >任务Code</div>
+                <div class="a" >存储过程</div>
+                <div class="a">运行状态</div>
+                <div class="a">下次运行时间</div>
+                <div  class="a">失效时间</div>
+                <div  class="a">key值</div>
+                <div class="a">
                     <div>
                         <i id="addCache" style="font-size: 30px; color: #1E9FFF;" class="layui-icon">&#xe61f;</i>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="cacheT" class="" style="width: 600px;margin:auto" >
+        <div id="cacheT" class="" style="" >
             <!--<div style="display: flex;justify-content: center;">
                 <div class="" style="width:170px;height:50px;display: flex;flex-direction: column;justify-content: center;">缓存任务
                 </div>
