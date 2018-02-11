@@ -16,7 +16,7 @@ layui.use(['layer','form', 'upload','table','laypage'], function(){  //如果只
             type: 2,
             title:'缓存任务',
             content: 'cacheDefine.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-            area: ['700px', '600px']
+            area: ['700px', '500px']
         });
     });
 
@@ -391,21 +391,35 @@ getCacheListPage();
                     for(var i=pageStartIndex;i<(pageStartIndex+obj.limit);i++){
 
                         if(i<obj.count){
+
+                            if(datas[i].cacheJobStatus==0){
+                                continue;
+                            }
 							var runStatus;
                             var cacheJobId = datas[i].cacheJobId;
                             var cacheJobName = datas[i].cacheJobName;
+                            var cacheJobCode = datas[i].cacheJobCode;
+                            var cacheJobProcedure = datas[i].cacheJobProcedure;
+                            var cacheJobInvalidTime = datas[i].cacheJobInvalidTime;
+                            var cacheJobKey = datas[i].cacheJobKey;
                             var cacheJobStatus = datas[i].cacheJobStatus;
 							if(cacheJobStatus=="1"){
-								cacheJobStatus="自动";
-							}else if(cacheJobStatus=="2"){
-								cacheJobStatus="手动";
+								cacheJobStatus="运行中";
+							}else if(cacheJobStatus=="0"){
+								cacheJobStatus="无效";
 							}
                             var cacheJobnextTime = datas[i].cacheJobnextTime;
 
+
+
                             var $cacheItem = $("<div class='cacheRow' id='"+cacheJobId+"'>" +
                                 "<div class='rowCacheName'>"+cacheJobName+"</div>" +
+                                    "<div class='rowCacheCode'>"+cacheJobCode+"</div>"+
+                                "<div class='rowCacheProce'>"+cacheJobProcedure+"</div>"+
                                 "<div class='rowCacheStatus'>"+cacheJobStatus+"</div>" +
                                 "<div class='rowCacheNextTime'>"+cacheJobnextTime+"</div>"+
+                                    "<div class='rowCacheInvalid'>"+cacheJobInvalidTime+"分</div>"+
+                                    "<div class='rowCacheKey'>"+cacheJobKey+"</div>"+
                                 "<div class='rowIcon'><div><i class='layui-icon editCache'>&#xe642;</i><i class='layui-icon delCache'>&#xe640;</i><i class='layui-icon refreshCache'>&#x1002;</i></div></div>" +
                                 "</div>");
                             $("#cacheT").append($cacheItem);
@@ -429,7 +443,7 @@ getCacheListPage();
                     $(".rowIcon").find(".delCache").each(function (index,element) {
                         var delId = $(this).parent().parent().parent().attr("id");
                         $(this).on("click",function () {
-                            alert("delete"+delId);
+                            //alert("delete"+delId);
                             layer.confirm('确认删除？', {
                                 btn: ['删除','取消'] //按钮
                             }, function(){
