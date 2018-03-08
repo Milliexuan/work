@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>核保政策</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../../../Content/js/layer.m/need/layer.css" rel="stylesheet"/>
+    <link type="text/css" rel="stylesheet" href="../../../Content/materialize/css/materialize.min.css"  media="screen,projection"/>
+    <link rel="stylesheet" href="../../../Content/layuix/css/layui.css" media="all">
+    <script type="text/javascript" src="../../../Content/js/layer.m/layer.js"></script>
+    <script type="text/javascript" src="../../../Content/layuix/layui.js"></script>
+    <script type="text/javascript" src="../../../Content/js/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="../../../Content/materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="../../../Content/js/base.jq.1.0.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <style type="text/css">
+        .valign-wrapper{
+            display:flex !important;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<div id="ppp">
+
+    <!-- <div class="layui-row" id="aa" style="height: 50px; line-height: 50px" >
+         <div class="layui-col-xs1"><i class="layui-icon" style="font-size: 20px; " >&#xe603;</i></div>
+         <div class="layui-col-xs10" style="text-align: center"><span  >我的评级</span></div>
+     </div>-->
+
+
+    <div class="layui-tab  layui-tab-card" lay-filter="docDemoTabBrief" >
+        <ul id="topCon" class="layui-tab-title " style="position:fixed;top:0;width:100%;z-index: 2">
+            <li class="layui-this  layui-col-xs6" style="">评定指标</li>
+            <li class=" layui-col-xs6" style="">核保政策</li>
+        </ul>
+
+
+
+
+        <div class="layui-tab-content " >
+            <!--第一个TAB下面的内容-->
+            <div class="layui-tab-item layui-show  "  style="margin-top: 80px;margin-bottom: 50px">
+                <div id="conRow" style="position:fixed;top:40px;left:0px;width:100%;z-index: 2">
+                    <div class="layui-row grey lighten-5 teal-text" >
+                        <div class="layui-col-xs6 valign-wrapper " style="border-right:solid 1px #ccc;height: 50px;" >
+                            <p style="margin:auto" class="center-align"><span></span><br>
+                                <span></span></p>
+                        </div>
+
+                        <div class="layui-col-xs6 valign-wrapper" style="height: 50px;padding: 0 10px;">
+                            <div class="layui-col-xs2">
+                                <a id="lefticon" href="javascript:minus()">
+                                    <i class="tiny layui-icon">&#xe603;</i>
+                                </a>
+                            </div>
+                            <div class="layui-col-xs8">
+                                <p id="tt" style="margin:auto" class="center-align">评级标准：<span></span>星</p>
+                            </div>
+                            <div class="layui-col-xs2 right-align">
+                                <a id="righticon" style="display:inline-block;" href="javascript:plus()">
+                                    <i class="tiny layui-icon">&#xe602;</i>
+                                </a>
+                            </div>
+                            <!--<p style="margin:auto;">评级标准：三星</p>-->
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <!--我的评级3星下面的内容-->
+                <div  id="tab1margintop">
+
+                    <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>入司年限</span></div>
+                    <div id="conRow1">
+                        <div class="layui-row grey lighten-5 " >
+                            <div class="layui-col-xs6 valign-wrapper" style="border-right:solid 1px #ccc;height: 40px;">
+                                <p  style="margin:auto"></p>
+                            </div>
+                            <div class="layui-col-xs6 valign-wrapper" style="height: 40px;">
+                                <p style="margin:auto"></p>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>首年佣金(FYC)</span></div>
+                    <div id="conRow2">
+                        <div class="layui-row grey lighten-5" >
+                            <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+
+                                <p class=" " style="margin:auto" ><span></span><br>
+                                    <span></span><br>
+                                    <span></span>
+                                </p>
+
+                            </div>
+                            <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                                <p style="margin:auto"></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>近一年综合持续率</span></div>
+                    <div id="conRow4">
+                        <div class="layui-row grey lighten-5" >
+                            <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 40px;" >
+
+                                <p class=" " style="margin:auto" ></p>
+
+                            </div>
+                            <div class="layui-col-xs6 valign-wrapper" style="height: 40px;">
+                                <p style="margin:auto"></p>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>长险因疾病</span></div>
+                    <div id="conRow5">
+                        <div class="layui-row grey lighten-5" >
+                            <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 50px;" >
+                                <p class=" " style="margin:auto" >
+                                    <span></span><br>
+                                    <span></span><br>
+                                </p>
+                            </div>
+
+                            <div class="layui-col-xs6 valign-wrapper" style="height: 50px;">
+                                <p style="margin:auto"></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>重疾险因疾病</span></div>
+                    <div id="conRow6">
+                        <div class="layui-row grey lighten-5" >
+                            <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+                                <p class=" " style="margin:auto" >
+                                    <span></span><br>
+                                    <span></span><br>
+                                    <span></span><br>
+                                </p>
+                            </div>
+                            <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                                <p style="margin:auto"></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>医疗险因疾病</span></div>
+                    <div id="conRow7">
+                        <div class="layui-row grey lighten-5" >
+                            <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 100px;" >
+                                <p class=" " style="margin:auto" >
+                                    <span></span><br>
+                                    <span></span><br>
+                                    <span></span><br>
+                                </p>
+                            </div>
+                            <div class="layui-col-xs6 valign-wrapper" style="height: 100px;">
+                                <p style="margin:auto"></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>有效投诉件数</span></div>
+                    <div id="conRow8">
+                        <div class="layui-row grey lighten-5" >
+                            <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 50px;" >
+                                <p class=" " style="margin:auto" >
+
+                                </p>
+                            </div>
+                            <div class="layui-col-xs6 valign-wrapper" style="height: 50px;">
+                                <p style="margin:auto"></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>违规违纪扣分</span></div>
+                    <div id="conRow9">
+                        <div class="layui-row grey lighten-5" >
+                            <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+                                <p class=" " style="margin:auto" >
+                                    <span></span><br>
+                                    <span></span>
+                                </p>
+                            </div>
+                            <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                                <p style="margin:auto"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>客户关键信息完整性100%</span></div>
+                    <div id="conRow10">
+                        <div class="layui-row grey lighten-5" >
+                            <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 50px;" >
+                                <p class=" " style="margin:auto" >
+
+                                </p>
+                            </div>
+                            <div class="layui-col-xs6 valign-wrapper" style="height: 40px;">
+                                <p style="margin:auto"></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <!-- <div style="height:300px;margin-top: 80px">la</div>-->
+
+            </div> <!--第一个TAB下面的内容-->
+
+
+            <!--第二个TAT下面的内容-->
+            <div  class="layui-tab-item " style="margin-top:100px;margin-bottom: 50px;">
+                <!--一个新的TAB-->
+                <div class="layui-tab layui-tab-card " lay-filter="tscTab" >
+
+                    <ul id="ultopCon" class="layui-tab-title"  style="position:fixed;top:40px;left:0px;width:100%;z-index: 2">
+                        <li class="layui-this layui-col-xs4" tabChose="chosed">体检规则</li>
+                        <li class="layui-col-xs4" tabChose="notchosed">生调规则</li>
+                        <li class="layui-col-xs4" tabChose="notchosed">财务规则</li>
+
+                    </ul>
+
+
+
+
+
+
+
+                    <div id="heconRow" style="position:fixed;top:80px;left:0px;width:100%;z-index: 2">
+                        <div class="layui-row grey lighten-5 teal-text" >
+                            <div class="layui-col-xs6 valign-wrapper " style="border-right:solid 1px #ccc;height: 50px;" >
+                                <p style="margin:auto" class="center-align"><span>我的评级：</span><br>
+                                    <span></span></p>
+                            </div>
+
+                            <div class="layui-col-xs6 valign-wrapper" style="height: 50px;padding: 0 10px;">
+                                <div class="layui-col-xs2">
+                                    <a id="helefticon" href="javascript:heminus()">
+                                        <i class="tiny layui-icon">&#xe603;</i>
+                                    </a>
+                                </div>
+                                <div class="layui-col-xs8">
+                                    <p id="hett" class="center-align">评级标准：<span></span>星</p>
+                                </div>
+                                <div class="layui-col-xs:2 right-align">
+                                    <a id="herighticon" style="display:inline-block;" href="javascript:heplus()">
+                                        <i class="tiny layui-icon">&#xe602;</i>
+                                    </a>
+                                </div>
+                                <!--<p style="margin:auto;">评级标准：三星</p>-->
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <!--TAB下面的内容-->
+                    <div class="layui-tab-content " id="tab2margintop">
+                        <div class="layui-tab-item layui-show">     <!--//内容1-->
+                            <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>寿险免体检额度</span></div>
+                            <div id="heconRow1">
+                                <div class="layui-row grey lighten-5" >
+                                    <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 200px;" >
+                                        <p class=" " style="margin:auto" >
+
+                                        </p>
+                                    </div>
+                                    <div class="layui-col-xs6 valign-wrapper" style="height: 200px;">
+                                        <p style="margin:auto"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>重疾险免体检额度</span></div>
+                            <div id="heconRow2">
+                                <div class="layui-row grey lighten-5" >
+                                    <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 200px;" >
+                                        <p class=" " style="margin:auto" >
+
+                                        </p>
+                                    </div>
+                                    <div class="layui-col-xs6 valign-wrapper" style="height: 200px;">
+                                        <p style="margin:auto"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>意外险免体检额度</span></div>
+                            <div id="heconRow3">
+                                <div class="layui-row grey lighten-5" >
+                                    <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+                                        <p class=" " style="margin:auto" >
+
+                                        </p>
+                                    </div>
+                                    <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                                        <p style="margin:auto"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <!--//内容2-->
+                        <div class="layui-tab-item">
+                            <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>寿险</span></div>
+                            <div id="heconRow4">
+                                <div class="layui-row grey lighten-5" >
+                                    <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+                                        <p class=" " style="margin:auto" >
+
+                                        </p>
+                                    </div>
+                                    <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                                        <p style="margin:auto">
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>重疾</span></div>
+                            <div id="heconRow5">
+                                <div class="layui-row grey lighten-5" >
+                                    <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+                                        <p class=" " style="margin:auto" >
+
+                                        </p>
+                                    </div>
+                                    <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                                        <p style="margin:auto">
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>意外</span></div>
+                            <div id="heconRow6">
+                                <div class="layui-row grey lighten-5" >
+                                    <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+                                        <p class=" " style="margin:auto" >
+
+                                        </p>
+                                    </div>
+                                    <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                                        <p style="margin:auto">
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!--//内容3-->
+                        <div class="layui-tab-item">
+                            <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>寿险</span></div>
+                            <div id="heconRow7">
+                                <div class="layui-row grey lighten-5" >
+                                    <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+                                        <p class=" " style="margin:auto" >
+
+                                        </p>
+                                    </div>
+                                    <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                                        <p style="margin:auto">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>重疾</span></div>
+                            <div id="heconRow8">
+                                <div class="layui-row grey lighten-5" >
+                                    <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+                                        <p class=" " style="margin:auto" >
+
+                                        </p>
+                                    </div>
+                                    <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                                        <p style="margin:auto">
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>意外</span></div>
+                            <div id="heconRow9">
+                                <div class="layui-row grey lighten-5" >
+                                    <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+                                        <p class=" " style="margin:auto" >
+
+                                        </p>
+                                    </div>
+                                    <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                                        <p style="margin:auto">
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+</div>
+<div id="bottomCon" class="grey lighten-3 valign-wrapper " style="position:fixed;bottom:0px;width:100%;height:60px;" ><p  style="margin:auto">注：1.以上为月初统计数据，供参考，带*项已剔除孤儿;<br>
+    2.试行期间高品质业务员目前仅适用于杭州地区;</p></div>
+
+
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+
+    layui.use('element', function(){
+        var $ = layui.jquery
+            ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+
+        //TSC  体检规则 声调规则 财务规则Tab切换时监听
+        element.on('tab(tscTab)', function(data){
+            //console.log(this); //当前Tab标题所在的原始DOM元素
+            $("li[tabchose]").each(function (index) {
+                if(index==data.index){
+                    $(this).attr("tabchose","chosed");
+                    //console.log($(this).attr("tabchose"));
+                }else{
+                    $(this).attr("tabchose","notchosed");
+                    //console.log($(this).attr("tabchose"));
+                }
+            });
+           // console.log("index",data.index); //得到当前Tab的所在下标
+            var starInSpan = $("#hett span").text();
+            if(starInSpan==""){
+                return;
+            }
+            setheStandard(data.index,starInSpan);
+
+            //console.log(data.elem); //得到当前的Tab大容器
+        });
+
+
+        getDetail();
+        getT();
+        getS();
+        getC();
+
+
+    });
+
+
+    var nowStarLevel;
+    function getDetail() {
+        layer.closeAll();
+        layer.open({ type: 2, shadeClose: false });
+        var salerP={};
+
+        var getinfoparam = basejq.param();
+        getinfoparam.reqData = salerP;
+        getinfoparam.encrypt = true;
+        getinfoparam.async = true;
+        getinfoparam.loadImg = false;
+        getinfoparam.reqCode = 'jdb0010';  //getSalerDetail
+
+        basejq.post(getinfoparam, function (data) {
+            if (data.IsError) {
+                basejq.showMsg(data.RetMessage);
+                return;
+            }
+            layer.closeAll();
+            var datas = data.RetData.rows;
+
+
+            if(datas.length==0){
+                return;
+            }
+
+             nowStarLevel = datas[0].starlevel;
+            getGradeDef();
+            getFreeamtDef();
+
+            console.log(datas);
+            $("#heconRow").find("p").eq(1).find("span").eq(0).text(nowStarLevel);
+
+            $("#heconRow").find("p").eq(0).find("span").eq(0).html("我的评级："+datas[0].starlevel+"星");
+            $("#heconRow").find("p").eq(0).find("span").eq(1).html("所在销售机构属于："+datas[0].branchLevel+"类公司");
+
+            $("#conRow").find("p").eq(0).find("span").eq(0).html("我的评级："+datas[0].starlevel+"星");
+            $("#conRow").find("p").eq(0).find("span").eq(1).html("所在销售机构属于："+datas[0].branchLevel+"类公司");
+            $("#conRow1").find("p").eq(0).html(datas[0].seniority+"年");  //入司年限
+
+            $("#conRow2").find("p").eq(0).find("span").eq(0).html("2016.7-2017.6："+datas[0].oneFYC);   //首年佣金FYC
+            $("#conRow2").find("p").eq(0).find("span").eq(1).html("2015.7-2016.6："+datas[0].twoFYC);
+            $("#conRow2").find("p").eq(0).find("span").eq(2).html("2014.7-2015.6："+datas[0].threeFYC);
+
+            $("#conRow4").find("p").eq(0).html(datas[0].oneylastrate*100+"%");   //近一年综合持续率
+
+            $("#conRow5").find("p").eq(0).find("span").eq(0).html("近2年理赔件数："+datas[0].twolongclaim);  //近两年长险疾病理赔件数
+            $("#conRow5").find("p").eq(0).find("span").eq(1).html("近3年理赔件数："+datas[0].threelongclaim);
+
+            $("#conRow6").find("p").eq(0).find("span").eq(0).html("重疾险短期出险率："+datas[0].illnessrate+"%");  //重疾险短期出险率
+            $("#conRow6").find("p").eq(0).find("span").eq(1).html("重疾险生效件数："+datas[0].illnessinforce);//重疾险生效件数
+            $("#conRow6").find("p").eq(0).find("span").eq(2).html("重疾险理赔件数："+datas[0].illnessclaim);//重疾险理赔件数
+
+            $("#conRow7").find("p").eq(0).find("span").eq(0).html("近1年医疗险出险率："+datas[0].medicalrate+"%");   //医疗险
+            $("#conRow7").find("p").eq(0).find("span").eq(1).html("近1年医疗险实收保费件数："+datas[0].medicalrecieved);
+            $("#conRow7").find("p").eq(0).find("span").eq(2).html("近1年医疗险赔付件数："+datas[0].medicalclaim);
+
+            $("#conRow8").find("p").eq(0).html("2016年-2017年："+datas[0].oneyearcomplaint);   //有效投诉件数
+
+            $("#conRow9").find("p").eq(0).find("span").eq(0).html("2016.7-2017.7："+datas[0].oneyeardeduct);  //违规违纪扣分
+            $("#conRow9").find("p").eq(0).find("span").eq(1).html("2015.7-2016.7："+datas[0].twoyeardeduct);
+
+            if(datas[0].custintegrity){
+                $("#conRow10").find("p").eq(0).html("是");   //客户关键信息完整性100%
+            }else{
+                $("#conRow10").find("p").eq(0).html("否");   //客户关键信息完整性100%
+            }
+
+        });
+    }
+
+
+    var globalDatas;
+    function getGradeDef() {
+        layer.closeAll();
+        layer.open({ type: 2, shadeClose: false });
+        var gradeDefPara={};
+        var getinfoparam = basejq.param();
+        getinfoparam.reqData = gradeDefPara;
+        getinfoparam.encrypt = true;
+        getinfoparam.async = true;
+        getinfoparam.loadImg = false;
+        getinfoparam.reqCode = 'jdb0011';  //getGradeDef
+
+        basejq.post(getinfoparam, function (data) {
+            if (data.IsError) {
+                basejq.showMsg(data.RetMessage);
+                return;
+            }
+            layer.closeAll();
+            var datas = data.RetData.rows;
+            globalDatas = datas;
+            /* var gradeDef = {};
+             gradeDef.star0 = datas[0];
+             gradeDef.star1 = datas[1];
+             gradeDef.star2 = datas[2];
+             gradeDef.star3 = datas[3];
+             gradeDef.star4 = datas[4];
+             gradeDef.star5 = datas[5];*/
+
+
+            setGradeStandard(nowStarLevel);
+
+
+
+        });
+    }
+    function  setGradeStandard(i) {
+
+
+        $("#conRow").find("p").eq(1).find("span").eq(0).text(globalDatas[i].star);
+        $("#conRow1").find("p").eq(1).html(globalDatas[i].serviceYear);  //入司年限
+
+        $("#conRow2").find("p").eq(1).html(globalDatas[i].yearCommission);   //首年佣金FYC
+
+
+        $("#conRow4").find("p").eq(1).html(globalDatas[i].continueRate);   //近一年综合持续率
+
+        if(globalDatas[i].longClaim != null){
+            $("#conRow5").find("p").eq(1).html("长险因疾病两年内出险率：<br>"+globalDatas[i].longClaim);  //近两年长险疾病理赔件数
+        }else{ $("#conRow5").find("p").eq(1).html("");}  //近两年长险疾病理赔件数
+
+
+        $("#conRow6").find("p").eq(1).html("重疾险两年内因疾病出险率："+globalDatas[i].illnessClaim);  //重疾险短期出险率
+
+
+        $("#conRow7").find("p").eq(1).html("近一年医疗出险率：<br>"+globalDatas[i].medicalClaim);   //医疗险
+
+
+        $("#conRow8").find("p").eq(1).html("近两年投诉件："+globalDatas[i].complaint);   //有效投诉件数
+
+        $("#conRow9").find("p").eq(1).html(globalDatas[i].deduct);  //违规违纪扣分
+
+
+        $("#conRow10").find("p").eq(1).html(globalDatas[i].clientIntegrity);   //客户关键信息完整性100%
+    }
+
+    function plus() {
+        var starInSpan = $("#tt span").text();   //是一个数字
+        if(starInSpan==""){
+            return;
+        }
+        starInSpan++;
+        //$("#tt span").text(starInSpan);
+        setGradeStandard(starInSpan);
+        if (starInSpan>=5){
+            document.getElementById('righticon').style.display='none';
+        }else{
+            document.getElementById('righticon').style.display='inline-block';
+            document.getElementById('lefticon').style.display='inline-block';
+        }
+    }
+    function minus() {
+        var starInSpan = $("#tt span").text();   //是一个数字
+        if(starInSpan==""){
+            return;
+        }
+        starInSpan--;
+        // $("#tt span").text(starInSpan);
+        setGradeStandard(starInSpan);
+        if (starInSpan<=0){
+            document.getElementById('lefticon').style.display='none';
+        }else{
+            document.getElementById('lefticon').style.display='inline-block';
+            document.getElementById('righticon').style.display='inline-block';
+        }
+    }
+
+
+
+    function getT() {
+        layer.closeAll();
+        layer.open({ type: 2, shadeClose: false });
+        var dataT={};
+        var getinfoparam = basejq.param();
+        getinfoparam.reqData = dataT;
+        getinfoparam.encrypt = true;
+        getinfoparam.async = true;
+        getinfoparam.loadImg = false;
+        getinfoparam.reqCode = 'jdb0012';  //jdb_getFreeamtT
+
+        basejq.post(getinfoparam, function (data) {
+            if (data.IsError) {
+                basejq.showMsg(data.RetMessage);
+                return;
+            }
+            layer.closeAll();
+            var datas = data.RetData.rows;
+
+            if(datas.length==0){
+                return;
+            }
+
+            for(var i = 0 ;i < datas.length;i++){
+                if(datas[i].poltype=="c"){
+                    $("#heconRow1").find("p").eq(0).append("<span>"+datas[i].agestart+"-"+datas[i].ageend+"岁:"+
+                        datas[i].freeamt1+"元</span><br>");
+                }else if(datas[i].poltype=="d"){
+                    $("#heconRow2").find("p").eq(0).append("<span>"+datas[i].agestart+"-"+datas[i].ageend+"岁:"+
+                        datas[i].freeamt1+"元</span><br>");
+                }else if(datas[i].poltype=="e"){
+                    $("#heconRow3").find("p").eq(0).append("<span>"+datas[i].agestart+"-"+datas[i].ageend+"岁:"+
+                        datas[i].freeamt1+"元</span><br>");
+                }
+            }
+        });
+    }
+
+    function getS() {
+        layer.closeAll();
+        layer.open({ type: 2, shadeClose: false });
+        var dataS={};
+        var getinfoparam = basejq.param();
+        getinfoparam.reqData = dataS;
+        getinfoparam.encrypt = true;
+        getinfoparam.async = true;
+        getinfoparam.loadImg = false;
+        getinfoparam.reqCode = 'jdb0013';  //jdb_getFreeamtS
+
+        basejq.post(getinfoparam, function (data) {
+            if (data.IsError) {
+                basejq.showMsg(data.RetMessage);
+                return;
+            }
+            layer.closeAll();
+            var datas = data.RetData.rows;
+
+            if(datas.length==0){
+                return;
+            }
+
+            for(var i = 0 ;i < datas.length;i++){
+                if(datas[i].poltype=="c"){
+                    $("#heconRow4").find("p").eq(0).append("<span>免生调额度：<br>"+ datas[i].freeamt1+"元</span><br>" +
+                        "<span>授权生调额度：<br>"+datas[i].freeamt2+"元</span>");
+                }else if(datas[i].poltype=="d"){
+                    $("#heconRow5").find("p").eq(0).append("<span>免生调额度：<br>"+
+                        datas[i].freeamt1+"元</span><br><span>授权生调额度：<br>"+datas[i].freeamt2+"元</span>");
+                }else if(datas[i].poltype=="e"){
+                    $("#heconRow6").find("p").eq(0).append("<span>免生调额度：<br>"+
+                        datas[i].freeamt1+"元</span><br><span>授权生调额度：<br>"+datas[i].freeamt2+"元</span>");
+                }
+            }
+        });
+    }
+
+    function getC() {
+        layer.closeAll();
+        layer.open({ type: 2, shadeClose: false });
+        var dataC={};
+        var getinfoparam = basejq.param();
+        getinfoparam.reqData = dataC;
+        getinfoparam.encrypt = true;
+        getinfoparam.async = true;
+        getinfoparam.loadImg = false;
+        getinfoparam.reqCode = 'jdb0014';  //jdb_getFreeamtC
+
+        basejq.post(getinfoparam, function (data) {
+            if (data.IsError) {
+                basejq.showMsg(data.RetMessage);
+                return;
+            }
+            layer.closeAll();
+            var datas = data.RetData.rows;
+
+            if(datas.length==0){
+                return;
+            }
+
+            for(var i = 0 ;i < datas.length;i++){
+                if(datas[i].poltype=="c"){
+                    $("#heconRow7").find("p").eq(0).append("<span>免财务问卷额度：<br>"+ datas[i].freeamt1+"元</span><br>" +
+                        "<span>免财务资料额度：<br>"+datas[i].freeamt2+"元</span>");
+                }else if(datas[i].poltype=="d"){
+                    $("#heconRow8").find("p").eq(0).append("<span>免财务问卷额度：<br>"+
+                        datas[i].freeamt1+"元</span><br><span>免财务资料额度：<br>"+datas[i].freeamt2+"元</span>");
+                }else if(datas[i].poltype=="e"){
+                    $("#heconRow9").find("p").eq(0).append("<span>免财务问卷额度：<br>"+
+                        datas[i].freeamt1+"元</span><br><span>免财务资料额度：<br>"+datas[i].freeamt2+"元</span>");
+                }
+            }
+        });
+    }
+
+
+var globalFreeamtDef;
+    function getFreeamtDef(){
+        layer.closeAll();
+        layer.open({ type: 2, shadeClose: false });
+        var dataDef={};
+        var getinfoparam = basejq.param();
+        getinfoparam.reqData = dataDef;
+        getinfoparam.encrypt = true;
+        getinfoparam.async = true;
+        getinfoparam.loadImg = false;
+        getinfoparam.reqCode = 'jdb0015';  //jdb_getFreeamtDef
+
+
+        basejq.post(getinfoparam, function (data) {
+            if (data.IsError) {
+                basejq.showMsg(data.RetMessage);
+                return;
+            }
+            layer.closeAll();
+            var datas = data.RetData.rows;
+            if (datas.length == 0) {
+                return;
+            }
+            globalFreeamtDef = datas;
+            setheStandard(0,nowStarLevel);   //最开始默认是T   和当前星级
+
+
+
+        });
+    }
+    
+    
+    
+    function setheStandard(tabIndex,star) {
+
+       // $("#heconRow").find("p").eq(1).find("span").eq(0).text(globalDatas[star].star);
+        var paratype = "";
+        if(tabIndex==0){
+            $("#heconRow1").find("p").eq(1).empty();
+            $("#heconRow2").find("p").eq(1).empty();
+            $("#heconRow3").find("p").eq(1).empty();
+            paratype = "T";
+            for(var i = 0; i <globalFreeamtDef.length; i++){
+                if(globalFreeamtDef[i].poltype=="c" && globalFreeamtDef[i].paratype==paratype && globalFreeamtDef[i].salerlevel==star){
+                    $("#heconRow1").find("p").eq(1).append("<span>"+globalFreeamtDef[i].agestart+"-"+globalFreeamtDef[i].ageend+"岁:"+
+                        globalFreeamtDef[i].freeamt1+"元</span><br>");
+                }else if(globalFreeamtDef[i].poltype=="d" && globalFreeamtDef[i].paratype==paratype && globalFreeamtDef[i].salerlevel==star){
+                    $("#heconRow2").find("p").eq(1).append("<span>"+globalFreeamtDef[i].agestart+"-"+globalFreeamtDef[i].ageend+"岁:"+
+                        globalFreeamtDef[i].freeamt1+"元</span><br>");
+                }else if(globalFreeamtDef[i].poltype=="e" && globalFreeamtDef[i].paratype==paratype && globalFreeamtDef[i].salerlevel==star){
+                    $("#heconRow3").find("p").eq(1).append("<span>"+globalFreeamtDef[i].agestart+"-"+globalFreeamtDef[i].ageend+"岁:"+
+                        globalFreeamtDef[i].freeamt1+"元</span><br>");
+                }
+            }
+        }else if(tabIndex==1){
+            paratype="S";
+            $("#heconRow4").find("p").eq(1).empty();
+            $("#heconRow5").find("p").eq(1).empty();
+            $("#heconRow6").find("p").eq(1).empty();
+            for(var i = 0; i <globalFreeamtDef.length; i++){
+                if(globalFreeamtDef[i].poltype=="c" && globalFreeamtDef[i].paratype==paratype && globalFreeamtDef[i].salerlevel==star){
+                    $("#heconRow4").find("p").eq(1).append("<span>免生调额度：<br>"+
+                        globalFreeamtDef[i].freeamt1+"元</span><br><span>授权生调额度：<br>"+globalFreeamtDef[i].freeamt2+"元</span>");
+                }else if(globalFreeamtDef[i].poltype=="d" && globalFreeamtDef[i].paratype==paratype && globalFreeamtDef[i].salerlevel==star){
+                    $("#heconRow5").find("p").eq(1).append("<span>免生调额度：<br>"+
+                        globalFreeamtDef[i].freeamt1+"元</span><br><span>授权生调额度：<br>"+globalFreeamtDef[i].freeamt2+"元</span>");
+                }else if(globalFreeamtDef[i].poltype=="e" && globalFreeamtDef[i].paratype==paratype && globalFreeamtDef[i].salerlevel==star){
+                    $("#heconRow6").find("p").eq(1).append("<span>免生调额度：<br>"+
+                        globalFreeamtDef[i].freeamt1+"元</span><br><span>授权生调额度：<br>"+globalFreeamtDef[i].freeamt2+"元</span>");
+                }
+            }
+        }else if(tabIndex==2){
+            paratype="C";
+            $("#heconRow7").find("p").eq(1).empty();
+            $("#heconRow8").find("p").eq(1).empty();
+            $("#heconRow9").find("p").eq(1).empty();
+            for(var i = 0; i <globalFreeamtDef.length; i++){
+                if(globalFreeamtDef[i].poltype=="c" && globalFreeamtDef[i].paratype==paratype && globalFreeamtDef[i].salerlevel==star){
+                    $("#heconRow7").find("p").eq(1).append("<span>免财务问卷额度：<br>"+
+                        globalFreeamtDef[i].freeamt1+"元</span><br><span>免财务资料额度：<br>"+globalFreeamtDef[i].freeamt2+"元</span>");
+                }else if(globalFreeamtDef[i].poltype=="d" && globalFreeamtDef[i].paratype==paratype && globalFreeamtDef[i].salerlevel==star){
+                    $("#heconRow8").find("p").eq(1).append("<span>免财务资料额度：<br>"+
+                        globalFreeamtDef[i].freeamt1+"元</span><br><span>免财务问卷额度：<br>"+globalFreeamtDef[i].freeamt2+"元</span>");
+                }else if(globalFreeamtDef[i].poltype=="e" && globalFreeamtDef[i].paratype==paratype && globalFreeamtDef[i].salerlevel==star){
+                    $("#heconRow9").find("p").eq(1).append("<span>免财务问卷额度：<br>"+
+                        globalFreeamtDef[i].freeamt1+"元</span><br><span>免财务资料额度：<br>"+globalFreeamtDef[i].freeamt2+"元</span>");
+                }
+            }
+        }
+    }
+
+    function heplus() {
+        var starInSpan = $("#hett span").text();   //是一个数字
+        if(starInSpan==""){
+            return;
+        }
+        starInSpan++;
+        $("#hett span").text(starInSpan);   //与setGradeStandard重复
+
+        var tabIndex;
+        $("li[tabChose]").each(function (index) {
+            if($(this).attr("tabChose")=="chosed"){
+                tabIndex= index;
+                return false;
+            }
+        });
+        setheStandard(tabIndex,starInSpan);
+        if (starInSpan>=5){
+            document.getElementById('herighticon').style.display='none';
+        }else{
+            document.getElementById('herighticon').style.display='inline-block';
+            document.getElementById('helefticon').style.display='inline-block';
+        }
+    }
+
+    function heminus() {
+        var starInSpan = $("#hett span").text();   //是一个数字
+        if(starInSpan==""){
+            return;
+        }
+        starInSpan--;
+        $("#hett span").text(starInSpan);   //与setGradeStandard重复
+
+        var tabIndex;
+        $("li[tabChose]").each(function (index) {
+            if($(this).attr("tabChose")=="chosed"){
+                tabIndex= index;
+                return false;
+            }
+        });
+        setheStandard(tabIndex,starInSpan);
+        if (starInSpan<=0){
+            document.getElementById('helefticon').style.display='none';
+        }else{
+            document.getElementById('helefticon').style.display='inline-block';
+            document.getElementById('herighticon').style.display='inline-block';
+        }
+    }
+
+
+
+</script>
+
+</body>
+</html>

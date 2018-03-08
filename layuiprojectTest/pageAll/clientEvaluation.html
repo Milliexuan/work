@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的评级</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../../../Content/js/layer.m/need/layer.css" rel="stylesheet"/>
+    <link type="text/css" rel="stylesheet" href="../../../Content/materialize/css/materialize.min.css"  media="screen,projection"/>
+    <link rel="stylesheet" href="../../../Content/layuix/css/layui.css" media="all">
+    <script type="text/javascript" src="../../../Content/js/layer.m/layer.js"></script>
+    <script type="text/javascript" src="../../../Content/layuix/layui.js"></script>
+    <script type="text/javascript" src="../../../Content/js/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="../../../Content/materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="../../../Content/js/base.jq.1.0.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <style type="text/css">
+		.valign-wrapper{
+			display:flex !important;
+		}
+    </style>
+</head>
+<body>
+
+
+
+<div >
+
+    <!--<div class="layui-row" id="aa" style="height: 50px; line-height: 50px" >
+        <div class="layui-col-xs1"><i class="layui-icon" style="font-size: 20px; " >&#xe603;</i></div>
+
+        <div class="layui-col-xs10" style="text-align: center"><span  >我的评级</span></div>
+
+    </div>-->
+
+
+
+    <div id="topCon" style="position:fixed;top:0;width:100%; z-index: 2" >
+        <div class="layui-bg-green valign-wrapper "  style=" margin-left:0px;height: 50px; ">
+            <p style="margin: auto;">评定指标</p>
+
+        </div>
+        <div id="conRow">
+            <div class="layui-row grey lighten-3 teal-text" >
+                <div class="layui-col-xs6 valign-wrapper " style="border-right:solid 1px #ccc;height: 50px;" >
+                    <p style="margin:auto">我的评级：三星</p>
+                </div>
+                <div class="layui-col-xs6 valign-wrapper" style="height: 50px;">
+                    <p style="margin:auto;">评级标准：三星</p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="ppp">
+
+        <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>入司年限</span></div>
+        <div id="conRow1">
+            <div class="layui-row grey lighten-5 " >
+                <div class="layui-col-xs6 valign-wrapper" style="border-right:solid 1px #ccc;height: 40px;">
+                    <p  style="margin:auto">xx年</p>
+                </div>
+                <div class="layui-col-xs6 valign-wrapper" style="height: 40px;">
+                    <p style="margin:auto">xxx</p>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>首年佣金(FYC)</span></div>
+        <div id="conRow2">
+            <div class="layui-row grey lighten-5" >
+                <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+
+                    <p class=" " style="margin:auto" ><span>2016.7-2017.6：xxssxxxx</span><br>
+                        <span>2015.7-2016.6:xxxxxxx</span><br>
+                        <span>2014.7-2015.6：xxxxxxxx</span>
+                    </p>
+
+                </div>
+                     <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                         <p style="margin:auto">近两年5万以上asdsd</p>
+                     </div>
+            </div>
+        </div>
+
+
+        <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>近一年综合持续率</span></div>
+        <div id="conRow4">
+            <div class="layui-row grey lighten-5" >
+                <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 40px;" >
+
+                    <p class=" " style="margin:auto" >xx.xx%</p>
+
+                </div>
+                 <div class="layui-col-xs6 valign-wrapper" style="height: 40px;">
+                     <p style="margin:auto">近两年5万以上asdsd</p>
+
+                 </div>
+            </div>
+        </div>
+
+
+        <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>长险因疾病理赔件数</span></div>
+        <div id="conRow5">
+            <div class="layui-row grey lighten-5" >
+                <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 50px;" >
+                    <p class=" " style="margin:auto" >
+                        <span>近两年：0</span><br>
+                        <span>近三年：有/无</span><br>
+                    </p>
+                </div>
+
+                <div class="layui-col-xs6 valign-wrapper" style="height: 50px;">
+                    <p style="margin:auto">长险xxx</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>重疾险因疾病</span></div>
+        <div id="conRow6">
+            <div class="layui-row grey lighten-5" >
+                <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+                    <p class=" " style="margin:auto" >
+                        <span>重疾险短期出险率：00%</span><br>
+                        <span>重疾险生效件数：33</span><br>
+                        <span>重疾险理赔件数：xx</span><br>
+                    </p>
+                </div>
+                <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                    <p style="margin:auto">zhongjixianxxx</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>医疗险因疾病</span></div>
+        <div id="conRow7">
+            <div class="layui-row grey lighten-5" >
+                <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 100px;" >
+                    <p class=" " style="margin:auto" >
+                        <span>近1年医疗险出险率：xx0.00%</span><br>
+                        <span>近1年医疗险实收保费件数：xx33</span><br>
+                        <span>近1年医疗险赔付件数：xx0</span><br>
+                    </p>
+                </div>
+                <div class="layui-col-xs6 valign-wrapper" style="height: 100px;">
+                    <p style="margin:auto">yiliaoxianxxx</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>有效投诉件数</span></div>
+        <div id="conRow8">
+            <div class="layui-row grey lighten-5" >
+                <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 50px;" >
+                    <p class=" " style="margin:auto" >
+                        2016年-2017年：xx
+                    </p>
+                </div>
+                <div class="layui-col-xs6 valign-wrapper" style="height: 50px;">
+                    <p style="margin:auto">投诉件数xxx</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>违规违纪扣分</span></div>
+        <div id="conRow9">
+            <div class="layui-row grey lighten-5" >
+                <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 80px;" >
+                    <p class=" " style="margin:auto" >
+                        <span>2016.7-2017.7：xx</span><br>
+                        <span>2015.7-2016.7：xx</span>
+                    </p>
+                </div>
+                <div class="layui-col-xs6 valign-wrapper" style="height: 80px;">
+                    <p style="margin:auto">weiguikoufenxx</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="teal lighten-2 white-text" style="margin-top: 5px"><span>客户关键信息完整性100%</span></div>
+        <div id="conRow10">
+            <div class="layui-row grey lighten-5" >
+                <div class="layui-col-xs6  valign-wrapper" style="border-right:solid 1px #ccc;height: 50px;" >
+                    <p class=" " style="margin:auto" >
+                        FALSE
+                    </p>
+                </div>
+                <div class="layui-col-xs6 valign-wrapper" style="height: 40px;">
+                    <p style="margin:auto">完整性</p>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+
+    <div id="bottomCon" class="grey lighten-3 valign-wrapper " style="position:fixed;bottom:0px;width:100%;height:60px;" ><p  style="margin:auto">注：1.以上为月初统计数据，供参考，带*项已剔除孤儿;<br>
+        2.试行期间高品质业务员目前仅适用于杭州地区;</p></div>
+
+
+
+
+
+</div>
+
+
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+
+    layui.use('element', function(){
+        var $ = layui.jquery
+            ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+        area();
+
+        getDetail();
+
+
+    });
+
+
+var nowStarLevel;
+    function getDetail() {
+        layer.closeAll();
+        layer.open({ type: 2, shadeClose: false });
+        var salerP={};
+
+        var getinfoparam = basejq.param();
+        getinfoparam.reqData = salerP;
+        getinfoparam.encrypt = true;
+        getinfoparam.async = true;
+        getinfoparam.loadImg = false;
+        getinfoparam.reqCode = 'jdb0010';  //getSalerDetail
+
+        basejq.post(getinfoparam, function (data) {
+            if (data.IsError) {
+                basejq.showMsg(data.RetMessage);
+                return;
+            }
+            layer.closeAll();
+            var datas = data.RetData.rows;
+
+            nowStarLevel = datas[0].starlevel;
+             getGradeDef();
+
+             console.log(datas);
+            $("#conRow").find("p").eq(0).html("我的评级："+datas[0].starlevel+"星");
+            $("#conRow1").find("p").eq(0).html(datas[0].seniority+"年");  //入司年限
+
+            $("#conRow2").find("p").eq(0).find("span").eq(0).html("2016.7-2017.6："+datas[0].oneFYC);   //首年佣金FYC
+            $("#conRow2").find("p").eq(0).find("span").eq(1).html("2015.7-2016.6："+datas[0].twoFYC);
+            $("#conRow2").find("p").eq(0).find("span").eq(2).html("2014.7-2015.6："+datas[0].threeFYC);
+
+            $("#conRow4").find("p").eq(0).html(datas[0].oneylastrate);   //近一年综合持续率
+
+            $("#conRow5").find("p").eq(0).find("span").eq(0).html("近2年："+datas[0].twolongclaim);  //近两年长险疾病理赔件数
+            $("#conRow5").find("p").eq(0).find("span").eq(1).html("近3年："+datas[0].threelongclaim);
+
+            $("#conRow6").find("p").eq(0).find("span").eq(0).html("重疾险短期出险率："+datas[0].illnessrate);  //重疾险短期出险率
+            $("#conRow6").find("p").eq(0).find("span").eq(1).html("重疾险生效件数："+datas[0].illnessinforce);//重疾险生效件数
+            $("#conRow6").find("p").eq(0).find("span").eq(2).html("重疾险理赔件数："+datas[0].illnessclaim);//重疾险理赔件数
+
+            $("#conRow7").find("p").eq(0).find("span").eq(0).html("近1年医疗险出险率："+datas[0].medicalrate);   //医疗险
+            $("#conRow7").find("p").eq(0).find("span").eq(1).html("近1年医疗险实收保费件数："+datas[0].medicalrecieved);
+            $("#conRow7").find("p").eq(0).find("span").eq(2).html("近1年医疗险赔付件数："+datas[0].medicalclaim);
+
+            $("#conRow8").find("p").eq(0).html("2016年-2017年："+datas[0].oneyearcomplaint);   //有效投诉件数
+
+            $("#conRow9").find("p").eq(0).find("span").eq(0).html("2016.7-2017.7："+datas[0].oneyeardeduct);  //违规违纪扣分
+            $("#conRow9").find("p").eq(0).find("span").eq(1).html("2015.7-2016.7："+datas[0].twoyeardeduct);
+
+            $("#conRow10").find("p").eq(0).html(datas[0].custintegrity);   //客户关键信息完整性100%
+        });
+    }
+
+
+
+
+var globalDatas;
+    function getGradeDef() {
+        layer.closeAll();
+        layer.open({ type: 2, shadeClose: false });
+        var gradeDefPara={};
+        var getinfoparam = basejq.param();
+        getinfoparam.reqData = gradeDefPara;
+        getinfoparam.encrypt = true;
+        getinfoparam.async = true;
+        getinfoparam.loadImg = false;
+        getinfoparam.reqCode = 'jdb0011';  //getGradeDef
+
+        basejq.post(getinfoparam, function (data) {
+            if (data.IsError) {
+                basejq.showMsg(data.RetMessage);
+                return;
+            }
+            layer.closeAll();
+            var datas = data.RetData.rows;
+                globalDatas = datas;
+           /* var gradeDef = {};
+            gradeDef.star0 = datas[0];
+            gradeDef.star1 = datas[1];
+            gradeDef.star2 = datas[2];
+            gradeDef.star3 = datas[3];
+            gradeDef.star4 = datas[4];
+            gradeDef.star5 = datas[5];*/
+
+
+                setGradeStandard(nowStarLevel);
+
+
+
+        });
+    }
+    function  setGradeStandard(i) {
+
+        $("#conRow").find("p").eq(1).html(globalDatas[i].star);
+        $("#conRow1").find("p").eq(1).html(globalDatas[i].serviceYear);  //入司年限
+
+        $("#conRow2").find("p").eq(1).html(globalDatas[i].yearCommission);   //首年佣金FYC
+
+
+        $("#conRow4").find("p").eq(1).html(globalDatas[i].continueRate);   //近一年综合持续率
+
+        $("#conRow5").find("p").eq(1).html("长险因疾病出险："+globalDatas[i].longClaim);  //近两年长险疾病理赔件数
+
+
+        $("#conRow6").find("p").eq(1).html("重疾险两年内因疾病出险率："+globalDatas[i].illnessClaim);  //重疾险短期出险率
+
+
+        $("#conRow7").find("p").eq(1).html("近一年医疗出效率："+globalDatas[i].medicalClaim);   //医疗险
+
+
+        $("#conRow8").find("p").eq(1).html("近两年投诉件："+globalDatas[i].complaint);   //有效投诉件数
+
+        $("#conRow9").find("p").eq(1).html(globalDatas[i].deduct);  //违规违纪扣分
+
+
+        $("#conRow10").find("p").eq(1).html("完整性与准确率："+globalDatas[i].clientIntegrity);   //客户关键信息完整性100%
+    }
+
+    function area() {
+        var aa = $("#topCon").outerHeight(true);
+        var bb=  $("#bottomCon").outerHeight(true);
+        var aaa =  aa + "px";
+        var bbb = bb + "px";
+        $("#ppp").css({
+            "margin-top": aaa,
+            "margin-bottom":bbb
+        });
+    }
+
+
+
+</script>
+
+</body>
+</html>

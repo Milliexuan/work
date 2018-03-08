@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>客户详情</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+   <!-- <link href="../../../Content/js/layer.m/need/layer.css" rel="stylesheet"/>
+    <link type="text/css" rel="stylesheet" href="../../../Content/materialize/css/materialize.min.css"  media="screen,projection"/>
+    <script type="text/javascript" src="../../../Content/js/layer.m/layer.js"></script>
+    <script type="text/javascript" src="../../../Content/js/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="../../../Content/materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="../../../Content/js/base.jq.1.0.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../materialize/css/materialize.css">
+    <script src="../layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../linkjs/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="../materialize/js/materialize.js"></script>
+</head>
+<body>
+
+
+
+<div class="layui-container">
+
+
+    <div class="layui-row" id="aa" style="height: 50px; line-height: 50px" >
+        <div class="layui-col-xs1"><i class="layui-icon" style="font-size: 20px; " >&#xe603;</i></div>
+
+        <div class="layui-col-xs9" style="text-align: center"><span  >加保空间</span></div>
+    </div>
+
+
+    <hr>
+
+    <div class="layui-bg-green" style="height: 35px ;line-height:35px; padding-left: 5px;"> 客户信息</div>
+
+    <div class="layui-row " style="height: 35px;line-height: 35px;" >
+        <div id="clientInfo_name" class="layui-col-xs2">
+
+        </div>
+        <div id="clientInfo_sex" class="layui-col-xs3">
+
+        </div>
+        <div id="clientInfo_age" class="layui-col-xs2">
+
+        </div>
+        <div id="clientInfo_birth" class="layui-col-xs5">
+
+        </div>
+    </div>
+    <hr>
+    <div id="clientInfo" style="line-height: 30px;">
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+    </div>
+    <div class="layui-bg-green" style="height: 35px ;line-height:35px; padding-left: 5px;"> 风险保额</div>
+
+    <div class="layui-row " style="height: 35px; line-height: 35px;">
+        <div  class="layui-col-xs6">累计净风险</div>
+        <div class="layui-col-xs3">2017.2.23起</div>
+        <div class="layui-col-xs3" >累计全部</div>
+    </div>
+
+    <div class="layui-row " style="height: 35px; line-height: 35px;">
+        <div  class="layui-col-xs6">寿险净风险：</div>
+        <div id="risk_1_1" class="layui-col-xs3">p01</div>
+        <div id="risk_1_2" class="layui-col-xs3">p11</div>
+    </div>
+    <div class="layui-row " style="height: 35px; line-height: 35px;">
+        <div class="layui-col-xs6">重疾净风险：</div>
+        <div id="risk_2_1" class="layui-col-xs3">xx</div>
+        <div id="risk_2_2" class="layui-col-xs3">p11</div>
+    </div>
+
+    <div class="layui-row " style="height: 35px; line-height: 35px;">
+        <div class="layui-col-xs9">非交通意外净风险：</div>
+
+        <div id="risk_3_1" class="layui-col-xs3">p11</div>
+    </div>
+    <div class="layui-row " style="height: 35px; line-height: 35px;">
+        <div class="layui-col-xs9">客运交通(含自驾)意外净风险：</div>
+
+        <div id="risk_4_1" class="layui-col-xs3">p11</div>
+    </div>
+    <div class="layui-row " style="height: 35px; line-height: 35px;">
+        <div class="layui-col-xs9">符合配比关系的最高意外净风险额度：</div>
+
+        <div id="risk_5_1" class="layui-col-xs3">p11</div>
+    </div>
+
+
+
+
+    <div class="layui-bg-green" style="height: 35px ;line-height:35px; padding-left: 5px;"> 可加保空间</div>
+
+    <div class="layui-tab layui-tab-brief " lay-filter="docDemoTabBrief" >
+        <ul class="layui-tab-title" >
+            <li class="layui-this" >免超额体检</li>
+            <li >免生存调查</li>
+            <li >免财务资料</li>
+
+        </ul>
+        <div class="layui-tab-content " style="border:solid 1px #ccc">
+           <!-- 免超额体检-->
+            <div class="layui-tab-item layui-show">
+                <div class="layui-row "style="height: 35px; line-height: 35px;" ><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs6"style="text-align: right; ">享受单独累计</div>
+                    <div class="layui-col-xs6" style="text-align: right; ">不享受单独累计</div>
+                </div>
+                <div class="layui-row " style="height: 35px; line-height: 35px;"><!--style="height: 35px; line-height: 35px;"-->
+                     <div class="layui-col-xs6" >
+                         <div class="layui-row">
+                             <div class="layui-col-xs6">寿险净风险:</div>
+                             <div class="layui-col-xs6" style="text-align: right; " id="jbkj_1tab_1_1">adf</div>
+                         </div>
+                     </div>
+                    <div class="layui-col-xs6" style="text-align: right; " id="jbkj_1tab_1_2">xxssadfsdf</div>
+
+                </div>
+                <div class="layui-row " style="height: 35px; line-height: 35px;"><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs6" >
+                        <div class="layui-row">
+                            <div class="layui-col-xs6">重疾净风险:</div>
+                            <div class="layui-col-xs6" style="text-align: right; " id="jbkj_1tab_2_1">safas</div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs6" style="text-align: right; " id="jbkj_1tab_2_2">xx</div>
+                </div>
+                <div class="layui-row "style="height: 35px; line-height: 35px;" ><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs8">非交通意外净风险:</div>
+                    <div class="layui-col-xs4" style="text-align: right; " id="jbkj_1tab_3_1">xxx</div>
+                </div>
+                <div class="layui-row "style="height: 35px; line-height: 35px;" ><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs8">客运交通意外(含自驾)净风险:</div>
+                    <div class="layui-col-xs4" style="text-align: right; " id="jbkj_1tab_4_1">xxx</div>
+                </div>
+            </div>
+
+           <!-- 免生存调查标签-->
+            <div class="layui-tab-item">
+                <div class="layui-row "style="height: 35px; line-height: 35px;" ><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs6"style="text-align: right; ">享受单独累计</div>
+                    <div class="layui-col-xs6" style="text-align: right; ">不享受单独累计</div>
+                </div>
+                <div class="layui-row " style="height: 35px; line-height: 35px;"><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs6" >
+                        <div class="layui-row">
+                            <div class="layui-col-xs6">寿险净风险:</div>
+                            <div class="layui-col-xs6" style="text-align: right; " id="jbkj_2tab_1_1">xxx</div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs6" style="text-align: right; " id="jbkj_2tab_1_2">xx</div>
+                </div>
+
+                <div class="layui-row " style="height: 35px; line-height: 35px;"><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs6" >
+                        <div class="layui-row">
+                            <div class="layui-col-xs6">寿险净风险:</div>
+                            <div class="layui-col-xs6" style="text-align: right; " id="jbkj_2tab_2_1">xxx</div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs6" style="text-align: right; " id="jbkj_2tab_2_2">xx</div>
+                </div>
+                <div class="layui-row "style="height: 35px; line-height: 35px;" ><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs8">非交通意外净风险:</div>
+                    <div class="layui-col-xs4" style="text-align: right; " id="jbkj_2tab_3_1">xxx</div>
+                </div>
+                <div class="layui-row "style="height: 35px; line-height: 35px;" ><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs8">客运交通意外(含自驾)净风险:</div>
+                    <div class="layui-col-xs4" style="text-align: right; " id="jbkj_2tab_4_1">xxx</div>
+                </div>
+                <br>
+                <div>*上述额度内，可能需要授权业务员生调</div>
+            </div>
+            <!--免财务资料-->
+            <div class="layui-tab-item">
+                <div class="layui-row "style="height: 35px; line-height: 35px;" ><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs6"style="text-align: right; ">享受单独累计</div>
+                    <div class="layui-col-xs6" style="text-align: right; ">不享受单独累计</div>
+                </div>
+                <div class="layui-row " style="height: 35px; line-height: 35px;"><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs6" >
+                        <div class="layui-row">
+                            <div class="layui-col-xs6">寿险净风险:</div>
+                            <div class="layui-col-xs6" style="text-align: right; " id="jbkj_3tab_1_1">xxx</div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs6" style="text-align: right; " id="jbkj_3tab_1_2">xx</div>
+                </div>
+
+                <div class="layui-row " style="height: 35px; line-height: 35px;"><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs6" >
+                        <div class="layui-row">
+                            <div class="layui-col-xs6">寿险净风险:</div>
+                            <div class="layui-col-xs6" style="text-align: right; " id="jbkj_3tab_2_1">xxx</div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs6" style="text-align: right; "id="jbkj_3tab_2_2">xx</div>
+                </div>
+                <div class="layui-row "style="height: 35px; line-height: 35px;" ><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs8">非交通意外净风险：</div>
+                    <div class="layui-col-xs4" style="text-align: right; "id="jbkj_3tab_3_1">xxx</div>
+                </div>
+                <div class="layui-row "style="height: 35px; line-height: 35px;" ><!--style="height: 35px; line-height: 35px;"-->
+                    <div class="layui-col-xs8">客运交通意外(含自驾)净风险：</div>
+                    <div class="layui-col-xs4" style="text-align: right; " id="jbkj_3tab_4_1">xxx</div>
+                </div>
+                <br>
+                <div>*上述额度内，可能需要客户填写财务问卷</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div style="text-align: center;font-size: 15px;height: 50px;">数据非实时更新，仅供参考</div>
+    <div class="layui-bg-green" style="height: 39px;line-height: 39px;text-align: center">
+        <button class="layui-btn layui-btn-small layui-btn-primary layui-btn-radius" onclick="myFunction()">
+            <i class="layui-icon" style="font-size: 20px;">&#xe6b2;</i>投保试算
+        </button>
+    </div>
+
+</div>
+
+
+
+
+
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    /*var  age;
+    var sex;*/
+    var globalcustid;
+    layui.use('element', function(){
+        var $ = layui.jquery
+            ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+    });
+
+
+    $(document).ready(function () {
+
+     // getuserInfo();
+      //  riskCount();
+    });
+
+    function getuserInfo() {
+        layer.closeAll();
+        layer.open({ type: 2, shadeClose: false });
+        var customerObj={};
+        //获取参数赋值到customerobj.custid
+        var custid = bj.getUrlParam("custid");
+        globalcustid = custid;
+
+        customerObj.custid= custid;
+        var getinfoparam = basejq.param();
+        getinfoparam.reqData = customerObj;
+        getinfoparam.encrypt = true;
+        getinfoparam.async = true;
+        getinfoparam.loadImg = false;
+        getinfoparam.reqCode = 'jdb003';  //需要修改
+
+        basejq.post(getinfoparam, function (data) {
+            if (data.IsError) {
+                basejq.showMsg(data.RetMessage);
+                return;
+            }
+            layer.closeAll();
+            var datas = data.RetData.rows;
+
+            $("#clientInfo_name").html("姓名:"+datas[0].name);
+           // if(datas)
+            $("#clientInfo_sex").html("性别:"+datas[0].sex);
+            $("#clientInfo_age").html("年龄:"+datas[0].age);
+            //距离生日还有n天
+            //$("#clientInfo_birth").html();
+            var nowDate = new Date();
+          // var nowMonth =  nowDate.getMonth()+1;
+            var nowYear = nowDate.getFullYear();
+
+
+            var strsArray= new Array(); //定义一数组
+           strsArray =  datas[0].birthdate.split(" ");
+           var ymd = new Array();
+           ymd = strsArray[0].split("-");
+           var strs = nowYear+"/"+ymd[1]+"/"+ymd[2]+" "+"00:00:00:000";
+           var newDate = new Date(strs);
+            var dateStr;
+           if(nowDate.getTime()>newDate.getTime()){
+               nowYear++;
+               dateStr = nowYear+"/"+ymd[1]+"/"+ymd[2]+" "+"00:00:00:000";
+           }else{
+               dateStr = strs;
+           }
+
+           var strDate = new Date(dateStr);
+           var leftTime = strDate.getTime()-nowDate.getTime();
+            var day = Math.floor(leftTime/1000/60/60/24);
+            $("#clientInfo_birth").html("距生日还有"+day+"天");
+
+            //详细信息
+            $("#clientInfo").append("<p>出生日期："+datas[0].birthdate+"</p><p>证件号码："+datas[0].idno+"</p><p>联系电话："
+                + datas[0].mobile+"</p><p>联系地址："+datas[0].address+"</p>");
+
+        });
+
+    }
+
+
+    function riskCount() {
+        layer.closeAll();
+        layer.open({ type: 2, shadeClose: false });
+        var customerObj={};
+        //获取参数赋值到customerobj.idno
+        var custid = bj.getUrlParam("custid");
+        customerObj.custid= custid;
+        var getinfoparam = basejq.param();
+        getinfoparam.reqData = customerObj;
+        getinfoparam.encrypt = true;
+        getinfoparam.async = true;
+        getinfoparam.loadImg = false;
+        getinfoparam.reqCode = 'jdb009';  //getUserCustfree
+
+        basejq.post(getinfoparam, function (data) {
+            if (data.IsError) {
+                basejq.showMsg(data.RetMessage);
+                return;
+            }
+            layer.closeAll();
+            var datas = data.RetData.rows;
+
+
+            if(datas[0].flag==1){
+                $("#risk_1_1").html(datas[0].P01);
+                $("#risk_2_1").html(datas[0].P02);
+                $("#jbkj_1tab_1_1").html(datas[0].T01);
+                $("#jbkj_1tab_2_1").html(datas[0].T02);
+                $("#jbkj_2tab_1_1").html(datas[0].S01);
+                $("#jbkj_2tab_2_1").html(datas[0].S02);
+                $("#jbkj_3tab_1_1").html(datas[0].C01);
+                $("#jbkj_3tab_2_1").html(datas[0].C02);
+            }
+            else {
+                $("#risk_1_1").html("不适用");
+                $("#risk_2_1").html("不适用");
+                $("#jbkj_1tab_1_1").html("不适用");
+                $("#jbkj_1tab_2_1").html("不适用");
+                $("#jbkj_2tab_1_1").html("不适用");
+                $("#jbkj_2tab_2_1").html("不适用");
+                $("#jbkj_3tab_1_1").html("不适用");
+                $("#jbkj_3tab_2_1").html("不适用");
+            }
+            $("#risk_1_2").html(datas[0].P11);
+            $("#risk_2_2").html(datas[0].P12);
+            $("#risk_3_1").html(datas[0].P13);
+            $("#risk_4_1").html(datas[0].P14);
+            $("#risk_5_1").html(datas[0].P15);
+            $("#jbkj_1tab_1_2").html(datas[0].T11);
+            $("#jbkj_1tab_2_2").html(datas[0].T12);
+            $("#jbkj_1tab_3_1").html(datas[0].T13);
+            $("#jbkj_1tab_4_1").html(datas[0].T14);
+            $("#jbkj_2tab_1_2").html(datas[0].S11);
+            $("#jbkj_2tab_2_2").html(datas[0].S12);
+            $("#jbkj_2tab_3_1").html(datas[0].S13);
+            $("#jbkj_2tab_4_1").html(datas[0].S14);
+            $("#jbkj_3tab_1_2").html(datas[0].C11);
+            $("#jbkj_3tab_2_2").html(datas[0].C12);
+            $("#jbkj_3tab_3_1").html(datas[0].C13);
+            $("#jbkj_3tab_4_1").html(datas[0].C14);
+        });
+    }
+
+
+    function  myFunction() {
+        var age = $("#clientInfo_age").val();
+        var sex = $("#clientInfo_sex").val();
+        window.location = "window.html?age="+age+"&sex="+sex+"&custid="+globalcustid;
+      //  console.log(globalcustid);
+
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<link href="../../../Content/js/layer.m/need/layer.css" rel="stylesheet"/>
+<link type="text/css" rel="stylesheet" href="../../../Content/materialize/css/materialize.min.css"  media="screen,projection"/>
+<link rel="stylesheet" href="../../../Content/layui2.1/css/layui.css" media="all">
+<script type="text/javascript" src="../../../Content/js/layer.m/layer.js"></script>
+<script type="text/javascript" src="../../../Content/layui2.1/layui.js"></script>
+<script type="text/javascript" src="../../../Content/js/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="../../../Content/materialize/js/materialize.min.js"></script>
+<script type="text/javascript" src="../../../Content/js/base.jq.1.0.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<title>加多宝</title>
+<style type="text/css">
+body { 
+	background-color:#f2f2f2;
+}
+
+</style>
+</head>
+<body>
+<div style="background-color:#009688;">
+	<ul class="collection with-header" style="margin-left:0px;margin-right:0px;margin-top:0px;margin-bottom:0px;">
+	  	<li class="collection-item active">
+	  		<div id="grade">我的核保评级：
+	  			<a href="clientEvaluation.html" class="secondary-content">
+	  				<i class="material-icons">send</i>
+	  			</a>
+	  		</div>
+	  	</li>
+	</ul>
+</div>
+<div style="margin-left:6px;margin-right:6px;">
+	<input id="search1" style="width: 100%" type="text" placeholder="搜索" />
+</div>
+<div id="wrapper">
+</div>
+<p id="loadmore" align="center">————————点击加载更多————————</p>
+<p align="center"><font color="red">数据非实时更新，仅供参考</font></p>
+</body>
+<script>
+$(document).ready(function(){
+	$("#loadmore").click(function(){
+        jq22.loadMore();
+    });
+
+	$("#search1").focus(function(){
+    	jq22.search();
+  	});
+
+  	$("#search1").keydown(function(){
+    	jq22.search();
+  	});
+
+  	$("#search1").keyup(function(){
+    	jq22.search();
+  	});
+
+  	$("#search1").blur(function(){
+   		jq22.search();
+  	});
+
+  	$("#search1").change(function(){
+   		jq22.search();
+  	});
+  	grade1();
+  	setcustlist();
+	
+});
+
+function grade1() {
+	layer.closeAll();
+    layer.open({ type: 2, shadeClose: false });
+    var getinfoparam = basejq.param();
+    getinfoparam.encrypt = true;
+    getinfoparam.async = true;
+    getinfoparam.loadImg = false;
+    getinfoparam.reqCode = 'jdb001';
+    basejq.post(getinfoparam, function (data) {
+	if (data.IsError) {
+		basejq.showMsg(data.RetMessage);
+		return;
+	}  
+	layer.closeAll();
+	var datas = data.RetData.rows;
+	var	starlevel = datas[0].starlevel;		 
+	for (var i=0;i<starlevel;i++)
+	{
+		$("#grade").append("<img src='image/02.png' height='12' width='12' />");
+	}			 
+    });
+} 
+
+function custlist() {
+	var flag = sessionStorage.getItem("sa");  
+	if ($.isEmptyObject(flag)){
+		layer.closeAll();
+	    layer.open({ type: 2, shadeClose: false });
+	    var datas;
+	    var getinfoparam = basejq.param();
+	    getinfoparam.encrypt = true;
+	    getinfoparam.async = false;
+	    getinfoparam.loadImg = false;
+	    getinfoparam.reqCode = 'jdb002';
+	    basejq.post(getinfoparam, function (data) {
+		if (data.IsError) {
+			basejq.showMsg(data.RetMessage);
+			return;
+		}  
+		layer.closeAll();
+		datas = data.RetData.rows;
+		sessionStorage.setItem("ss",JSON.stringify(datas)); 
+	    });
+	}
+	else {
+		datas = JSON.parse(flag);
+	}
+    return datas;
+}
+
+function setcustlist() {
+	var flagcount = sessionStorage.getItem("count");
+	var datai = custlist();
+	if (flagcount ==  "undefined" || flagcount == '' || flagcount == null) {
+		for (var i=0;i<2;i++){
+			$("#wrapper").append("<ul class='collection' style='margin-left:6px;margin-bottom:6px;margin-top:0px;margin-right:6px;'><li class='collection-item row' style='word-spacing:15px;margin-left:0px;font-size:12px;'><a href="+ datai[i].custid + "'clientDetail.html?custid='><p>" + datai[i].name + "&nbsp;" + datai[i].sex + "&nbsp;" + datai[i].birthdate + "<br>" + datai[i].mobile + "&nbsp;" + datai[i].address + "</p></a></li></ul>");
+	  	}
+	  	var sf = JSON.stringify(datai.slice(0,2)); 
+		sessionStorage.setItem("sa",sf); 
+		sessionStorage.setItem("sb",JSON.stringify(datai)); 
+		sessionStorage.setItem("count", 1);
+	}
+	else {
+		for (var i=0;i<=flagcount;i++){
+			$("#wrapper").append("<ul class='collection' style='margin-left:6px;margin-bottom:6px;margin-top:0px;margin-right:6px;'><li class='collection-item row' style='word-spacing:15px;margin-left:0px;font-size:12px;'><a href="+ datai[i].custid + "'clientDetail.html?custid='><p>" + datai[i].name + "&nbsp;" + datai[i].sex + "&nbsp;" + datai[i].birthdate + "<br>" + datai[i].mobile + "&nbsp;" + datai[i].address + "</p></a></li></ul>");
+	  	}
+	  	var countl = Number(flagcount) + 1;
+	  	var datae = sessionStorage.getItem("ss");
+	  	var ll = JSON.stringify(JSON.parse(datae));
+	  	var sf = JSON.stringify(JSON.parse(datae).slice(0,countl)); 
+		sessionStorage.setItem("sa",sf); 
+		sessionStorage.setItem("sb",ll); 
+		sessionStorage.setItem("count", flagcount);
+	}
+}
+
+var jq22 = {
+	loadMore:function(){
+		//var el, li, i;
+		//el =document.querySelector("#wrapper ul");
+		var i = sessionStorage.getItem("count"); 
+		var b = Number(i) + 1;
+		var a = Number(i) + 2;
+		var c = Number(i) + 3;//等于数组间隔长度加上初始数组长
+		var data = sessionStorage.getItem("sb");
+		var b1 = JSON.stringify(JSON.parse(data).slice(0,c));
+    	sessionStorage.setItem("sa",b1);  
+		if (a < data.length-1) {
+			for (var c=b; c<=a; c++) {
+				//li = document.createElement('li');
+				//li.innerHTML="<p>" + data[c] + "</p>";
+				//el.appendChild(li, el.childNodes[0]);
+				$("#wrapper").append("<ul class='collection' style='margin-left:6px;margin-bottom:6px;margin-top:0px;margin-right:6px;'><li class='collection-item row' style='word-spacing:15px;margin-left:0px;font-size:12px;'><a href="+ JSON.parse(data)[c].custid + "'clientDetail.html?custid='><p>" + JSON.parse(data)[c].name + "&nbsp;" + JSON.parse(data)[c].sex + "&nbsp;" + JSON.parse(data)[c].birthdate + "<br>" + JSON.parse(data)[c].mobile + "&nbsp;" + JSON.parse(data)[c].address + "</p></a></li></ul>");
+			};
+		}
+		else {	
+			for (var c=b; c<JSON.parse(data).length; c++) {
+				//li = document.createElement('li');
+				//li.innerHTML="<p>" + data[c] + "</p>";
+				//el.appendChild(li, el.childNodes[0]);
+				$("#wrapper").append("<ul class='collection' style='margin-left:6px;margin-bottom:6px;margin-top:0px;margin-right:6px;'><li class='collection-item row' style='word-spacing:15px;margin-left:0px;font-size:12px;'><a href="+ JSON.parse(data).custid + "'clientDetail.html?custid='><p>" + JSON.parse(data).name + "&nbsp;" + JSON.parse(data).sex + "&nbsp;" + JSON.parse(data).birthdate + "<br>" + JSON.parse(data).mobile + "&nbsp;" + JSON.parse(data).address + "</p></a></li></ul>");
+			}
+			$("#loadmore").css("display","none");
+			$(".abc").css("display","none");
+			$("#wrapper").append("<p class='abc' align='center'>已经是底部</p>");
+		}
+	    sessionStorage.setItem("count", a);
+		//wrapper.refresh();
+	},
+	search:function(){
+		var el, li;
+		el =document.querySelector("#wrapper ul");
+		var count0 = sessionStorage.getItem("count"); 
+		var count1 = Number(count0);
+		var data = sessionStorage.getItem("sb");
+		var data1 = new Array();
+		var a1 = sessionStorage.getItem("sa");
+		var str = $("#search1").val();
+		if (str != "undefined" && str != "" && str != null) {
+			for (var i=0;i<JSON.parse(a1).length;i++) {
+        		var cc = JSON.parse(a1)[i].name.indexOf(str);
+        		if (cc >= 0)
+        			data1.push(JSON.parse(a1)[i]);
+			}
+			$("#wrapper").empty();
+			for (var i=0; i<data1.length; i++) {
+				//li = document.createElement('li');
+				//li.innerHTML="<p>" + data1[i] + "</p>";
+				//el.appendChild(li, el.childNodes[0]);
+				$("#wrapper").append("<ul class='collection' style='margin-left:6px;margin-bottom:6px;margin-top:0px;margin-right:6px;'><li class='collection-item row' style='word-spacing:15px;margin-left:0px;font-size:12px;'><a href="+ data1[i].custid + "'clientDetail.html?custid='><p>" + data1[i].name + "&nbsp;" + data1[i].sex + "&nbsp;" + data1[i].birthdate + "<br>" + data1[i].mobile + "&nbsp;" + data1[i].address + "</p></a></li></ul>");
+			}
+		} 
+		else {
+			$("#wrapper").empty();
+			if (count1 < JSON.parse(data).length-1) {
+				for (var i=0; i<JSON.parse(a1).length; i++) {
+					//li = document.createElement('li');
+					//li.innerHTML="<p>" + JSON.parse(a1)[i] + "</p>";
+					//el.appendChild(li, el.childNodes[0]);
+					$("#wrapper").append("<ul class='collection' style='margin-left:6px;margin-bottom:6px;margin-top:0px;margin-right:6px;'><li class='collection-item row' style='word-spacing:15px;margin-left:0px;font-size:12px;'><a href="+ JSON.parse(a1)[i].custid + "'clientDetail.html?custid='><p>" + JSON.parse(a1)[i].name + "&nbsp;" + JSON.parse(a1)[i].sex + "&nbsp;" + JSON.parse(a1)[i].birthdate + "<br>" + JSON.parse(a1)[i].mobile + "&nbsp;" + JSON.parse(a1)[i].address + "</p></a></li></ul>");
+				}
+			}
+			else {
+				for (var i=0; i<JSON.parse(a1).length; i++) {
+					//li = document.createElement('li');
+					//li.innerHTML="<p>" + JSON.parse(a1)[i] + "</p>";
+					//el.appendChild(li, el.childNodes[0]);
+					$("#wrapper").append("<ul class='collection' style='margin-left:6px;margin-bottom:6px;margin-top:0px;margin-right:6px;'><li class='collection-item row' style='word-spacing:15px;margin-left:0px;font-size:12px;'><a href="+ JSON.parse(a1)[i].custid + "'clientDetail.html?custid='><p>" + JSON.parse(a1)[i].name + "&nbsp;" + JSON.parse(a1)[i].sex + "&nbsp;" + JSON.parse(a1)[i].birthdate + "<br>" + JSON.parse(a1)[i].mobile + "&nbsp;" + JSON.parse(a1)[i].address + "</p></a></li></ul>");
+				}
+				$("#loadmore").css("display","none");
+				$(".abc").css("display","none");
+				$("#wrapper").append("<p class='abc' align='center'>已经是底部</p>");
+			}	
+		}
+	}
+}
+</script>
+</html>
